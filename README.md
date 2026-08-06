@@ -77,6 +77,24 @@ from Git.
 This step saves the SEC's original HTML only. It does not parse or analyze the
 filing.
 
+## Convert a filing to clean text
+
+Process an already-downloaded filing without making another SEC request:
+
+```bash
+process-filing data/raw/sec/0000320193/000032019325000079/aapl-20250927.htm
+```
+
+The cleaned UTF-8 text is saved under the matching path:
+
+```text
+data/processed/sec/0000320193/000032019325000079/filing.txt
+```
+
+The processor removes scripts, styles, comments, hidden XBRL metadata, and excess
+whitespace while retaining readable text and inline financial values. Processed
+files are generated local data and are excluded from Git.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -101,11 +119,14 @@ StockLens/
 │   ├── cli.py
 │   ├── download_cli.py
 │   ├── filing_downloader.py
+│   ├── filing_processor.py
 │   ├── filings_cli.py
+│   ├── process_cli.py
 │   ├── sec_filings.py
 │   └── sec_companies.py
 ├── tests/
 │   ├── test_filing_downloader.py
+│   ├── test_filing_processor.py
 │   ├── test_sec_filings.py
 │   └── test_sec_companies.py
 ├── app.py

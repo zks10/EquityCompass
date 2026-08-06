@@ -22,6 +22,7 @@ venv/
 
 # Downloaded SEC source documents
 data/raw/
+data/processed/
 
 # Editor and operating-system files
 .vscode/
