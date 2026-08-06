@@ -9,6 +9,8 @@ from pathlib import Path
 from finance_news.section_extractor import (
     SectionExtractionError,
     extract_10k_sections,
+    extract_10q_sections,
+    extract_quarterly_sections_file,
     extract_sections_file,
 )
 
@@ -41,6 +43,31 @@ Item 7A. Quantitative and Qualitative Disclosures About Market Risk
 Interest-rate information follows.
 Item 8. Financial Statements and Supplementary Data
 Statements follow.
+"""
+
+SAMPLE_10Q = """Table of Contents
+Item 2.
+Management's Discussion and Analysis
+12
+Item 3.
+Market Risk
+20
+Item 1A.
+Risk Factors
+25
+Item 2.
+Unregistered Sales
+27
+Item 2. Management's Discussion and Analysis of Financial Condition and Results of Operations
+Quarterly revenue increased and management discusses operating results.
+Liquidity and capital resources remained sufficient during the quarter.
+Item 3. Quantitative and Qualitative Disclosures About Market Risk
+Market-risk disclosures follow.
+Item 1A. Risk Factors
+The company faces competition, supply constraints, and regulatory uncertainty.
+These risks could materially affect quarterly and future operating results.
+Item 2. Unregistered Sales of Equity Securities and Use of Proceeds
+Issuer purchase information follows.
 """
 
 
@@ -102,6 +129,33 @@ class ExtractSectionsFileTests(unittest.TestCase):
     def test_reports_missing_input_file(self) -> None:
         with self.assertRaisesRegex(SectionExtractionError, "not found"):
             extract_sections_file(Path("missing-filing.txt"))
+
+
+class Extract10QSectionsTests(unittest.TestCase):
+    def test_extracts_quarterly_mda_and_risk_factors(self) -> None:
+        sections = extract_10q_sections(SAMPLE_10Q)
+
+        self.assertEqual(set(sections), {"mda.txt", "risk_factors.txt"})
+        self.assertIn("Quarterly revenue increased", sections["mda.txt"])
+        self.assertIn("regulatory uncertainty", sections["risk_factors.txt"])
+
+    def test_quarterly_sections_end_at_correct_items(self) -> None:
+        sections = extract_10q_sections(SAMPLE_10Q)
+
+        self.assertNotIn("Market-risk disclosures", sections["mda.txt"])
+        self.assertNotIn("Unregistered Sales", sections["risk_factors.txt"])
+
+    def test_writes_quarterly_section_files(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            source = root / "filing.txt"
+            source.write_text(SAMPLE_10Q, encoding="utf-8")
+
+            paths = extract_quarterly_sections_file(source)
+
+            self.assertEqual(
+                {path.name for path in paths}, {"mda.txt", "risk_factors.txt"}
+            )
 
 
 if __name__ == "__main__":

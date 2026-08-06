@@ -192,6 +192,21 @@ facts, saves annual history, and calculates deterministic metrics. Use
 Each stage is displayed as it runs. If a stage fails, processing stops with that
 stage's name; later outputs are not presented as complete.
 
+## Collect the latest quarterly filing
+
+Download and process the latest 10-Q for a supported ticker:
+
+```bash
+quarterly-pipeline AAPL
+```
+
+This five-stage collector resolves the company, finds and downloads or reuses
+the latest 10-Q, creates clean text, and extracts quarterly MD&A and Risk Factors.
+Use `--force-download` only to replace an existing raw quarterly filing.
+
+This step collects quarterly filing text only. Quarterly XBRL calculations and
+AI analysis are not included.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -225,6 +240,8 @@ StockLens/
 │   ├── metrics_cli.py
 │   ├── pipeline.py
 │   ├── pipeline_cli.py
+│   ├── quarterly_cli.py
+│   ├── quarterly_pipeline.py
 │   ├── process_cli.py
 │   ├── section_extractor.py
 │   ├── sections_cli.py
@@ -235,6 +252,7 @@ StockLens/
 │   ├── test_filing_processor.py
 │   ├── test_derived_metrics.py
 │   ├── test_pipeline.py
+│   ├── test_quarterly_pipeline.py
 │   ├── test_financial_facts.py
 │   ├── test_section_extractor.py
 │   ├── test_sec_filings.py

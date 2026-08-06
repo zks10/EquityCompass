@@ -1,4 +1,4 @@
-"""Extract major sections from cleaned SEC 10-K text."""
+"""Extract major sections from cleaned SEC 10-K and 10-Q text."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ MIN_SECTION_CHARACTERS = 80
 
 
 class SectionExtractionError(Exception):
-    """Raised when required 10-K sections cannot be extracted."""
+    """Raised when required filing sections cannot be extracted."""
 
 
 @dataclass(frozen=True)
@@ -47,6 +47,23 @@ SECTION_DEFINITIONS = (
         title_terms=("management", "discussion", "analysis"),
         end_items=frozenset({"7A", "8"}),
         filename="mda.txt",
+    ),
+)
+
+QUARTERLY_SECTION_DEFINITIONS = (
+    SectionDefinition(
+        name="MD&A",
+        start_item="2",
+        title_terms=("management", "discussion", "analysis"),
+        end_items=frozenset({"3"}),
+        filename="mda.txt",
+    ),
+    SectionDefinition(
+        name="Risk Factors",
+        start_item="1A",
+        title_terms=("risk factor",),
+        end_items=frozenset({"2"}),
+        filename="risk_factors.txt",
     ),
 )
 
@@ -99,8 +116,9 @@ def _extract_section(lines: list[str], definition: SectionDefinition) -> str | N
     return max(candidates, key=lambda candidate: candidate[0])[1] + "\n"
 
 
-def extract_10k_sections(text: str) -> dict[str, str]:
-    """Extract Business, Risk Factors, and MD&A from cleaned 10-K text."""
+def _extract_required_sections(
+    text: str, definitions: tuple[SectionDefinition, ...]
+) -> dict[str, str]:
     if not text.strip():
         raise SectionExtractionError("The processed filing is empty.")
 
@@ -108,7 +126,7 @@ def extract_10k_sections(text: str) -> dict[str, str]:
     sections: dict[str, str] = {}
     missing: list[str] = []
 
-    for definition in SECTION_DEFINITIONS:
+    for definition in definitions:
         content = _extract_section(lines, definition)
         if content is None:
             missing.append(definition.name)
@@ -121,6 +139,16 @@ def extract_10k_sections(text: str) -> dict[str, str]:
         )
 
     return sections
+
+
+def extract_10k_sections(text: str) -> dict[str, str]:
+    """Extract Business, Risk Factors, and MD&A from cleaned 10-K text."""
+    return _extract_required_sections(text, SECTION_DEFINITIONS)
+
+
+def extract_10q_sections(text: str) -> dict[str, str]:
+    """Extract MD&A and Risk Factors from cleaned 10-Q text."""
+    return _extract_required_sections(text, QUARTERLY_SECTION_DEFINITIONS)
 
 
 def extract_sections_file(
@@ -140,6 +168,36 @@ def extract_sections_file(
         sections = extract_10k_sections(filing_text)
         destination_directory.mkdir(parents=True, exist_ok=True)
 
+        saved_paths = []
+        for filename, content in sections.items():
+            destination = destination_directory / filename
+            temporary_path = destination.with_suffix(f"{destination.suffix}.part")
+            temporary_path.write_text(content, encoding="utf-8")
+            temporary_path.replace(destination)
+            saved_paths.append(destination)
+    except SectionExtractionError:
+        raise
+    except (OSError, UnicodeError) as exc:
+        raise SectionExtractionError(f"Could not extract filing sections: {exc}") from exc
+
+    return saved_paths
+
+
+def extract_quarterly_sections_file(
+    input_path: Path, output_directory: Path | None = None
+) -> list[Path]:
+    """Extract major sections from a processed 10-Q and save separate files."""
+    source = Path(input_path)
+    if not source.is_file():
+        raise SectionExtractionError(f"Processed filing not found: {source}")
+
+    destination_directory = (
+        Path(output_directory) if output_directory else source.parent / "sections"
+    )
+
+    try:
+        sections = extract_10q_sections(source.read_text(encoding="utf-8"))
+        destination_directory.mkdir(parents=True, exist_ok=True)
         saved_paths = []
         for filename, content in sections.items():
             destination = destination_directory / filename

@@ -55,7 +55,7 @@ class PipelineResult:
     derived_metrics_path: Path
 
 
-def _run_stage(name: str, operation: Callable[[], StageResult]) -> StageResult:
+def run_stage(name: str, operation: Callable[[], StageResult]) -> StageResult:
     try:
         return operation()
     except PIPELINE_ERRORS as exc:
@@ -72,7 +72,7 @@ def run_pipeline(
     notify = progress or (lambda _message: None)
 
     notify("1/9 Resolve ticker and SEC CIK")
-    company = _run_stage("Resolve ticker", lambda: resolve_ticker(ticker))
+    company = run_stage("Resolve ticker", lambda: resolve_ticker(ticker))
 
     notify("2/9 Find the latest 10-K")
 
@@ -85,10 +85,10 @@ def run_pipeline(
             )
         return filing
 
-    filing = _run_stage("Select latest 10-K", select_filing)
+    filing = run_stage("Select latest 10-K", select_filing)
 
     notify("3/9 Download or reuse the raw 10-K")
-    raw_filing_path = _run_stage(
+    raw_filing_path = run_stage(
         "Download filing",
         lambda: download_filing(
             filing, company.cik, overwrite=force_download
@@ -96,20 +96,20 @@ def run_pipeline(
     )
 
     notify("4/9 Convert the filing to clean text")
-    processed_filing_path = _run_stage(
+    processed_filing_path = run_stage(
         "Process filing", lambda: process_filing(raw_filing_path)
     )
 
     notify("5/9 Extract Business, Risk Factors, and MD&A")
     section_paths = tuple(
-        _run_stage(
+        run_stage(
             "Extract 10-K sections",
             lambda: extract_sections_file(processed_filing_path),
         )
     )
 
     notify("6/9 Retrieve SEC Company Facts")
-    company_facts = _run_stage(
+    company_facts = run_stage(
         "Retrieve Company Facts", lambda: fetch_company_facts(company.cik)
     )
 
@@ -121,7 +121,7 @@ def run_pipeline(
             company_facts, latest, company.ticker, company.cik
         )
 
-    raw_facts_path, latest_facts_path = _run_stage(
+    raw_facts_path, latest_facts_path = run_stage(
         "Save latest annual facts", save_latest
     )
 
@@ -137,10 +137,10 @@ def run_pipeline(
             requested_years=years,
         )
 
-    _, history_path = _run_stage("Save financial history", save_history)
+    _, history_path = run_stage("Save financial history", save_history)
 
     notify("9/9 Calculate deterministic financial metrics")
-    derived_metrics_path = _run_stage(
+    derived_metrics_path = run_stage(
         "Calculate financial metrics", lambda: calculate_metrics_file(history_path)
     )
 
