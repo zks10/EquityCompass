@@ -20,6 +20,9 @@ venv/
 .streamlit/secrets.toml
 .agents/
 
+# Downloaded SEC source documents
+data/raw/
+
 # Editor and operating-system files
 .vscode/
 .idea/

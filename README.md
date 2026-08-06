@@ -61,6 +61,22 @@ After installation, the equivalent shorter command is:
 recent-filings AAPL --limit 5
 ```
 
+## Download a raw SEC filing
+
+Download the newest filing of a selected type to local raw-data storage:
+
+```bash
+download-filing AAPL --form 10-K
+```
+
+The default output path is organized by CIK and accession number under
+`data/raw/sec/`. Existing nonempty files are reused; add `--force` to download
+the document again. Downloaded filings are local source data and are excluded
+from Git.
+
+This step saves the SEC's original HTML only. It does not parse or analyze the
+filing.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -83,10 +99,13 @@ StockLens/
 ├── finance_news/
 │   ├── __init__.py
 │   ├── cli.py
+│   ├── download_cli.py
+│   ├── filing_downloader.py
 │   ├── filings_cli.py
 │   ├── sec_filings.py
 │   └── sec_companies.py
 ├── tests/
+│   ├── test_filing_downloader.py
 │   ├── test_sec_filings.py
 │   └── test_sec_companies.py
 ├── app.py
