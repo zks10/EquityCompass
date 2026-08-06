@@ -95,6 +95,27 @@ The processor removes scripts, styles, comments, hidden XBRL metadata, and exces
 whitespace while retaining readable text and inline financial values. Processed
 files are generated local data and are excluded from Git.
 
+## Extract major 10-K sections
+
+Split a processed 10-K into Business, Risk Factors, and MD&A:
+
+```bash
+extract-sections data/processed/sec/0000320193/000032019325000079/filing.txt
+```
+
+The extracted files are saved beside the processed filing:
+
+```text
+sections/
+├── business.txt
+├── risk_factors.txt
+└── mda.txt
+```
+
+The extractor recognizes SEC item headings and avoids selecting their short
+table-of-contents entries. This step performs structural extraction only; it does
+not summarize or analyze the sections.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -122,11 +143,14 @@ StockLens/
 │   ├── filing_processor.py
 │   ├── filings_cli.py
 │   ├── process_cli.py
+│   ├── section_extractor.py
+│   ├── sections_cli.py
 │   ├── sec_filings.py
 │   └── sec_companies.py
 ├── tests/
 │   ├── test_filing_downloader.py
 │   ├── test_filing_processor.py
+│   ├── test_section_extractor.py
 │   ├── test_sec_filings.py
 │   └── test_sec_companies.py
 ├── app.py
