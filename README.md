@@ -116,6 +116,27 @@ The extractor recognizes SEC item headings and avoids selecting their short
 table-of-contents entries. This step performs structural extraction only; it does
 not summarize or analyze the sections.
 
+## Retrieve annual financial facts
+
+Fetch the latest annual US-GAAP values reported on Form 10-K:
+
+```bash
+financial-facts AAPL
+```
+
+The collector retrieves revenue, net income, total assets, total liabilities,
+and operating cash flow. It saves both the original SEC Company Facts response
+and a normalized file:
+
+```text
+data/raw/sec/{CIK}/companyfacts.json
+data/processed/sec/{CIK}/financial_facts.json
+```
+
+Every normalized value retains its SEC concept tag, unit, fiscal year, period
+end, filing date, accession number, and form. This step collects reported facts
+only; it does not calculate ratios or provide financial analysis.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -142,6 +163,8 @@ StockLens/
 │   ├── filing_downloader.py
 │   ├── filing_processor.py
 │   ├── filings_cli.py
+│   ├── financial_facts.py
+│   ├── facts_cli.py
 │   ├── process_cli.py
 │   ├── section_extractor.py
 │   ├── sections_cli.py
@@ -150,6 +173,7 @@ StockLens/
 ├── tests/
 │   ├── test_filing_downloader.py
 │   ├── test_filing_processor.py
+│   ├── test_financial_facts.py
 │   ├── test_section_extractor.py
 │   ├── test_sec_filings.py
 │   └── test_sec_companies.py
