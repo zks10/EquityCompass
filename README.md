@@ -207,6 +207,26 @@ Use `--force-download` only to replace an existing raw quarterly filing.
 This step collects quarterly filing text only. Quarterly XBRL calculations and
 AI analysis are not included.
 
+## Collect recent material-event filings
+
+Collect and process the three most recent 8-K filings:
+
+```bash
+events-pipeline AAPL --limit 3
+```
+
+For each filing, the collector downloads or reuses the raw document, creates
+clean text, detects and saves its `Item x.xx` sections, and records filing/item
+provenance in:
+
+```text
+data/processed/sec/{CIK}/eight_k_events.json
+```
+
+Use `--force-download` only to replace existing raw 8-K documents. The collector
+preserves all detected items, including exhibit metadata, without judging
+materiality or performing AI analysis.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -231,6 +251,9 @@ StockLens/
 │   ├── cli.py
 │   ├── download_cli.py
 │   ├── derived_metrics.py
+│   ├── event_extractor.py
+│   ├── events_cli.py
+│   ├── events_pipeline.py
 │   ├── filing_downloader.py
 │   ├── filing_processor.py
 │   ├── filings_cli.py
@@ -251,6 +274,8 @@ StockLens/
 │   ├── test_filing_downloader.py
 │   ├── test_filing_processor.py
 │   ├── test_derived_metrics.py
+│   ├── test_event_extractor.py
+│   ├── test_events_pipeline.py
 │   ├── test_pipeline.py
 │   ├── test_quarterly_pipeline.py
 │   ├── test_financial_facts.py
