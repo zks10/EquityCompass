@@ -176,6 +176,22 @@ The formulas are included in the output JSON. A zero denominator is stored as
 `null`. These are mechanical calculations only, not investment conclusions or
 AI analysis.
 
+## Run the complete Phase 1 pipeline
+
+Run all existing stages in order for any supported ticker:
+
+```bash
+stocklens-pipeline AAPL --years 5
+```
+
+The pipeline resolves the company, finds and downloads or reuses its latest
+10-K, creates clean text, extracts Business/Risk Factors/MD&A, retrieves SEC XBRL
+facts, saves annual history, and calculates deterministic metrics. Use
+`--force-download` only when the raw 10-K should be downloaded again.
+
+Each stage is displayed as it runs. If a stage fails, processing stops with that
+stage's name; later outputs are not presented as complete.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -207,6 +223,8 @@ StockLens/
 │   ├── facts_cli.py
 │   ├── history_cli.py
 │   ├── metrics_cli.py
+│   ├── pipeline.py
+│   ├── pipeline_cli.py
 │   ├── process_cli.py
 │   ├── section_extractor.py
 │   ├── sections_cli.py
@@ -216,6 +234,7 @@ StockLens/
 │   ├── test_filing_downloader.py
 │   ├── test_filing_processor.py
 │   ├── test_derived_metrics.py
+│   ├── test_pipeline.py
 │   ├── test_financial_facts.py
 │   ├── test_section_extractor.py
 │   ├── test_sec_filings.py
