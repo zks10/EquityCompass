@@ -12,9 +12,11 @@ import requests
 
 from finance_news.financial_facts import (
     FinancialFactsError,
+    extract_annual_history,
     extract_latest_annual_facts,
     fetch_company_facts,
     save_financial_facts,
+    save_financial_history,
 )
 
 
@@ -116,6 +118,40 @@ class ExtractLatestAnnualFactsTests(unittest.TestCase):
             extract_latest_annual_facts({"facts": {}})
 
 
+class ExtractAnnualHistoryTests(unittest.TestCase):
+    def test_deduplicates_periods_and_returns_newest_first(self) -> None:
+        payload = company_facts_payload()
+        revenue_records = payload["facts"]["us-gaap"][
+            "RevenueFromContractWithCustomerExcludingAssessedTax"
+        ]["units"]["USD"]
+        revenue_records.extend(
+            [
+                annual_record(80, "2023-09-30", "2023-11-03", 2023),
+                annual_record(100, "2024-09-28", "2024-11-01", 2024),
+                annual_record(100, "2024-09-28", "2025-10-31", 2025),
+            ]
+        )
+
+        history = extract_annual_history(payload, years=3)
+        revenue = history["revenue"]
+
+        self.assertEqual(
+            [fact.period_end for fact in revenue],
+            ["2025-09-27", "2024-09-28", "2023-09-30"],
+        )
+        self.assertEqual(revenue[1].filed, "2025-10-31")
+        self.assertEqual(revenue[1].fiscal_year, 2024)
+
+    def test_limits_each_metric_to_requested_years(self) -> None:
+        history = extract_annual_history(company_facts_payload(), years=1)
+
+        self.assertTrue(all(len(facts) == 1 for facts in history.values()))
+
+    def test_rejects_invalid_year_count(self) -> None:
+        with self.assertRaisesRegex(FinancialFactsError, "between 1 and 20"):
+            extract_annual_history(company_facts_payload(), years=0)
+
+
 class SaveFinancialFactsTests(unittest.TestCase):
     def test_saves_raw_and_normalized_json(self) -> None:
         payload = company_facts_payload()
@@ -137,6 +173,27 @@ class SaveFinancialFactsTests(unittest.TestCase):
             self.assertEqual(normalized["ticker"], "EXAM")
             self.assertEqual(normalized["cik"], "0000001234")
             self.assertEqual(len(normalized["facts"]), 5)
+            self.assertFalse(any(root.rglob("*.part")))
+
+    def test_saves_normalized_history(self) -> None:
+        payload = company_facts_payload()
+        history = extract_annual_history(payload, years=2)
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            _, processed_path = save_financial_history(
+                payload,
+                history,
+                "exam",
+                "1234",
+                requested_years=2,
+                raw_root=root / "raw",
+                processed_root=root / "processed",
+            )
+
+            normalized = json.loads(processed_path.read_text(encoding="utf-8"))
+            self.assertEqual(normalized["requested_years"], 2)
+            self.assertIn("revenue", normalized["metrics"])
             self.assertFalse(any(root.rglob("*.part")))
 
 

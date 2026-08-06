@@ -137,6 +137,24 @@ Every normalized value retains its SEC concept tag, unit, fiscal year, period
 end, filing date, accession number, and form. This step collects reported facts
 only; it does not calculate ratios or provide financial analysis.
 
+## Retrieve multi-year financial history
+
+Collect several annual 10-K periods for the same five metrics:
+
+```bash
+financial-history AAPL --years 5
+```
+
+The normalized history is saved to:
+
+```text
+data/processed/sec/{CIK}/financial_history.json
+```
+
+The collector deduplicates comparative facts repeated in later 10-K filings by
+period end and retains the latest filing provenance. It records historical
+values only; it does not calculate growth rates, trends, or conclusions.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -165,6 +183,7 @@ StockLens/
 │   ├── filings_cli.py
 │   ├── financial_facts.py
 │   ├── facts_cli.py
+│   ├── history_cli.py
 │   ├── process_cli.py
 │   ├── section_extractor.py
 │   ├── sections_cli.py

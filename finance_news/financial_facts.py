@@ -196,6 +196,106 @@ def extract_latest_annual_facts(payload: dict[str, Any]) -> list[FinancialFact]:
     return extracted
 
 
+def _annual_history_for_metric(
+    us_gaap_facts: dict[str, Any], definition: MetricDefinition, years: int
+) -> list[FinancialFact]:
+    records_by_period: dict[str, list[tuple[int, str, dict[str, Any]]]] = {}
+
+    for tag_priority, tag in enumerate(definition.tags):
+        concept = us_gaap_facts.get(tag)
+        if not isinstance(concept, dict):
+            continue
+        units = concept.get("units", {})
+        if not isinstance(units, dict):
+            continue
+
+        records = units.get("USD", [])
+        if not isinstance(records, list):
+            continue
+        for record in records:
+            if not isinstance(record, dict):
+                continue
+            if record.get("form") != "10-K" or record.get("fp") != "FY":
+                continue
+            if not all(
+                key in record for key in ("val", "fy", "end", "filed", "accn")
+            ):
+                continue
+            period_end = str(record["end"])
+            records_by_period.setdefault(period_end, []).append(
+                (tag_priority, tag, record)
+            )
+
+    history: list[FinancialFact] = []
+    for period_end in sorted(records_by_period, reverse=True)[:years]:
+        period_records = records_by_period[period_end]
+        best_priority = min(candidate[0] for candidate in period_records)
+        preferred_records = [
+            candidate for candidate in period_records if candidate[0] == best_priority
+        ]
+        _, tag, selected = max(
+            preferred_records, key=lambda candidate: str(candidate[2]["filed"])
+        )
+
+        try:
+            fiscal_year = min(int(candidate[2]["fy"]) for candidate in preferred_records)
+            history.append(
+                FinancialFact(
+                    metric=definition.name,
+                    label=definition.label,
+                    tag=tag,
+                    value=selected["val"],
+                    unit="USD",
+                    fiscal_year=fiscal_year,
+                    period_end=period_end,
+                    filed=str(selected["filed"]),
+                    accession_number=str(selected["accn"]),
+                    form="10-K",
+                )
+            )
+        except (TypeError, ValueError) as exc:
+            raise FinancialFactsError(
+                f"The SEC returned an invalid historical value for {definition.label}."
+            ) from exc
+
+    return history
+
+
+def extract_annual_history(
+    payload: dict[str, Any], years: int = 5
+) -> dict[str, list[FinancialFact]]:
+    """Normalize up to ``years`` annual periods for each Phase 1 metric."""
+    if years < 1 or years > 20:
+        raise FinancialFactsError("Years must be between 1 and 20.")
+
+    try:
+        us_gaap_facts = payload["facts"]["us-gaap"]
+    except (KeyError, TypeError) as exc:
+        raise FinancialFactsError(
+            "The SEC response does not contain US-GAAP company facts."
+        ) from exc
+    if not isinstance(us_gaap_facts, dict):
+        raise FinancialFactsError("The SEC response has an unexpected facts format.")
+
+    history: dict[str, list[FinancialFact]] = {}
+    missing: list[str] = []
+    for definition in METRICS:
+        metric_history = _annual_history_for_metric(
+            us_gaap_facts, definition, years
+        )
+        if not metric_history:
+            missing.append(definition.label)
+        else:
+            history[definition.name] = metric_history
+
+    if missing:
+        raise FinancialFactsError(
+            "Could not locate annual history for: " + ", ".join(missing) + "."
+        )
+
+    return history
+
+
 def _write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary_path = path.with_suffix(f"{path.suffix}.part")
@@ -232,5 +332,41 @@ def save_financial_facts(
         _write_json(processed_path, normalized_payload)
     except OSError as exc:
         raise FinancialFactsError(f"Could not save financial facts: {exc}") from exc
+
+    return raw_path, processed_path
+
+
+def save_financial_history(
+    payload: dict[str, Any],
+    history: dict[str, list[FinancialFact]],
+    ticker: str,
+    cik: str,
+    requested_years: int,
+    raw_root: Path = DEFAULT_RAW_ROOT,
+    processed_root: Path = DEFAULT_PROCESSED_ROOT,
+) -> tuple[Path, Path]:
+    """Save raw Company Facts and normalized multi-year annual history."""
+    normalized_cik = _normalize_cik(cik)
+    raw_path = Path(raw_root) / normalized_cik / "companyfacts.json"
+    processed_path = (
+        Path(processed_root) / normalized_cik / "financial_history.json"
+    )
+    normalized_payload = {
+        "ticker": ticker.upper(),
+        "cik": normalized_cik,
+        "entity_name": str(payload.get("entityName", "")),
+        "source": SEC_COMPANY_FACTS_URL.format(cik=normalized_cik),
+        "requested_years": requested_years,
+        "metrics": {
+            metric: [asdict(fact) for fact in facts]
+            for metric, facts in history.items()
+        },
+    }
+
+    try:
+        _write_json(raw_path, payload)
+        _write_json(processed_path, normalized_payload)
+    except OSError as exc:
+        raise FinancialFactsError(f"Could not save financial history: {exc}") from exc
 
     return raw_path, processed_path
