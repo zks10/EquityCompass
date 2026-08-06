@@ -43,6 +43,24 @@ resolve-company AAPL
 Ticker input is case-insensitive. Invalid tickers, connection problems, and
 unexpected SEC responses produce a readable error and a non-zero exit status.
 
+## List recent SEC filings
+
+Resolve a ticker and list its latest 10-K, 10-Q, and 8-K filing metadata:
+
+```bash
+python3 -m finance_news.filings_cli AAPL --limit 5
+```
+
+Each result includes the filing type, filing date, accession number, and a direct
+link to the primary filing document. This step retrieves metadata only; it does
+not download or parse the filing contents.
+
+After installation, the equivalent shorter command is:
+
+```bash
+recent-filings AAPL --limit 5
+```
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -65,8 +83,11 @@ StockLens/
 ├── finance_news/
 │   ├── __init__.py
 │   ├── cli.py
+│   ├── filings_cli.py
+│   ├── sec_filings.py
 │   └── sec_companies.py
 ├── tests/
+│   ├── test_sec_filings.py
 │   └── test_sec_companies.py
 ├── app.py
 ├── pyproject.toml

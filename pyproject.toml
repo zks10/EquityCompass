@@ -18,6 +18,7 @@ dependencies = [
 
 [project.scripts]
 resolve-company = "finance_news.cli:main"
+recent-filings = "finance_news.filings_cli:main"
 
 [tool.setuptools.packages.find]
 include = ["finance_news*"]
