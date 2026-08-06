@@ -25,6 +25,7 @@ process-filing = "finance_news.process_cli:main"
 extract-sections = "finance_news.sections_cli:main"
 financial-facts = "finance_news.facts_cli:main"
 financial-history = "finance_news.history_cli:main"
+calculate-metrics = "finance_news.metrics_cli:main"
 
 [tool.setuptools.packages.find]
 include = ["finance_news*"]

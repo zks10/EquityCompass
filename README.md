@@ -155,6 +155,27 @@ The collector deduplicates comparative facts repeated in later 10-K filings by
 period end and retains the latest filing provenance. It records historical
 values only; it does not calculate growth rates, trends, or conclusions.
 
+## Calculate deterministic financial metrics
+
+Calculate ratios from an already-stored financial history without another SEC
+request:
+
+```bash
+calculate-metrics data/processed/sec/0000320193/financial_history.json
+```
+
+The calculator produces annual revenue growth, net profit margin,
+liabilities-to-assets, and operating-cash-flow margin. Results and the exact
+source values used are saved to:
+
+```text
+data/processed/sec/{CIK}/derived_metrics.json
+```
+
+The formulas are included in the output JSON. A zero denominator is stored as
+`null`. These are mechanical calculations only, not investment conclusions or
+AI analysis.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -178,12 +199,14 @@ StockLens/
 │   ├── __init__.py
 │   ├── cli.py
 │   ├── download_cli.py
+│   ├── derived_metrics.py
 │   ├── filing_downloader.py
 │   ├── filing_processor.py
 │   ├── filings_cli.py
 │   ├── financial_facts.py
 │   ├── facts_cli.py
 │   ├── history_cli.py
+│   ├── metrics_cli.py
 │   ├── process_cli.py
 │   ├── section_extractor.py
 │   ├── sections_cli.py
@@ -192,6 +215,7 @@ StockLens/
 ├── tests/
 │   ├── test_filing_downloader.py
 │   ├── test_filing_processor.py
+│   ├── test_derived_metrics.py
 │   ├── test_financial_facts.py
 │   ├── test_section_extractor.py
 │   ├── test_sec_filings.py
