@@ -1,4 +1,4 @@
-"""Command-line interface for the complete StockLens Phase 1 pipeline."""
+"""Command-line interface for the complete Equity Compass Phase 1 pipeline."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from finance_news.pipeline import PipelineError, run_pipeline
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Run the complete StockLens Phase 1 SEC pipeline."
+        description="Run the complete Equity Compass Phase 1 SEC pipeline."
     )
     parser.add_argument("ticker", help="Ticker symbol, for example AAPL")
     parser.add_argument(

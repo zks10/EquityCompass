@@ -1,76 +1,94 @@
-import pandas as pd
-import plotly.express as px
+"""Equity Compass Streamlit dashboard."""
+
 import streamlit as st
-import yfinance as yf
+
+from finance_news.dashboard import DashboardError, analyze_ticker
 
 
-st.set_page_config(page_title="StockLens", page_icon="📈", layout="wide")
+def format_usd(value: int | float) -> str:
+    """Format large SEC values in a compact, readable form."""
+    absolute_value = abs(value)
+    if absolute_value >= 1_000_000_000:
+        return f"${value / 1_000_000_000:,.1f}B"
+    if absolute_value >= 1_000_000:
+        return f"${value / 1_000_000:,.1f}M"
+    return f"${value:,.0f}"
 
-st.title("📈 StockLens")
-st.write("Explore a stock's recent price history in a beginner-friendly way.")
+
+def format_percent(value: float | None) -> str:
+    """Format a calculated percentage while preserving unavailable values."""
+    return "N/A" if value is None else f"{value:.1f}%"
+
+
+st.set_page_config(page_title="Equity Compass", page_icon="📈")
+
+st.title("📈 Equity Compass")
+st.write("Enter a U.S. public-company ticker to collect its latest research data.")
 
 ticker = st.text_input(
-    "Enter a stock ticker",
+    "Ticker",
     value="AAPL",
-    placeholder="Examples: AAPL, MSFT, SHOP.TO",
+    placeholder="Examples: AAPL, MSFT, NVDA",
 ).strip().upper()
 
-analyze = st.button("Analyze stock", type="primary")
-
-if analyze:
+if st.button("Analyze", type="primary"):
     if not ticker:
         st.warning("Please enter a ticker symbol.")
     else:
-        with st.spinner(f"Loading market data for {ticker}..."):
-            try:
-                history = yf.download(
-                    ticker,
-                    period="1mo",
-                    interval="1d",
-                    progress=False,
-                    auto_adjust=True,
-                )
-            except Exception as error:
-                st.error("StockLens could not connect to the market-data service.")
-                st.caption(f"Technical details: {error}")
-                history = pd.DataFrame()
-
-        if history.empty:
-            st.error(
-                f"No price data was found for {ticker}. "
-                "Check the ticker and try again."
-            )
+        progress_message = st.empty()
+        try:
+            with st.spinner(f"Analyzing {ticker}..."):
+                summary = analyze_ticker(ticker, progress=progress_message.write)
+        except DashboardError as error:
+            progress_message.empty()
+            st.error(f"Equity Compass could not complete the analysis: {error}")
         else:
-            close_prices = history["Close"].squeeze()
-            current_price = float(close_prices.iloc[-1])
-            starting_price = float(close_prices.iloc[0])
-            price_change = current_price - starting_price
-            percent_change = (price_change / starting_price) * 100
+            progress_message.empty()
+            st.subheader(summary.company_name)
+            st.write(f"SEC CIK: {summary.cik}")
 
-            price_column, change_column = st.columns(2)
-            price_column.metric("Latest closing price", f"${current_price:,.2f}")
-            change_column.metric(
-                "Change over the last month",
-                f"{percent_change:+.2f}%",
-                f"${price_change:+,.2f}",
+            ten_k, ten_q, news = st.columns(3)
+            ten_k.metric("Latest 10-K", summary.latest_10k_date)
+            ten_q.metric("Latest 10-Q", summary.latest_10q_date)
+            news.metric("Recent news articles", summary.news_article_count)
+
+            financials = summary.financials
+            st.subheader("Financial Overview")
+            st.caption(
+                f"Fiscal year {financials.fiscal_year}, ended "
+                f"{financials.period_end} · Annual SEC figures"
             )
 
-            chart_data = close_prices.rename("Closing price").reset_index()
-            date_column = chart_data.columns[0]
-            chart = px.line(
-                chart_data,
-                x=date_column,
-                y="Closing price",
-                title=f"{ticker} closing price — last month",
-                labels={date_column: "Date", "Closing price": "Price (USD)"},
-            )
-            chart.update_traces(line_color="#2E7DFF", line_width=3)
-            chart.update_layout(hovermode="x unified")
-            st.plotly_chart(chart, use_container_width=True)
+            revenue, income, assets = st.columns(3)
+            revenue.metric("Revenue", format_usd(financials.revenue))
+            income.metric("Net income", format_usd(financials.net_income))
+            assets.metric("Total assets", format_usd(financials.assets))
 
-            st.info(
-                "The latest closing price is the price recorded at the end of the "
-                "most recent trading day. Past performance does not predict future results."
+            liabilities, cash_flow = st.columns(2)
+            liabilities.metric(
+                "Total liabilities", format_usd(financials.liabilities)
+            )
+            cash_flow.metric(
+                "Operating cash flow", format_usd(financials.operating_cash_flow)
             )
 
-st.caption("StockLens is for education and research, not financial advice.")
+            st.subheader("Financial Ratios")
+            growth, margin, debt, cash_margin = st.columns(4)
+            growth.metric(
+                "Revenue growth",
+                format_percent(financials.revenue_growth_percent),
+            )
+            margin.metric(
+                "Net profit margin",
+                format_percent(financials.net_profit_margin_percent),
+            )
+            debt.metric(
+                "Liabilities / assets",
+                format_percent(financials.liabilities_to_assets_percent),
+            )
+            cash_margin.metric(
+                "Operating cash flow margin",
+                format_percent(financials.operating_cash_flow_margin_percent),
+            )
+
+st.caption("Equity Compass is for education and research, not financial advice.")

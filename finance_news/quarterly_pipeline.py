@@ -1,4 +1,4 @@
-"""Run the StockLens latest-quarterly-filing collection pipeline."""
+"""Run the Equity Compass latest-quarterly-filing collection pipeline."""
 
 from __future__ import annotations
 

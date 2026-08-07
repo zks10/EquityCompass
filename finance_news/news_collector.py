@@ -16,7 +16,7 @@ import requests
 
 
 GOOGLE_NEWS_RSS_URL = "https://news.google.com/rss/search"
-DEFAULT_NEWS_USER_AGENT = "StockLens/0.1 news-rss-collector"
+DEFAULT_NEWS_USER_AGENT = "EquityCompass/0.1 news-rss-collector"
 DEFAULT_RAW_ROOT = Path("data/raw/news")
 DEFAULT_PROCESSED_ROOT = Path("data/processed/news")
 

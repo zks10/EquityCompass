@@ -1,4 +1,4 @@
-"""Run the complete StockLens Phase 1 SEC data pipeline."""
+"""Run the complete Equity Compass Phase 1 SEC data pipeline."""
 
 from __future__ import annotations
 

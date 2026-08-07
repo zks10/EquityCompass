@@ -1,20 +1,35 @@
-# StockLens
+# Equity Compass
 
-StockLens is a beginner-friendly stock research project. Phase 1 includes a small
-command-line tool that resolves a ticker such as `AAPL` to the company's official
-name and SEC Central Index Key (CIK), using the SEC company tickers dataset.
+Equity Compass is a beginner-friendly stock research project that collects and
+displays SEC filings, financial history, deterministic metrics, and recent company
+news for supported U.S. public-company tickers.
 
-The existing Streamlit price-chart prototype remains available separately. The
-SEC resolver does not collect financial statements, news, or perform AI analysis.
+Repository: https://github.com/zks10/EquityCompass
 
 ## Set up
 
 ```bash
-cd /Users/kevinzhu/Desktop/StockLens
+cd /Users/kevinzhu/Desktop/EquityCompass
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -e .
 ```
+
+## Launch the Streamlit app
+
+Set the SEC contact identity described below, then start the local dashboard:
+
+```bash
+export SEC_USER_AGENT="Equity Compass your-email@example.com"
+streamlit run app.py
+```
+
+Enter a supported U.S. public-company ticker and select **Analyze**. The app runs
+the existing annual, quarterly, and news collectors (reusing downloaded SEC
+filings when available), then displays the company name, SEC CIK, latest 10-K
+and 10-Q filing dates, recent-news count, latest annual financial values, and
+four deterministic financial ratios. The first run can take a little while
+because it downloads and processes the source data.
 
 ## Resolve a company ticker
 
@@ -22,7 +37,7 @@ The SEC asks automated clients to identify themselves. Set your application name
 and contact email, then run the resolver:
 
 ```bash
-export SEC_USER_AGENT="StockLens your-email@example.com"
+export SEC_USER_AGENT="Equity Compass your-email@example.com"
 python3 -m finance_news.cli AAPL
 ```
 
@@ -181,7 +196,7 @@ AI analysis.
 Run all existing stages in order for any supported ticker:
 
 ```bash
-stocklens-pipeline AAPL --years 5
+equity-compass-pipeline AAPL --years 5
 ```
 
 The pipeline resolves the company, finds and downloads or reuses its latest
@@ -268,7 +283,7 @@ streamlit run app.py
 ## Project structure
 
 ```text
-StockLens/
+EquityCompass/
 ├── finance_news/
 │   ├── __init__.py
 │   ├── cli.py
@@ -316,4 +331,4 @@ StockLens/
 └── requirements.txt
 ```
 
-StockLens is intended for education and research, not financial advice.
+Equity Compass is intended for education and research, not financial advice.

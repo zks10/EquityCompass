@@ -1,2 +1,2 @@
-"""Automated tests for StockLens."""
+"""Automated tests for Equity Compass."""
 

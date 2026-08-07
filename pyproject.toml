@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "stocklens"
+name = "equity-compass"
 version = "0.1.0"
 description = "Beginner-friendly stock research tools."
 readme = "README.md"
@@ -26,7 +26,7 @@ extract-sections = "finance_news.sections_cli:main"
 financial-facts = "finance_news.facts_cli:main"
 financial-history = "finance_news.history_cli:main"
 calculate-metrics = "finance_news.metrics_cli:main"
-stocklens-pipeline = "finance_news.pipeline_cli:main"
+equity-compass-pipeline = "finance_news.pipeline_cli:main"
 quarterly-pipeline = "finance_news.quarterly_cli:main"
 events-pipeline = "finance_news.events_cli:main"
 news-pipeline = "finance_news.news_cli:main"
