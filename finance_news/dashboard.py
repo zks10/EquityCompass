@@ -51,6 +51,13 @@ class RecentNewsArticle:
 
 
 @dataclass(frozen=True)
+class AnnualFilingSections:
+    business: str
+    risk_factors: str
+    mda: str
+
+
+@dataclass(frozen=True)
 class DashboardSummary:
     company_name: str
     cik: str
@@ -60,6 +67,7 @@ class DashboardSummary:
     financials: FinancialOverview
     financial_history: tuple[FinancialHistoryRow, ...]
     recent_news: tuple[RecentNewsArticle, ...]
+    annual_sections: AnnualFilingSections
 
 
 def _read_json(path: Path, description: str) -> dict:
@@ -208,6 +216,33 @@ def _read_financial_history(path: Path) -> tuple[FinancialHistoryRow, ...]:
     return rows
 
 
+def _read_annual_sections(paths: tuple[Path, ...]) -> AnnualFilingSections:
+    """Read the three saved sections extracted from the latest 10-K."""
+    required_files = {
+        "business.txt": "business",
+        "risk_factors.txt": "risk_factors",
+        "mda.txt": "mda",
+    }
+    files_by_name = {Path(path).name: Path(path) for path in paths}
+    missing = [name for name in required_files if name not in files_by_name]
+    if missing:
+        raise DashboardError(
+            "Saved 10-K sections are missing: " + ", ".join(missing) + "."
+        )
+
+    contents: dict[str, str] = {}
+    try:
+        for filename, field_name in required_files.items():
+            content = files_by_name[filename].read_text(encoding="utf-8").strip()
+            if not content:
+                raise DashboardError(f"Saved 10-K section is empty: {filename}.")
+            contents[field_name] = content
+    except OSError as exc:
+        raise DashboardError(f"Could not read saved 10-K sections: {exc}") from exc
+
+    return AnnualFilingSections(**contents)
+
+
 def analyze_ticker(
     ticker: str,
     progress: Callable[[str], None] | None = None,
@@ -243,12 +278,14 @@ def analyze_ticker(
         ),
         financial_history=_read_financial_history(annual.history_path),
         recent_news=recent_news,
+        annual_sections=_read_annual_sections(annual.section_paths),
     )
 
 
 __all__ = [
     "DashboardError",
     "DashboardSummary",
+    "AnnualFilingSections",
     "FinancialOverview",
     "FinancialHistoryRow",
     "RecentNewsArticle",

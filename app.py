@@ -135,4 +135,16 @@ if st.button("Analyze", type="primary"):
                 st.caption(f"{article.publisher} · {article.published_at}")
                 st.link_button("Read article", article.url)
 
+            st.subheader("Latest 10-K Sections")
+            st.caption(
+                "Extracted directly from the latest annual SEC filing; "
+                "not summarized or analyzed."
+            )
+            with st.expander("Business"):
+                st.write(summary.annual_sections.business)
+            with st.expander("Risk Factors"):
+                st.write(summary.annual_sections.risk_factors)
+            with st.expander("Management’s Discussion and Analysis (MD&A)"):
+                st.write(summary.annual_sections.mda)
+
 st.caption("Equity Compass is for education and research, not financial advice.")

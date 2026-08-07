@@ -9,7 +9,11 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
-from finance_news.dashboard import DashboardError, analyze_ticker
+from finance_news.dashboard import (
+    DashboardError,
+    _read_annual_sections,
+    analyze_ticker,
+)
 from finance_news.pipeline import PipelineError
 from finance_news.sec_companies import Company
 from finance_news.sec_filings import Filing
@@ -116,12 +120,22 @@ class AnalyzeTickerTests(unittest.TestCase):
                 ),
                 encoding="utf-8",
             )
+            section_paths = []
+            for filename, content in (
+                ("business.txt", "The company designs consumer products."),
+                ("risk_factors.txt", "Competition may affect future results."),
+                ("mda.txt", "Management discusses operations and liquidity."),
+            ):
+                section_path = Path(directory) / filename
+                section_path.write_text(content, encoding="utf-8")
+                section_paths.append(section_path)
             mock_annual.return_value = SimpleNamespace(
                 company=COMPANY,
                 filing=TEN_K,
                 latest_facts_path=latest_facts_path,
                 derived_metrics_path=metrics_path,
                 history_path=history_path,
+                section_paths=tuple(section_paths),
             )
             mock_quarterly.return_value = SimpleNamespace(filing=TEN_Q)
             mock_news.return_value = SimpleNamespace(articles_path=articles_path)
@@ -141,6 +155,9 @@ class AnalyzeTickerTests(unittest.TestCase):
         self.assertEqual(
             summary.recent_news[1].url, "https://example.com/apple-results"
         )
+        self.assertIn("consumer products", summary.annual_sections.business)
+        self.assertIn("Competition", summary.annual_sections.risk_factors)
+        self.assertIn("liquidity", summary.annual_sections.mda)
         self.assertEqual(summary.financials.revenue, 120_000_000_000)
         self.assertEqual(summary.financials.revenue_growth_percent, 20.0)
         self.assertEqual(summary.financials.fiscal_year, 2025)
@@ -285,6 +302,33 @@ class AnalyzeTickerTests(unittest.TestCase):
 
             with self.assertRaisesRegex(DashboardError, "invalid article"):
                 analyze_ticker("AAPL")
+
+
+class ReadAnnualSectionsTests(unittest.TestCase):
+    def test_reads_sections_by_filename(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            paths = []
+            for filename, content in (
+                ("mda.txt", "Management analysis"),
+                ("business.txt", "Business description"),
+                ("risk_factors.txt", "Risk disclosures"),
+            ):
+                path = root / filename
+                path.write_text(content, encoding="utf-8")
+                paths.append(path)
+
+            sections = _read_annual_sections(tuple(paths))
+
+        self.assertEqual(sections.business, "Business description")
+        self.assertEqual(sections.risk_factors, "Risk disclosures")
+        self.assertEqual(sections.mda, "Management analysis")
+
+    def test_reports_missing_section(self) -> None:
+        with self.assertRaisesRegex(DashboardError, "risk_factors.txt"):
+            _read_annual_sections(
+                (Path("business.txt"), Path("mda.txt"))
+            )
 
 
 if __name__ == "__main__":
