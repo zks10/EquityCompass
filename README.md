@@ -27,9 +27,10 @@ streamlit run app.py
 Enter a supported U.S. public-company ticker and select **Analyze**. The app runs
 the existing annual, quarterly, and news collectors (reusing downloaded SEC
 filings when available), then displays the company name, SEC CIK, latest 10-K
-and 10-Q filing dates, recent-news count, latest annual financial values, and
-four deterministic financial ratios. The first run can take a little while
-because it downloads and processes the source data.
+and 10-Q filing dates, recent-news count, latest annual financial values, four
+deterministic financial ratios, and a five-year financial table with trend
+charts. The first run can take a little while because it downloads and processes
+the source data.
 
 ## Resolve a company ticker
 
@@ -274,7 +275,7 @@ send repeated requests to the SEC:
 python3 -m unittest discover -s tests -v
 ```
 
-## Run the existing Streamlit prototype
+## Run the Streamlit dashboard
 
 ```bash
 streamlit run app.py
@@ -289,6 +290,7 @@ EquityCompass/
 │   ├── cli.py
 │   ├── download_cli.py
 │   ├── derived_metrics.py
+│   ├── dashboard.py
 │   ├── event_extractor.py
 │   ├── events_cli.py
 │   ├── events_pipeline.py
@@ -315,6 +317,7 @@ EquityCompass/
 │   ├── test_filing_downloader.py
 │   ├── test_filing_processor.py
 │   ├── test_derived_metrics.py
+│   ├── test_dashboard.py
 │   ├── test_event_extractor.py
 │   ├── test_events_pipeline.py
 │   ├── test_news_collector.py

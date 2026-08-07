@@ -1,5 +1,6 @@
 """Equity Compass Streamlit dashboard."""
 
+import pandas as pd
 import streamlit as st
 
 from finance_news.dashboard import DashboardError, analyze_ticker
@@ -89,6 +90,41 @@ if st.button("Analyze", type="primary"):
             cash_margin.metric(
                 "Operating cash flow margin",
                 format_percent(financials.operating_cash_flow_margin_percent),
+            )
+
+            st.subheader("Five-Year Financial History")
+            history = pd.DataFrame(
+                [
+                    {
+                        "Fiscal year": row.fiscal_year,
+                        "Period end": row.period_end,
+                        "Revenue": row.revenue,
+                        "Net income": row.net_income,
+                        "Total assets": row.assets,
+                        "Total liabilities": row.liabilities,
+                        "Operating cash flow": row.operating_cash_flow,
+                    }
+                    for row in summary.financial_history
+                ]
+            )
+            displayed_history = history.copy()
+            money_columns = [
+                "Revenue",
+                "Net income",
+                "Total assets",
+                "Total liabilities",
+                "Operating cash flow",
+            ]
+            for column in money_columns:
+                displayed_history[column] = displayed_history[column].map(format_usd)
+            st.dataframe(displayed_history, hide_index=True, use_container_width=True)
+
+            chart_history = history.sort_values("Fiscal year").set_index("Fiscal year")
+            st.write("Revenue and net income")
+            st.line_chart(chart_history[["Revenue", "Net income"]])
+            st.write("Assets and liabilities")
+            st.line_chart(
+                chart_history[["Total assets", "Total liabilities"]]
             )
 
 st.caption("Equity Compass is for education and research, not financial advice.")

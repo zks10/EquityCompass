@@ -64,6 +64,35 @@ class AnalyzeTickerTests(unittest.TestCase):
                 ),
                 encoding="utf-8",
             )
+            history_path = Path(directory) / "financial_history.json"
+            history_path.write_text(
+                json.dumps(
+                    {
+                        "metrics": {
+                            metric: [
+                                {
+                                    "fiscal_year": 2025,
+                                    "period_end": "2025-09-27",
+                                    "value": value,
+                                },
+                                {
+                                    "fiscal_year": 2024,
+                                    "period_end": "2024-09-28",
+                                    "value": previous_value,
+                                },
+                            ]
+                            for metric, value, previous_value in (
+                                ("revenue", 120, 100),
+                                ("net_income", 24, 18),
+                                ("assets", 300, 275),
+                                ("liabilities", 150, 140),
+                                ("operating_cash_flow", 30, 25),
+                            )
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
             articles_path = Path(directory) / "articles.json"
             articles_path.write_text(
                 json.dumps({"article_count": 7}), encoding="utf-8"
@@ -73,6 +102,7 @@ class AnalyzeTickerTests(unittest.TestCase):
                 filing=TEN_K,
                 latest_facts_path=latest_facts_path,
                 derived_metrics_path=metrics_path,
+                history_path=history_path,
             )
             mock_quarterly.return_value = SimpleNamespace(filing=TEN_Q)
             mock_news.return_value = SimpleNamespace(articles_path=articles_path)
@@ -88,6 +118,9 @@ class AnalyzeTickerTests(unittest.TestCase):
         self.assertEqual(summary.financials.revenue, 120_000_000_000)
         self.assertEqual(summary.financials.revenue_growth_percent, 20.0)
         self.assertEqual(summary.financials.fiscal_year, 2025)
+        self.assertEqual(len(summary.financial_history), 2)
+        self.assertEqual(summary.financial_history[0].fiscal_year, 2025)
+        self.assertEqual(summary.financial_history[1].revenue, 100)
         self.assertTrue(progress.called)
 
     @patch("finance_news.dashboard.run_pipeline")
@@ -133,6 +166,67 @@ class AnalyzeTickerTests(unittest.TestCase):
             mock_news.return_value = SimpleNamespace(articles_path=articles_path)
 
             with self.assertRaisesRegex(DashboardError, "financial facts"):
+                analyze_ticker("AAPL")
+
+    @patch("finance_news.dashboard.run_news_pipeline")
+    @patch("finance_news.dashboard.run_quarterly_pipeline")
+    @patch("finance_news.dashboard.run_pipeline")
+    def test_reports_unreadable_financial_history(
+        self, mock_annual: Mock, mock_quarterly: Mock, mock_news: Mock
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            facts_path = root / "financial_facts.json"
+            facts_path.write_text(
+                json.dumps(
+                    {
+                        "facts": [
+                            {"metric": metric, "value": 1}
+                            for metric in (
+                                "revenue",
+                                "net_income",
+                                "assets",
+                                "liabilities",
+                                "operating_cash_flow",
+                            )
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            metrics_path = root / "derived_metrics.json"
+            metrics_path.write_text(
+                json.dumps(
+                    {
+                        "periods": [
+                            {
+                                "fiscal_year": 2025,
+                                "period_end": "2025-12-31",
+                                "revenue_growth_percent": 1.0,
+                                "net_profit_margin_percent": 1.0,
+                                "liabilities_to_assets_percent": 1.0,
+                                "operating_cash_flow_margin_percent": 1.0,
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            articles_path = root / "articles.json"
+            articles_path.write_text(
+                json.dumps({"article_count": 1}), encoding="utf-8"
+            )
+            mock_annual.return_value = SimpleNamespace(
+                company=COMPANY,
+                filing=TEN_K,
+                latest_facts_path=facts_path,
+                derived_metrics_path=metrics_path,
+                history_path=root / "missing-history.json",
+            )
+            mock_quarterly.return_value = SimpleNamespace(filing=TEN_Q)
+            mock_news.return_value = SimpleNamespace(articles_path=articles_path)
+
+            with self.assertRaisesRegex(DashboardError, "financial history"):
                 analyze_ticker("AAPL")
 
 

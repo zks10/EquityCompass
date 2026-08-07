@@ -32,6 +32,17 @@ class FinancialOverview:
 
 
 @dataclass(frozen=True)
+class FinancialHistoryRow:
+    fiscal_year: int
+    period_end: str
+    revenue: int | float
+    net_income: int | float
+    assets: int | float
+    liabilities: int | float
+    operating_cash_flow: int | float
+
+
+@dataclass(frozen=True)
 class DashboardSummary:
     company_name: str
     cik: str
@@ -39,6 +50,7 @@ class DashboardSummary:
     latest_10q_date: str
     news_article_count: int
     financials: FinancialOverview
+    financial_history: tuple[FinancialHistoryRow, ...]
 
 
 def _read_json(path: Path, description: str) -> dict:
@@ -108,6 +120,64 @@ def _read_financial_overview(
     return financials
 
 
+def _read_financial_history(path: Path) -> tuple[FinancialHistoryRow, ...]:
+    """Read and align the saved annual financial history by period end."""
+    payload = _read_json(path, "financial history")
+    metric_names = (
+        "revenue",
+        "net_income",
+        "assets",
+        "liabilities",
+        "operating_cash_flow",
+    )
+
+    try:
+        metrics = payload["metrics"]
+        indexed = {
+            name: {record["period_end"]: record for record in metrics[name]}
+            for name in metric_names
+        }
+        common_periods = set.intersection(
+            *(set(records) for records in indexed.values())
+        )
+        rows = tuple(
+            FinancialHistoryRow(
+                fiscal_year=int(indexed["revenue"][period]["fiscal_year"]),
+                period_end=period,
+                revenue=indexed["revenue"][period]["value"],
+                net_income=indexed["net_income"][period]["value"],
+                assets=indexed["assets"][period]["value"],
+                liabilities=indexed["liabilities"][period]["value"],
+                operating_cash_flow=indexed["operating_cash_flow"][period][
+                    "value"
+                ],
+            )
+            for period in sorted(common_periods, reverse=True)
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise DashboardError(
+            f"Saved financial history has an unexpected format: {exc}"
+        ) from exc
+
+    if not rows:
+        raise DashboardError("Saved financial history has no aligned annual periods.")
+
+    for row in rows:
+        values = (
+            row.revenue,
+            row.net_income,
+            row.assets,
+            row.liabilities,
+            row.operating_cash_flow,
+        )
+        if any(
+            isinstance(value, bool) or not isinstance(value, (int, float))
+            for value in values
+        ):
+            raise DashboardError("Saved financial history contains a non-numeric value.")
+    return rows
+
+
 def analyze_ticker(
     ticker: str,
     progress: Callable[[str], None] | None = None,
@@ -140,6 +210,7 @@ def analyze_ticker(
         financials=_read_financial_overview(
             annual.latest_facts_path, annual.derived_metrics_path
         ),
+        financial_history=_read_financial_history(annual.history_path),
     )
 
 
@@ -147,5 +218,6 @@ __all__ = [
     "DashboardError",
     "DashboardSummary",
     "FinancialOverview",
+    "FinancialHistoryRow",
     "analyze_ticker",
 ]
