@@ -157,4 +157,26 @@ if st.button("Analyze", type="primary"):
             with st.expander("Quarterly Risk Factors"):
                 st.write(summary.quarterly_sections.risk_factors)
 
+            st.subheader("Recent 8-K Events")
+            st.caption(
+                "Extracted event items from the three most recent 8-K filings; "
+                "not ranked or analyzed."
+            )
+            for filing in summary.recent_events:
+                st.write(
+                    f"8-K filed {filing.filing_date} · "
+                    f"{len(filing.items)} extracted item(s)"
+                )
+                st.link_button(
+                    "Open SEC filing",
+                    filing.document_url,
+                    key=f"8k-{filing.accession_number}",
+                )
+                for item in filing.items:
+                    item_title = f" — {item.title}" if item.title else ""
+                    with st.expander(
+                        f"{filing.filing_date} · Item {item.item_number}{item_title}"
+                    ):
+                        st.write(item.text)
+
 st.caption("Equity Compass is for education and research, not financial advice.")

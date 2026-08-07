@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
 
+from finance_news.events_pipeline import run_events_pipeline
 from finance_news.news_pipeline import NewsPipelineError, run_news_pipeline
 from finance_news.pipeline import PipelineError, run_pipeline
 from finance_news.quarterly_pipeline import run_quarterly_pipeline
@@ -64,6 +65,21 @@ class QuarterlyFilingSections:
 
 
 @dataclass(frozen=True)
+class RecentEventItem:
+    item_number: str
+    title: str
+    text: str
+
+
+@dataclass(frozen=True)
+class RecentEventFiling:
+    filing_date: str
+    accession_number: str
+    document_url: str
+    items: tuple[RecentEventItem, ...]
+
+
+@dataclass(frozen=True)
 class DashboardSummary:
     company_name: str
     cik: str
@@ -75,6 +91,7 @@ class DashboardSummary:
     recent_news: tuple[RecentNewsArticle, ...]
     annual_sections: AnnualFilingSections
     quarterly_sections: QuarterlyFilingSections
+    recent_events: tuple[RecentEventFiling, ...]
 
 
 def _read_json(path: Path, description: str) -> dict:
@@ -276,6 +293,48 @@ def _read_quarterly_sections(paths: tuple[Path, ...]) -> QuarterlyFilingSections
     return QuarterlyFilingSections(**contents)
 
 
+def _read_event_manifest(path: Path) -> tuple[RecentEventFiling, ...]:
+    """Read recent 8-K filing metadata and extracted item text."""
+    payload = _read_json(path, "8-K event manifest")
+    try:
+        filings = []
+        for filing in payload["filings"]:
+            items = []
+            for item in filing["items"]:
+                text = Path(item["text_path"]).read_text(encoding="utf-8").strip()
+                items.append(
+                    RecentEventItem(
+                        item_number=str(item["item_number"]).strip(),
+                        title=str(item.get("title", "")).strip(),
+                        text=text,
+                    )
+                )
+            filings.append(
+                RecentEventFiling(
+                    filing_date=str(filing["filing_date"]).strip(),
+                    accession_number=str(filing["accession_number"]).strip(),
+                    document_url=str(filing["document_url"]).strip(),
+                    items=tuple(items),
+                )
+            )
+    except (KeyError, TypeError, OSError) as exc:
+        raise DashboardError(f"Could not read saved 8-K events: {exc}") from exc
+
+    if not filings:
+        raise DashboardError("Saved 8-K event manifest contains no filings.")
+    if any(
+        not all(
+            (filing.filing_date, filing.accession_number, filing.document_url)
+        )
+        or not filing.document_url.startswith(("https://", "http://"))
+        or not filing.items
+        or any(not item.item_number or not item.text for item in filing.items)
+        for filing in filings
+    ):
+        raise DashboardError("Saved 8-K event manifest contains an invalid filing.")
+    return tuple(filings)
+
+
 def analyze_ticker(
     ticker: str,
     progress: Callable[[str], None] | None = None,
@@ -296,6 +355,10 @@ def analyze_ticker(
         news = run_news_pipeline(
             ticker, progress=lambda message: notify(f"News: {message}")
         )
+        notify("Starting recent 8-K event collection")
+        events = run_events_pipeline(
+            ticker, progress=lambda message: notify(f"8-K events: {message}")
+        )
     except (PipelineError, NewsPipelineError) as exc:
         raise DashboardError(str(exc)) from exc
 
@@ -313,6 +376,7 @@ def analyze_ticker(
         recent_news=recent_news,
         annual_sections=_read_annual_sections(annual.section_paths),
         quarterly_sections=_read_quarterly_sections(quarterly.section_paths),
+        recent_events=_read_event_manifest(events.manifest_path),
     )
 
 
@@ -321,6 +385,8 @@ __all__ = [
     "DashboardSummary",
     "AnnualFilingSections",
     "QuarterlyFilingSections",
+    "RecentEventFiling",
+    "RecentEventItem",
     "FinancialOverview",
     "FinancialHistoryRow",
     "RecentNewsArticle",

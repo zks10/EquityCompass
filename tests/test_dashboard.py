@@ -12,6 +12,7 @@ from unittest.mock import Mock, patch
 from finance_news.dashboard import (
     DashboardError,
     _read_annual_sections,
+    _read_event_manifest,
     _read_quarterly_sections,
     analyze_ticker,
 )
@@ -26,11 +27,19 @@ TEN_Q = Filing("10-Q", "2026-08-01", "quarterly", "10q.htm", "https://example/10
 
 
 class AnalyzeTickerTests(unittest.TestCase):
+    def setUp(self) -> None:
+        events_patcher = patch("finance_news.dashboard.run_events_pipeline")
+        self.mock_events = events_patcher.start()
+        self.addCleanup(events_patcher.stop)
+
     @patch("finance_news.dashboard.run_news_pipeline")
     @patch("finance_news.dashboard.run_quarterly_pipeline")
     @patch("finance_news.dashboard.run_pipeline")
     def test_returns_summary_from_pipeline_results_and_saved_news(
-        self, mock_annual: Mock, mock_quarterly: Mock, mock_news: Mock
+        self,
+        mock_annual: Mock,
+        mock_quarterly: Mock,
+        mock_news: Mock,
     ) -> None:
         with tempfile.TemporaryDirectory() as directory:
             latest_facts_path = Path(directory) / "financial_facts.json"
@@ -151,6 +160,36 @@ class AnalyzeTickerTests(unittest.TestCase):
                 filing=TEN_Q, section_paths=tuple(quarterly_paths)
             )
             mock_news.return_value = SimpleNamespace(articles_path=articles_path)
+            event_text_path = Path(directory) / "item_2_02.txt"
+            event_text_path.write_text(
+                "Item 2.02 Results of Operations\nThe company reported results.",
+                encoding="utf-8",
+            )
+            manifest_path = Path(directory) / "eight_k_events.json"
+            manifest_path.write_text(
+                json.dumps(
+                    {
+                        "filings": [
+                            {
+                                "filing_date": "2026-07-30",
+                                "accession_number": "0000320193-26-000018",
+                                "document_url": "https://www.sec.gov/example-8k",
+                                "items": [
+                                    {
+                                        "item_number": "2.02",
+                                        "title": "Results of Operations",
+                                        "text_path": str(event_text_path),
+                                    }
+                                ],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            self.mock_events.return_value = SimpleNamespace(
+                manifest_path=manifest_path
+            )
             progress = Mock()
 
             summary = analyze_ticker("aapl", progress=progress)
@@ -172,6 +211,9 @@ class AnalyzeTickerTests(unittest.TestCase):
         self.assertIn("liquidity", summary.annual_sections.mda)
         self.assertIn("management", summary.quarterly_sections.mda)
         self.assertIn("risks", summary.quarterly_sections.risk_factors)
+        self.assertEqual(summary.recent_events[0].filing_date, "2026-07-30")
+        self.assertEqual(summary.recent_events[0].items[0].item_number, "2.02")
+        self.assertIn("reported results", summary.recent_events[0].items[0].text)
         self.assertEqual(summary.financials.revenue, 120_000_000_000)
         self.assertEqual(summary.financials.revenue_growth_percent, 20.0)
         self.assertEqual(summary.financials.fiscal_year, 2025)
@@ -366,6 +408,69 @@ class ReadQuarterlySectionsTests(unittest.TestCase):
     def test_reports_missing_section(self) -> None:
         with self.assertRaisesRegex(DashboardError, "risk_factors.txt"):
             _read_quarterly_sections((Path("mda.txt"),))
+
+
+class ReadEventManifestTests(unittest.TestCase):
+    def test_reads_filing_and_item_text(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            text_path = root / "item_8_01.txt"
+            text_path.write_text("Item 8.01 Other Events\nEvent body", encoding="utf-8")
+            manifest_path = root / "events.json"
+            manifest_path.write_text(
+                json.dumps(
+                    {
+                        "filings": [
+                            {
+                                "filing_date": "2026-08-01",
+                                "accession_number": "one",
+                                "document_url": "https://www.sec.gov/one",
+                                "items": [
+                                    {
+                                        "item_number": "8.01",
+                                        "title": "Other Events",
+                                        "text_path": str(text_path),
+                                    }
+                                ],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            filings = _read_event_manifest(manifest_path)
+
+        self.assertEqual(filings[0].items[0].title, "Other Events")
+        self.assertIn("Event body", filings[0].items[0].text)
+
+    def test_reports_missing_item_text(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            manifest_path = Path(directory) / "events.json"
+            manifest_path.write_text(
+                json.dumps(
+                    {
+                        "filings": [
+                            {
+                                "filing_date": "2026-08-01",
+                                "accession_number": "one",
+                                "document_url": "https://www.sec.gov/one",
+                                "items": [
+                                    {
+                                        "item_number": "8.01",
+                                        "title": "Other Events",
+                                        "text_path": "missing-event.txt",
+                                    }
+                                ],
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(DashboardError, "8-K events"):
+                _read_event_manifest(manifest_path)
 
 
 if __name__ == "__main__":
