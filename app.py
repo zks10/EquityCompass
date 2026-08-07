@@ -147,4 +147,14 @@ if st.button("Analyze", type="primary"):
             with st.expander("Management’s Discussion and Analysis (MD&A)"):
                 st.write(summary.annual_sections.mda)
 
+            st.subheader("Latest 10-Q Sections")
+            st.caption(
+                "Extracted directly from the latest quarterly SEC filing; "
+                "not summarized or analyzed."
+            )
+            with st.expander("Quarterly MD&A"):
+                st.write(summary.quarterly_sections.mda)
+            with st.expander("Quarterly Risk Factors"):
+                st.write(summary.quarterly_sections.risk_factors)
+
 st.caption("Equity Compass is for education and research, not financial advice.")

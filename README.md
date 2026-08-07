@@ -31,8 +31,9 @@ and 10-Q filing dates, recent-news count, latest annual financial values, four
 deterministic financial ratios, and a five-year financial table with trend
 charts. It also lists recent headlines with their publisher, publication time,
 and source link, plus the extracted Business, Risk Factors, and MD&A sections
-from the latest 10-K. The first run can take a little while because it downloads
-and processes the source data.
+from the latest 10-K and the MD&A and Risk Factors sections from the latest
+10-Q. The first run can take a little while because it downloads and processes
+the source data.
 
 ## Resolve a company ticker
 

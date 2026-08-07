@@ -12,6 +12,7 @@ from unittest.mock import Mock, patch
 from finance_news.dashboard import (
     DashboardError,
     _read_annual_sections,
+    _read_quarterly_sections,
     analyze_ticker,
 )
 from finance_news.pipeline import PipelineError
@@ -137,7 +138,18 @@ class AnalyzeTickerTests(unittest.TestCase):
                 history_path=history_path,
                 section_paths=tuple(section_paths),
             )
-            mock_quarterly.return_value = SimpleNamespace(filing=TEN_Q)
+            quarterly_paths = []
+            for filename, content in (
+                ("mda.txt", "Quarterly management discussion."),
+                ("risk_factors.txt", "Quarterly risks may change."),
+            ):
+                path = Path(directory) / "quarterly" / filename
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(content, encoding="utf-8")
+                quarterly_paths.append(path)
+            mock_quarterly.return_value = SimpleNamespace(
+                filing=TEN_Q, section_paths=tuple(quarterly_paths)
+            )
             mock_news.return_value = SimpleNamespace(articles_path=articles_path)
             progress = Mock()
 
@@ -158,6 +170,8 @@ class AnalyzeTickerTests(unittest.TestCase):
         self.assertIn("consumer products", summary.annual_sections.business)
         self.assertIn("Competition", summary.annual_sections.risk_factors)
         self.assertIn("liquidity", summary.annual_sections.mda)
+        self.assertIn("management", summary.quarterly_sections.mda)
+        self.assertIn("risks", summary.quarterly_sections.risk_factors)
         self.assertEqual(summary.financials.revenue, 120_000_000_000)
         self.assertEqual(summary.financials.revenue_growth_percent, 20.0)
         self.assertEqual(summary.financials.fiscal_year, 2025)
@@ -329,6 +343,29 @@ class ReadAnnualSectionsTests(unittest.TestCase):
             _read_annual_sections(
                 (Path("business.txt"), Path("mda.txt"))
             )
+
+
+class ReadQuarterlySectionsTests(unittest.TestCase):
+    def test_reads_sections_by_filename(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            paths = []
+            for filename, content in (
+                ("risk_factors.txt", "Quarterly risk disclosures"),
+                ("mda.txt", "Quarterly management analysis"),
+            ):
+                path = root / filename
+                path.write_text(content, encoding="utf-8")
+                paths.append(path)
+
+            sections = _read_quarterly_sections(tuple(paths))
+
+        self.assertEqual(sections.risk_factors, "Quarterly risk disclosures")
+        self.assertEqual(sections.mda, "Quarterly management analysis")
+
+    def test_reports_missing_section(self) -> None:
+        with self.assertRaisesRegex(DashboardError, "risk_factors.txt"):
+            _read_quarterly_sections((Path("mda.txt"),))
 
 
 if __name__ == "__main__":
