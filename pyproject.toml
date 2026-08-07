@@ -29,6 +29,7 @@ calculate-metrics = "finance_news.metrics_cli:main"
 stocklens-pipeline = "finance_news.pipeline_cli:main"
 quarterly-pipeline = "finance_news.quarterly_cli:main"
 events-pipeline = "finance_news.events_cli:main"
+news-pipeline = "finance_news.news_cli:main"
 
 [tool.setuptools.packages.find]
 include = ["finance_news*"]

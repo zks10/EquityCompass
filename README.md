@@ -227,6 +227,29 @@ Use `--force-download` only to replace existing raw 8-K documents. The collector
 preserves all detected items, including exhibit metadata, without judging
 materiality or performing AI analysis.
 
+## Collect recent company news
+
+Collect up to 20 articles from the past seven days:
+
+```bash
+news-pipeline AAPL --days 7 --limit 20
+```
+
+The source adapter currently uses the public Google News RSS search feed and does
+not require an API key. It saves both the original feed and normalized article
+metadata:
+
+```text
+data/raw/news/{CIK}/feed.xml
+data/processed/news/{CIK}/articles.json
+```
+
+Normalized records contain title, publisher, UTC publication time, feed URL, and
+GUID. The collector deduplicates feed entries but does not summarize, rank,
+sentiment-score, or verify article claims. Because the RSS endpoint is external
+and has no project API guarantee, its adapter is intentionally isolated and can
+be replaced later.
+
 ## Run the automated tests
 
 The tests use simulated SEC responses, so they do not require internet access or
@@ -261,6 +284,9 @@ StockLens/
 │   ├── facts_cli.py
 │   ├── history_cli.py
 │   ├── metrics_cli.py
+│   ├── news_cli.py
+│   ├── news_collector.py
+│   ├── news_pipeline.py
 │   ├── pipeline.py
 │   ├── pipeline_cli.py
 │   ├── quarterly_cli.py
@@ -276,6 +302,8 @@ StockLens/
 │   ├── test_derived_metrics.py
 │   ├── test_event_extractor.py
 │   ├── test_events_pipeline.py
+│   ├── test_news_collector.py
+│   ├── test_news_pipeline.py
 │   ├── test_pipeline.py
 │   ├── test_quarterly_pipeline.py
 │   ├── test_financial_facts.py
