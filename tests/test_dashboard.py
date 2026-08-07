@@ -95,7 +95,26 @@ class AnalyzeTickerTests(unittest.TestCase):
             )
             articles_path = Path(directory) / "articles.json"
             articles_path.write_text(
-                json.dumps({"article_count": 7}), encoding="utf-8"
+                json.dumps(
+                    {
+                        "article_count": 2,
+                        "articles": [
+                            {
+                                "title": "Apple announces a new product",
+                                "publisher": "Example News",
+                                "published_at": "2026-08-06T12:00:00Z",
+                                "url": "https://example.com/apple-product",
+                            },
+                            {
+                                "title": "Apple reports results",
+                                "publisher": "Example Business",
+                                "published_at": "2026-08-05T18:30:00Z",
+                                "url": "https://example.com/apple-results",
+                            },
+                        ],
+                    }
+                ),
+                encoding="utf-8",
             )
             mock_annual.return_value = SimpleNamespace(
                 company=COMPANY,
@@ -114,7 +133,14 @@ class AnalyzeTickerTests(unittest.TestCase):
         self.assertEqual(summary.cik, "0000320193")
         self.assertEqual(summary.latest_10k_date, "2025-10-31")
         self.assertEqual(summary.latest_10q_date, "2026-08-01")
-        self.assertEqual(summary.news_article_count, 7)
+        self.assertEqual(summary.news_article_count, 2)
+        self.assertEqual(len(summary.recent_news), 2)
+        self.assertEqual(
+            summary.recent_news[0].publisher, "Example News"
+        )
+        self.assertEqual(
+            summary.recent_news[1].url, "https://example.com/apple-results"
+        )
         self.assertEqual(summary.financials.revenue, 120_000_000_000)
         self.assertEqual(summary.financials.revenue_growth_percent, 20.0)
         self.assertEqual(summary.financials.fiscal_year, 2025)
@@ -154,7 +180,7 @@ class AnalyzeTickerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             articles_path = Path(directory) / "articles.json"
             articles_path.write_text(
-                json.dumps({"article_count": 2}), encoding="utf-8"
+                json.dumps({"article_count": 0, "articles": []}), encoding="utf-8"
             )
             mock_annual.return_value = SimpleNamespace(
                 company=COMPANY,
@@ -214,7 +240,7 @@ class AnalyzeTickerTests(unittest.TestCase):
             )
             articles_path = root / "articles.json"
             articles_path.write_text(
-                json.dumps({"article_count": 1}), encoding="utf-8"
+                json.dumps({"article_count": 0, "articles": []}), encoding="utf-8"
             )
             mock_annual.return_value = SimpleNamespace(
                 company=COMPANY,
@@ -227,6 +253,37 @@ class AnalyzeTickerTests(unittest.TestCase):
             mock_news.return_value = SimpleNamespace(articles_path=articles_path)
 
             with self.assertRaisesRegex(DashboardError, "financial history"):
+                analyze_ticker("AAPL")
+
+    @patch("finance_news.dashboard.run_news_pipeline")
+    @patch("finance_news.dashboard.run_quarterly_pipeline")
+    @patch("finance_news.dashboard.run_pipeline")
+    def test_reports_invalid_saved_news_article(
+        self, mock_annual: Mock, mock_quarterly: Mock, mock_news: Mock
+    ) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            articles_path = Path(directory) / "articles.json"
+            articles_path.write_text(
+                json.dumps(
+                    {
+                        "article_count": 1,
+                        "articles": [
+                            {
+                                "title": "Missing a valid link",
+                                "publisher": "Example",
+                                "published_at": "2026-08-06T12:00:00Z",
+                                "url": "not-a-url",
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            mock_annual.return_value = SimpleNamespace(company=COMPANY, filing=TEN_K)
+            mock_quarterly.return_value = SimpleNamespace(filing=TEN_Q)
+            mock_news.return_value = SimpleNamespace(articles_path=articles_path)
+
+            with self.assertRaisesRegex(DashboardError, "invalid article"):
                 analyze_ticker("AAPL")
 
 

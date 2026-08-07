@@ -127,4 +127,12 @@ if st.button("Analyze", type="primary"):
                 chart_history[["Total assets", "Total liabilities"]]
             )
 
+            st.subheader("Recent News")
+            if not summary.recent_news:
+                st.info("No recent articles were found for this company.")
+            for article in summary.recent_news:
+                st.write(article.title)
+                st.caption(f"{article.publisher} · {article.published_at}")
+                st.link_button("Read article", article.url)
+
 st.caption("Equity Compass is for education and research, not financial advice.")

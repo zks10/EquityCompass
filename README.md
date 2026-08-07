@@ -29,8 +29,9 @@ the existing annual, quarterly, and news collectors (reusing downloaded SEC
 filings when available), then displays the company name, SEC CIK, latest 10-K
 and 10-Q filing dates, recent-news count, latest annual financial values, four
 deterministic financial ratios, and a five-year financial table with trend
-charts. The first run can take a little while because it downloads and processes
-the source data.
+charts. It also lists recent headlines with their publisher, publication time,
+and source link. The first run can take a little while because it downloads and
+processes the source data.
 
 ## Resolve a company ticker
 

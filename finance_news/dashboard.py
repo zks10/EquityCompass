@@ -43,6 +43,14 @@ class FinancialHistoryRow:
 
 
 @dataclass(frozen=True)
+class RecentNewsArticle:
+    title: str
+    publisher: str
+    published_at: str
+    url: str
+
+
+@dataclass(frozen=True)
 class DashboardSummary:
     company_name: str
     cik: str
@@ -51,6 +59,7 @@ class DashboardSummary:
     news_article_count: int
     financials: FinancialOverview
     financial_history: tuple[FinancialHistoryRow, ...]
+    recent_news: tuple[RecentNewsArticle, ...]
 
 
 def _read_json(path: Path, description: str) -> dict:
@@ -63,17 +72,38 @@ def _read_json(path: Path, description: str) -> dict:
     return payload
 
 
-def _read_article_count(path: Path) -> int:
-    """Read the saved normalized news output and return its article count."""
+def _read_news_results(
+    path: Path,
+) -> tuple[int, tuple[RecentNewsArticle, ...]]:
+    """Read the count and article details from normalized saved news."""
     try:
         payload = _read_json(path, "news results")
         article_count = payload["article_count"]
+        articles = tuple(
+            RecentNewsArticle(
+                title=str(article["title"]).strip(),
+                publisher=str(article["publisher"]).strip(),
+                published_at=str(article["published_at"]).strip(),
+                url=str(article["url"]).strip(),
+            )
+            for article in payload["articles"]
+        )
     except (KeyError, TypeError) as exc:
         raise DashboardError(f"Could not read saved news results: {exc}") from exc
 
-    if not isinstance(article_count, int) or article_count < 0:
+    if (
+        not isinstance(article_count, int)
+        or article_count < 0
+        or article_count != len(articles)
+    ):
         raise DashboardError("Saved news results contain an invalid article count.")
-    return article_count
+    if any(
+        not all((article.title, article.publisher, article.published_at))
+        or not article.url.startswith(("https://", "http://"))
+        for article in articles
+    ):
+        raise DashboardError("Saved news results contain an invalid article.")
+    return article_count, articles
 
 
 def _read_financial_overview(
@@ -201,16 +231,18 @@ def analyze_ticker(
     except (PipelineError, NewsPipelineError) as exc:
         raise DashboardError(str(exc)) from exc
 
+    article_count, recent_news = _read_news_results(news.articles_path)
     return DashboardSummary(
         company_name=annual.company.name,
         cik=annual.company.cik,
         latest_10k_date=annual.filing.filing_date,
         latest_10q_date=quarterly.filing.filing_date,
-        news_article_count=_read_article_count(news.articles_path),
+        news_article_count=article_count,
         financials=_read_financial_overview(
             annual.latest_facts_path, annual.derived_metrics_path
         ),
         financial_history=_read_financial_history(annual.history_path),
+        recent_news=recent_news,
     )
 
 
@@ -219,5 +251,6 @@ __all__ = [
     "DashboardSummary",
     "FinancialOverview",
     "FinancialHistoryRow",
+    "RecentNewsArticle",
     "analyze_ticker",
 ]
