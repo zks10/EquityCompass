@@ -49,12 +49,12 @@ downloads and processes the source data.
 The results are organized into four tabs so each area can be reviewed separately:
 **Overview**, **Financials**, **Filings**, and **News & Events**. The ticker search
 area remains intentionally simple and will be redesigned separately.
-The Overview leads with the company, latest daily price movement, and a chart
-with 1D, 1M, 6M, YTD, 1Y, and 5Y shortcuts. Each selected range marks its
-high, low, and average. A compact **Company at a glance** profile then explains
-what the company does and lists its sector, industry, headquarters, employee
-count, and official website. Its
-financial signal breakdown pairs a five-year revenue, net-income, and operating-
+The Overview leads with a compact **Company at a glance** profile explaining
+what the company does and listing its sector, industry, headquarters, employee
+count, and official website. Next, the latest daily price movement and chart
+offer 1D, 1M, 6M, YTD, 1Y, and 5Y shortcuts, with each selected range marking
+its high, low, and average. The **Financial Compass** pairs a five-year revenue,
+net-income, and operating-
 cash-flow chart with the overall score. Component scores are combined with their
 current results in one aligned factor table. SEC CIK and latest 10-K/10-Q dates
 live in the Filings tab, where that metadata has the right context.

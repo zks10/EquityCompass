@@ -266,7 +266,7 @@ def show_price_chart(market: MarketOverview, ticker: str) -> None:
 
 
 def show_overview(summary: DashboardSummary) -> None:
-    """Display the market story first, then curated cross-section takeaways."""
+    """Display company context, market history, and financial signals."""
     financials = summary.financials
     snapshot_score = build_financial_snapshot_score(financials)
     st.caption(f"{summary.ticker} · U.S. public company")
@@ -276,18 +276,6 @@ def show_overview(summary: DashboardSummary) -> None:
         market = load_market_overview(summary.ticker)
     except MarketDataError:
         market = None
-
-    if market is None:
-        st.info("The price chart is temporarily unavailable. The company research below is still complete.")
-    else:
-        delta = f"{market.price_change:+.2f} ({market.price_change_percent:+.2f}%)"
-        st.metric(
-            "Latest close (USD)",
-            f"${market.latest_price:,.2f}",
-            delta=delta,
-        )
-        st.caption(f"As of {market.as_of} · Daily closing prices")
-        show_price_chart(market, summary.ticker)
 
     st.subheader("Company at a glance")
     business_summary = build_filing_preview(
@@ -347,8 +335,20 @@ def show_overview(summary: DashboardSummary) -> None:
         unsafe_allow_html=True,
     )
 
+    if market is None:
+        st.info("The price chart is temporarily unavailable. The company research below is still complete.")
+    else:
+        delta = f"{market.price_change:+.2f} ({market.price_change_percent:+.2f}%)"
+        st.metric(
+            "Latest close (USD)",
+            f"${market.latest_price:,.2f}",
+            delta=delta,
+        )
+        st.caption(f"As of {market.as_of} · Daily closing prices")
+        show_price_chart(market, summary.ticker)
+
     with st.container(border=True):
-        st.subheader("Financial signal breakdown")
+        st.subheader("Financial Compass")
         available_components = [
             component for component in snapshot_score.components if component.score is not None
         ]
@@ -447,12 +447,14 @@ def show_overview(summary: DashboardSummary) -> None:
                 f'<td class="factor-assessment"><span class="factor-reading factor-{tone}">{reading}</span></td></tr>'
             )
         st.markdown("#### Signal components")
-        score_help = (
-            "Overall score: equal-weight average. Revenue growth: -10%=0, 0%=50, +10%=100. "
-            "Net and cash margins: 0%=0, 25%=100. Liabilities/assets: 40%=100, 100%=0."
-        )
+        score_help = """
+          <span class="score-popover">
+            <strong>How the score works</strong>
+            <small>We score four financial signals from 0 to 100, then average them equally. Higher growth, profit, and cash generation help the score; a lower liabilities share helps the balance-sheet score.</small>
+          </span>
+        """
         st.markdown(
-            f'<table class="factor-table"><thead><tr><th>Factor</th><th>Current result</th><th>Score <span class="score-info" title="{html.escape(score_help, quote=True)}">?</span></th><th>Assessment</th></tr></thead><tbody>{"".join(factor_rows)}</tbody></table>',
+            f'<table class="factor-table"><thead><tr><th>Factor</th><th>Current result</th><th>Score <span class="score-info" tabindex="0" aria-label="How scores are calculated">?{score_help}</span></th><th>Assessment</th></tr></thead><tbody>{"".join(factor_rows)}</tbody></table>',
             unsafe_allow_html=True,
         )
         st.caption(
@@ -899,6 +901,7 @@ st.markdown(
     }
     .score-summary-item strong { display: block; margin-top: 1px; }
     .score-info {
+        position: relative;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -912,6 +915,49 @@ st.markdown(
         cursor: help;
         vertical-align: 1px;
     }
+    .score-popover {
+        position: absolute;
+        z-index: 1000;
+        top: calc(100% + 9px);
+        left: 50%;
+        width: 315px;
+        padding: 15px;
+        border: 1px solid rgba(120, 130, 150, 0.25);
+        border-radius: 12px;
+        color: #3F4652;
+        background: #FFFFFF;
+        box-shadow: 0 8px 24px rgba(25, 35, 55, 0.14);
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 1.5;
+        text-align: left;
+        text-transform: none;
+        white-space: normal;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -4px);
+        transition: opacity 120ms ease, transform 120ms ease;
+    }
+    .score-popover > strong {
+        display: block;
+        color: #292F3A;
+        font-size: 0.92rem;
+        font-weight: 750;
+    }
+    .score-popover > small {
+        display: block;
+        margin: 5px 0 0;
+        color: #747C89;
+        font-size: 0.74rem;
+        line-height: 1.4;
+    }
+    .score-info:hover .score-popover,
+    .score-info:focus .score-popover,
+    .score-info:focus-within .score-popover {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
     .summary-dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 9px; }
     .summary-strong { background: #0A8F6A; }
     .summary-watch { background: #D05B68; }
@@ -921,8 +967,10 @@ st.markdown(
         border-spacing: 0;
         border: 1px solid rgba(120, 130, 150, 0.25);
         border-radius: 12px;
-        overflow: hidden;
+        overflow: visible;
     }
+    .factor-table th:first-child { border-top-left-radius: 11px; }
+    .factor-table th:last-child { border-top-right-radius: 11px; }
     .factor-table th {
         padding: 11px 16px;
         color: #7A8291;
