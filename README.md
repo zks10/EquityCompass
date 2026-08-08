@@ -26,15 +26,37 @@ streamlit run app.py
 
 Enter a supported U.S. public-company ticker and select **Analyze**. The app runs
 the existing annual, quarterly, and news collectors (reusing downloaded SEC
-filings when available), then displays the company name, SEC CIK, latest 10-K
-and 10-Q filing dates, recent-news count, latest annual financial values, four
+filings when available), then displays the latest closing price, an interactive
+five-year price chart, latest annual financial values, four
 deterministic financial ratios, and a five-year financial table with trend
-charts. It also lists recent headlines with their publisher, publication time,
-and source link, plus the extracted Business, Risk Factors, and MD&A sections
+charts. A beginner summary translates the four ratios into cautious plain-English
+signals and includes expandable definitions for the underlying financial terms.
+It also lists recent headlines with their publisher, publication time,
+and source link. The first five headlines are shown initially, with the rest in
+an expandable list. Beginner guidance explains the purpose of 10-K, 10-Q, and
+8-K filings and the meaning of common 8-K item categories. The app also keeps
+mechanically detected headline topics and short extractive filing previews,
+clearly labeled as incomplete aids rather than analysis or AI summaries. A transparent Financial
+Snapshot Score averages four equally weighted annual metrics and displays every
+component, threshold, limitation, and missing input. It is explicitly not a
+valuation, forecast, company rating, or investment recommendation. The app keeps
+the extracted Business, Risk Factors, and MD&A sections
 from the latest 10-K and the MD&A and Risk Factors sections from the latest
 10-Q. Recent 8-K filings are also shown with their extracted event items and
 direct SEC document links. The first run can take a little while because it
 downloads and processes the source data.
+
+The results are organized into four tabs so each area can be reviewed separately:
+**Overview**, **Financials**, **Filings**, and **News & Events**. The ticker search
+area remains intentionally simple and will be redesigned separately.
+The Overview leads with the company, latest daily price movement, and a chart
+with 1D, 1M, 6M, YTD, 1Y, and 5Y shortcuts. Each selected range marks its
+high, low, and average. A compact **Company highlights** panel then
+selects one useful takeaway from Financials, Filings, and News & Events. Its
+financial signal breakdown pairs a five-year revenue, net-income, and operating-
+cash-flow chart with the overall score. Component scores are combined with their
+current results in one aligned factor table. SEC CIK and latest 10-K/10-Q dates
+live in the Filings tab, where that metadata has the right context.
 
 ## Resolve a company ticker
 

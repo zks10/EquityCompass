@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
@@ -33,6 +34,35 @@ class FinancialOverview:
 
 
 @dataclass(frozen=True)
+class FinancialInsight:
+    """A plain-language explanation of one calculated financial metric."""
+
+    title: str
+    label: str
+    explanation: str
+
+
+@dataclass(frozen=True)
+class ScoreComponent:
+    """One transparent component of the financial snapshot score."""
+
+    name: str
+    score: int | None
+    source_value: float | None
+    explanation: str
+
+
+@dataclass(frozen=True)
+class FinancialSnapshotScore:
+    """A narrow score of currently available annual financial signals."""
+
+    score: int | None
+    label: str
+    available_components: int
+    components: tuple[ScoreComponent, ...]
+
+
+@dataclass(frozen=True)
 class FinancialHistoryRow:
     fiscal_year: int
     period_end: str
@@ -49,6 +79,14 @@ class RecentNewsArticle:
     publisher: str
     published_at: str
     url: str
+
+
+@dataclass(frozen=True)
+class NewsTopic:
+    """A topic detected mechanically from recent news headlines."""
+
+    label: str
+    article_count: int
 
 
 @dataclass(frozen=True)
@@ -81,6 +119,7 @@ class RecentEventFiling:
 
 @dataclass(frozen=True)
 class DashboardSummary:
+    ticker: str
     company_name: str
     cik: str
     latest_10k_date: str
@@ -92,6 +131,299 @@ class DashboardSummary:
     annual_sections: AnnualFilingSections
     quarterly_sections: QuarterlyFilingSections
     recent_events: tuple[RecentEventFiling, ...]
+
+
+def build_financial_insights(
+    financials: FinancialOverview,
+) -> tuple[FinancialInsight, ...]:
+    """Translate calculated ratios into cautious, beginner-friendly language."""
+    growth = financials.revenue_growth_percent
+    if growth is None:
+        growth_label = "Not available"
+        growth_explanation = "There is not enough annual data to compare revenue."
+    elif growth >= 5:
+        growth_label = "Growing"
+        growth_explanation = (
+            f"Revenue increased {growth:.1f}% from the previous fiscal year."
+        )
+    elif growth >= 0:
+        growth_label = "Mostly steady"
+        growth_explanation = (
+            f"Revenue increased {growth:.1f}% from the previous fiscal year."
+        )
+    else:
+        growth_label = "Revenue declined"
+        growth_explanation = (
+            f"Revenue decreased {abs(growth):.1f}% from the previous fiscal year."
+        )
+
+    profit_margin = financials.net_profit_margin_percent
+    if profit_margin is None:
+        profit_label = "Not available"
+        profit_explanation = "A profit margin could not be calculated."
+    elif profit_margin >= 20:
+        profit_label = "High profit margin"
+        profit_explanation = (
+            f"The company kept about {profit_margin:.0f} dollars in net profit for "
+            "every 100 dollars of revenue."
+        )
+    elif profit_margin >= 10:
+        profit_label = "Profitable"
+        profit_explanation = (
+            f"The company kept about {profit_margin:.0f} dollars in net profit for "
+            "every 100 dollars of revenue."
+        )
+    elif profit_margin >= 0:
+        profit_label = "Low profit margin"
+        profit_explanation = (
+            f"The company kept about {profit_margin:.0f} dollars in net profit for "
+            "every 100 dollars of revenue."
+        )
+    else:
+        profit_label = "Reported a loss"
+        profit_explanation = (
+            f"The company lost about {abs(profit_margin):.0f} dollars for every 100 "
+            "dollars of revenue."
+        )
+
+    liabilities_ratio = financials.liabilities_to_assets_percent
+    if liabilities_ratio is None:
+        liabilities_label = "Not available"
+        liabilities_explanation = "The liabilities-to-assets ratio could not be calculated."
+    elif liabilities_ratio <= 50:
+        liabilities_label = "Lower liabilities share"
+        liabilities_explanation = (
+            f"Liabilities equal about {liabilities_ratio:.0f}% of assets. This still "
+            "needs comparison with similar companies."
+        )
+    elif liabilities_ratio <= 80:
+        liabilities_label = "Higher liabilities share"
+        liabilities_explanation = (
+            f"Liabilities equal about {liabilities_ratio:.0f}% of assets. This is not "
+            "automatically bad, but industry comparison matters."
+        )
+    else:
+        liabilities_label = "Very high liabilities share"
+        liabilities_explanation = (
+            f"Liabilities equal about {liabilities_ratio:.0f}% of assets, so the "
+            "balance sheet deserves closer review."
+        )
+
+    cash_margin = financials.operating_cash_flow_margin_percent
+    if cash_margin is None:
+        cash_label = "Not available"
+        cash_explanation = "An operating cash-flow margin could not be calculated."
+    elif cash_margin >= 20:
+        cash_label = "Strong cash generation"
+        cash_explanation = (
+            f"Operations generated about {cash_margin:.0f} dollars in cash for every "
+            "100 dollars of revenue."
+        )
+    elif cash_margin >= 10:
+        cash_label = "Positive cash generation"
+        cash_explanation = (
+            f"Operations generated about {cash_margin:.0f} dollars in cash for every "
+            "100 dollars of revenue."
+        )
+    elif cash_margin >= 0:
+        cash_label = "Low cash generation"
+        cash_explanation = (
+            f"Operations generated about {cash_margin:.0f} dollars in cash for every "
+            "100 dollars of revenue."
+        )
+    else:
+        cash_label = "Negative operating cash flow"
+        cash_explanation = (
+            f"Operations used about {abs(cash_margin):.0f} dollars in cash for every "
+            "100 dollars of revenue."
+        )
+
+    return (
+        FinancialInsight("Revenue trend", growth_label, growth_explanation),
+        FinancialInsight("Profitability", profit_label, profit_explanation),
+        FinancialInsight(
+            "Balance sheet", liabilities_label, liabilities_explanation
+        ),
+        FinancialInsight("Cash generation", cash_label, cash_explanation),
+    )
+
+
+def _bounded_score(value: float) -> int:
+    """Round a numeric score and keep it between zero and one hundred."""
+    return round(max(0.0, min(100.0, value)))
+
+
+def build_financial_snapshot_score(
+    financials: FinancialOverview,
+) -> FinancialSnapshotScore:
+    """Score four reported metrics using visible, deterministic thresholds."""
+    definitions = (
+        (
+            "Revenue growth",
+            financials.revenue_growth_percent,
+            lambda value: 50 + (5 * value),
+            "Measures the annual change in revenue. Zero growth scores 50; minus 10% scores 0; plus 10% scores 100.",
+        ),
+        (
+            "Net profit margin",
+            financials.net_profit_margin_percent,
+            lambda value: 4 * value,
+            "Measures net profit earned from each 100 dollars of revenue. A zero margin scores 0; a 25% margin scores 100.",
+        ),
+        (
+            "Liabilities / assets",
+            financials.liabilities_to_assets_percent,
+            lambda value: ((100 - value) / 60) * 100,
+            "Measures liabilities as a share of assets. A 40% ratio scores 100; a 100% ratio scores 0. Industry context is not included.",
+        ),
+        (
+            "Operating cash flow margin",
+            financials.operating_cash_flow_margin_percent,
+            lambda value: 4 * value,
+            "Measures operating cash generated from each 100 dollars of revenue. A zero margin scores 0; a 25% margin scores 100.",
+        ),
+    )
+    components = tuple(
+        ScoreComponent(
+            name=name,
+            score=None if value is None else _bounded_score(calculator(value)),
+            source_value=value,
+            explanation=explanation,
+        )
+        for name, value, calculator, explanation in definitions
+    )
+    available_scores = [
+        component.score for component in components if component.score is not None
+    ]
+    if not available_scores:
+        return FinancialSnapshotScore(
+            score=None,
+            label="Not enough data",
+            available_components=0,
+            components=components,
+        )
+
+    score = round(sum(available_scores) / len(available_scores))
+    if len(available_scores) < 3:
+        label = "Limited data"
+    elif score >= 75:
+        label = "Mostly favorable current signals"
+    elif score >= 50:
+        label = "Mixed-to-favorable current signals"
+    elif score >= 25:
+        label = "Mixed-to-cautious current signals"
+    else:
+        label = "Mostly cautious current signals"
+    return FinancialSnapshotScore(
+        score=score,
+        label=label,
+        available_components=len(available_scores),
+        components=components,
+    )
+
+
+def explain_8k_item(item_number: str) -> str:
+    """Explain common 8-K item numbers without interpreting the filing itself."""
+    explanations = {
+        "1.01": "The company entered into an important agreement.",
+        "1.02": "An important company agreement ended.",
+        "2.01": "The company completed an acquisition or sold significant assets.",
+        "2.02": "The company announced financial results or operating performance.",
+        "2.03": "The company took on a significant financial obligation.",
+        "2.05": "The company committed to a restructuring or exit plan.",
+        "2.06": "The company expects a significant reduction in an asset's recorded value.",
+        "3.01": "The company received or reported a stock-exchange listing notice.",
+        "4.01": "The company changed or dismissed its accounting firm.",
+        "4.02": "Previously issued financial statements should no longer be relied upon.",
+        "5.01": "Control of the company changed.",
+        "5.02": "A director or senior executive changed, or related compensation was updated.",
+        "5.03": "The company changed its charter or bylaws.",
+        "5.07": "The company reported the results of a shareholder vote.",
+        "7.01": "The company shared information publicly under Regulation FD.",
+        "8.01": "The company reported another event it considered important.",
+        "9.01": "The filing includes financial statements or supporting exhibits.",
+    }
+    normalized = str(item_number).strip()
+    return explanations.get(
+        normalized,
+        "This numbered category identifies the type of event reported to the SEC.",
+    )
+
+
+def build_filing_preview(text: str, max_sentences: int = 2) -> str:
+    """Create a short extractive preview without inventing or paraphrasing claims."""
+    if max_sentences < 1:
+        raise ValueError("max_sentences must be at least 1")
+
+    useful_lines = []
+    for raw_line in str(text).splitlines():
+        line = " ".join(raw_line.split())
+        if not line or re.fullmatch(r"Item\s+\d+[A-Z]?(?:\.\d+)?\.?[^.]*", line, re.I):
+            continue
+        if len(line) < 80 and not line.endswith(('.', '!', '?')):
+            continue
+        useful_lines.append(line)
+
+    sentences = [
+        sentence
+        for line in useful_lines
+        for sentence in re.split(r"(?<=[.!?])\s+(?=[A-Z“\"])", line)
+    ]
+    boilerplate = (
+        "the following discussion should be read",
+        "this item and other sections",
+        "this item generally discusses",
+        "forward-looking statements can",
+        "this section should be read",
+        "the company’s fiscal year",
+        "the company's fiscal year",
+        "is the company’s line",
+        "is the company's line",
+        "the company assumes no obligation",
+        "unless otherwise stated",
+    )
+    selected = [
+        sentence.strip()
+        for sentence in sentences
+        if len(sentence.split()) >= 8
+        and not sentence.lower().startswith(boilerplate)
+    ][:max_sentences]
+    return " ".join(selected) if selected else "No short preview is available."
+
+
+def detect_news_topics(
+    articles: tuple[RecentNewsArticle, ...],
+) -> tuple[NewsTopic, ...]:
+    """Count broad topics using headline keywords, without sentiment analysis."""
+    topic_keywords = {
+        "Products and services": (
+            "product", "iphone", "ipad", "mac", "watch", "airtag", "app store",
+            "software", "service", "launch", "trade-in",
+        ),
+        "Legal and regulation": (
+            "lawsuit", "suit", "court", "judge", "legal", "antitrust", "regulat",
+            "patent", "trade secret",
+        ),
+        "Financial results": (
+            "earnings", "revenue", "profit", "sales", "results", "quarter",
+        ),
+        "Investor commentary": (
+            "stock", "shares", "stake", "buy", "sell", "forecast", "analyst",
+            "investor", "holding", "etf",
+        ),
+        "Leadership and organization": (
+            "ceo", "executive", "director", "leadership", "appoint", "resign",
+        ),
+    }
+    counts = []
+    for label, keywords in topic_keywords.items():
+        count = sum(
+            any(keyword in article.title.lower() for keyword in keywords)
+            for article in articles
+        )
+        if count:
+            counts.append(NewsTopic(label, count))
+    return tuple(sorted(counts, key=lambda topic: (-topic.article_count, topic.label)))
 
 
 def _read_json(path: Path, description: str) -> dict:
@@ -364,6 +696,7 @@ def analyze_ticker(
 
     article_count, recent_news = _read_news_results(news.articles_path)
     return DashboardSummary(
+        ticker=annual.company.ticker,
         company_name=annual.company.name,
         cik=annual.company.cik,
         latest_10k_date=annual.filing.filing_date,
@@ -388,7 +721,16 @@ __all__ = [
     "RecentEventFiling",
     "RecentEventItem",
     "FinancialOverview",
+    "FinancialInsight",
+    "ScoreComponent",
+    "FinancialSnapshotScore",
     "FinancialHistoryRow",
     "RecentNewsArticle",
+    "NewsTopic",
+    "build_financial_insights",
+    "build_financial_snapshot_score",
+    "build_filing_preview",
+    "detect_news_topics",
+    "explain_8k_item",
     "analyze_ticker",
 ]

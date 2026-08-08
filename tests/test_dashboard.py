@@ -11,10 +11,17 @@ from unittest.mock import Mock, patch
 
 from finance_news.dashboard import (
     DashboardError,
+    FinancialOverview,
+    RecentNewsArticle,
     _read_annual_sections,
     _read_event_manifest,
     _read_quarterly_sections,
     analyze_ticker,
+    build_filing_preview,
+    build_financial_insights,
+    build_financial_snapshot_score,
+    detect_news_topics,
+    explain_8k_item,
 )
 from finance_news.pipeline import PipelineError
 from finance_news.sec_companies import Company
@@ -24,6 +31,176 @@ from finance_news.sec_filings import Filing
 COMPANY = Company(ticker="AAPL", name="Apple Inc.", cik="0000320193")
 TEN_K = Filing("10-K", "2025-10-31", "annual", "10k.htm", "https://example/10k")
 TEN_Q = Filing("10-Q", "2026-08-01", "quarterly", "10q.htm", "https://example/10q")
+
+
+class FinancialInsightTests(unittest.TestCase):
+    def test_explains_positive_financial_metrics_in_plain_language(self) -> None:
+        financials = FinancialOverview(
+            fiscal_year=2025,
+            period_end="2025-09-27",
+            revenue=120,
+            net_income=24,
+            assets=300,
+            liabilities=150,
+            operating_cash_flow=30,
+            revenue_growth_percent=20.0,
+            net_profit_margin_percent=20.0,
+            liabilities_to_assets_percent=50.0,
+            operating_cash_flow_margin_percent=25.0,
+        )
+
+        insights = build_financial_insights(financials)
+
+        self.assertEqual(len(insights), 4)
+        self.assertEqual(insights[0].label, "Growing")
+        self.assertIn("increased 20.0%", insights[0].explanation)
+        self.assertIn("20 dollars", insights[1].explanation)
+        self.assertIn("comparison", insights[2].explanation)
+        self.assertIn("25 dollars", insights[3].explanation)
+
+    def test_explains_negative_and_unavailable_metrics(self) -> None:
+        financials = FinancialOverview(
+            fiscal_year=2025,
+            period_end="2025-09-27",
+            revenue=100,
+            net_income=-5,
+            assets=100,
+            liabilities=90,
+            operating_cash_flow=-2,
+            revenue_growth_percent=-3.5,
+            net_profit_margin_percent=-5.0,
+            liabilities_to_assets_percent=90.0,
+            operating_cash_flow_margin_percent=None,
+        )
+
+        insights = build_financial_insights(financials)
+
+        self.assertEqual(insights[0].label, "Revenue declined")
+        self.assertEqual(insights[1].label, "Reported a loss")
+        self.assertEqual(insights[2].label, "Very high liabilities share")
+        self.assertEqual(insights[3].label, "Not available")
+
+
+class FinancialSnapshotScoreTests(unittest.TestCase):
+    def make_financials(
+        self,
+        growth: float | None,
+        margin: float | None,
+        liabilities: float | None,
+        cash_margin: float | None,
+    ) -> FinancialOverview:
+        return FinancialOverview(
+            fiscal_year=2025,
+            period_end="2025-12-31",
+            revenue=100,
+            net_income=10,
+            assets=100,
+            liabilities=50,
+            operating_cash_flow=10,
+            revenue_growth_percent=growth,
+            net_profit_margin_percent=margin,
+            liabilities_to_assets_percent=liabilities,
+            operating_cash_flow_margin_percent=cash_margin,
+        )
+
+    def test_scores_four_favorable_metrics(self) -> None:
+        result = build_financial_snapshot_score(
+            self.make_financials(10.0, 25.0, 40.0, 25.0)
+        )
+
+        self.assertEqual(result.score, 100)
+        self.assertEqual(result.available_components, 4)
+        self.assertEqual(result.label, "Mostly favorable current signals")
+        self.assertEqual([component.score for component in result.components], [100] * 4)
+
+    def test_bounds_unfavorable_metrics_at_zero(self) -> None:
+        result = build_financial_snapshot_score(
+            self.make_financials(-20.0, -5.0, 120.0, -10.0)
+        )
+
+        self.assertEqual(result.score, 0)
+        self.assertEqual([component.score for component in result.components], [0] * 4)
+
+    def test_averages_available_metrics_and_labels_limited_data(self) -> None:
+        result = build_financial_snapshot_score(
+            self.make_financials(10.0, None, None, 0.0)
+        )
+
+        self.assertEqual(result.score, 50)
+        self.assertEqual(result.available_components, 2)
+        self.assertEqual(result.label, "Limited data")
+
+    def test_reports_when_every_metric_is_unavailable(self) -> None:
+        result = build_financial_snapshot_score(
+            self.make_financials(None, None, None, None)
+        )
+
+        self.assertIsNone(result.score)
+        self.assertEqual(result.available_components, 0)
+        self.assertEqual(result.label, "Not enough data")
+
+
+class Explain8KItemTests(unittest.TestCase):
+    def test_explains_common_event_categories(self) -> None:
+        self.assertIn("financial results", explain_8k_item("2.02"))
+        self.assertIn("director or senior executive", explain_8k_item("5.02"))
+        self.assertIn("supporting exhibits", explain_8k_item("9.01"))
+
+    def test_returns_general_explanation_for_unknown_item(self) -> None:
+        self.assertIn("event reported to the SEC", explain_8k_item("6.99"))
+
+
+class BeginnerPreviewTests(unittest.TestCase):
+    def test_builds_preview_from_substantive_filing_sentences(self) -> None:
+        text = (
+            "Item 1. Business\nCompany Background\n"
+            "The company designs and sells consumer technology products worldwide. "
+            "It also provides digital services to its customers. "
+            "A third sentence should not appear."
+        )
+
+        preview = build_filing_preview(text)
+
+        self.assertIn("consumer technology", preview)
+        self.assertIn("digital services", preview)
+        self.assertNotIn("third sentence", preview)
+
+    def test_rejects_invalid_preview_sentence_limit(self) -> None:
+        with self.assertRaisesRegex(ValueError, "at least 1"):
+            build_filing_preview("Some filing text.", max_sentences=0)
+
+    def test_detects_and_counts_news_topics(self) -> None:
+        articles = (
+            RecentNewsArticle(
+                "Company reports quarterly revenue results",
+                "Example",
+                "2026-08-01",
+                "https://example.com/one",
+            ),
+            RecentNewsArticle(
+                "Judge considers company antitrust lawsuit",
+                "Example",
+                "2026-08-02",
+                "https://example.com/two",
+            ),
+            RecentNewsArticle(
+                "Analyst reviews the company's stock",
+                "Example",
+                "2026-08-03",
+                "https://example.com/three",
+            ),
+        )
+
+        topics = detect_news_topics(articles)
+
+        self.assertEqual(
+            {topic.label: topic.article_count for topic in topics},
+            {
+                "Financial results": 1,
+                "Investor commentary": 1,
+                "Legal and regulation": 1,
+            },
+        )
 
 
 class AnalyzeTickerTests(unittest.TestCase):
@@ -195,6 +372,7 @@ class AnalyzeTickerTests(unittest.TestCase):
             summary = analyze_ticker("aapl", progress=progress)
 
         self.assertEqual(summary.company_name, "Apple Inc.")
+        self.assertEqual(summary.ticker, "AAPL")
         self.assertEqual(summary.cik, "0000320193")
         self.assertEqual(summary.latest_10k_date, "2025-10-31")
         self.assertEqual(summary.latest_10q_date, "2026-08-01")
