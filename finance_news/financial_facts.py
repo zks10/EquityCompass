@@ -27,6 +27,7 @@ class MetricDefinition:
     name: str
     label: str
     tags: tuple[str, ...]
+    unit: str = "USD"
 
 
 @dataclass(frozen=True)
@@ -68,6 +69,54 @@ METRICS = (
         tags=("NetCashProvidedByUsedInOperatingActivities",),
     ),
 )
+
+SUPPLEMENTAL_METRICS = (
+    MetricDefinition(
+        name="capital_expenditures",
+        label="Capital expenditures",
+        tags=(
+            "PaymentsToAcquirePropertyPlantAndEquipment",
+            "PaymentsToAcquireProductiveAssets",
+            "PaymentsForAdditionsToPropertyPlantAndEquipment",
+            "PaymentsForProceedsFromPropertyPlantAndEquipment",
+        ),
+    ),
+    MetricDefinition(
+        name="eps",
+        label="Earnings per share",
+        tags=(
+            "EarningsPerShareDiluted",
+            "EarningsPerShareBasicAndDiluted",
+            "EarningsPerShareBasic",
+        ),
+        unit="USD/shares",
+    ),
+)
+
+EQUITY_DEFINITION = MetricDefinition(
+    name="stockholders_equity",
+    label="Stockholders' equity",
+    tags=(
+        "StockholdersEquity",
+        "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+    ),
+)
+
+
+def _derived_liabilities(assets: FinancialFact, equity: FinancialFact) -> FinancialFact:
+    """Derive total liabilities when SEC XBRL omits the standalone concept."""
+    return FinancialFact(
+        metric="liabilities",
+        label="Total liabilities",
+        tag=f"derived:{assets.tag}-{equity.tag}",
+        value=assets.value - equity.value,
+        unit="USD",
+        fiscal_year=assets.fiscal_year,
+        period_end=assets.period_end,
+        filed=max(assets.filed, equity.filed),
+        accession_number=assets.accession_number,
+        form="10-K",
+    )
 
 
 def _normalize_cik(cik: str) -> str:
@@ -122,7 +171,7 @@ def _latest_annual_fact(
             continue
 
         for unit, records in units.items():
-            if unit != "USD" or not isinstance(records, list):
+            if unit != definition.unit or not isinstance(records, list):
                 continue
             for record in records:
                 if not isinstance(record, dict):
@@ -154,7 +203,7 @@ def _latest_annual_fact(
             label=definition.label,
             tag=tag,
             value=record["val"],
-            unit="USD",
+            unit=definition.unit,
             fiscal_year=int(record["fy"]),
             period_end=str(record["end"]),
             filed=str(record["filed"]),
@@ -181,12 +230,19 @@ def extract_latest_annual_facts(payload: dict[str, Any]) -> list[FinancialFact]:
 
     extracted: list[FinancialFact] = []
     missing: list[str] = []
-    for definition in METRICS:
+    for definition in METRICS + SUPPLEMENTAL_METRICS:
         fact = _latest_annual_fact(us_gaap_facts, definition)
-        if fact is None:
+        if fact is None and definition in METRICS:
             missing.append(definition.label)
-        else:
+        elif fact is not None:
             extracted.append(fact)
+
+    if "Total liabilities" in missing:
+        assets = next((fact for fact in extracted if fact.metric == "assets"), None)
+        equity = _latest_annual_fact(us_gaap_facts, EQUITY_DEFINITION)
+        if assets is not None and equity is not None and assets.period_end == equity.period_end:
+            extracted.append(_derived_liabilities(assets, equity))
+            missing.remove("Total liabilities")
 
     if missing:
         raise FinancialFactsError(
@@ -209,7 +265,7 @@ def _annual_history_for_metric(
         if not isinstance(units, dict):
             continue
 
-        records = units.get("USD", [])
+        records = units.get(definition.unit, [])
         if not isinstance(records, list):
             continue
         for record in records:
@@ -238,14 +294,17 @@ def _annual_history_for_metric(
         )
 
         try:
-            fiscal_year = min(int(candidate[2]["fy"]) for candidate in preferred_records)
+            # Comparative values are often repeated in a later 10-K whose ``fy``
+            # identifies the filing year rather than the value's own fiscal year.
+            # The annual period end is the stable identity for the historical row.
+            fiscal_year = int(period_end[:4])
             history.append(
                 FinancialFact(
                     metric=definition.name,
                     label=definition.label,
                     tag=tag,
                     value=selected["val"],
-                    unit="USD",
+                    unit=definition.unit,
                     fiscal_year=fiscal_year,
                     period_end=period_end,
                     filed=str(selected["filed"]),
@@ -279,14 +338,34 @@ def extract_annual_history(
 
     history: dict[str, list[FinancialFact]] = {}
     missing: list[str] = []
-    for definition in METRICS:
+    for definition in METRICS + SUPPLEMENTAL_METRICS:
         metric_history = _annual_history_for_metric(
             us_gaap_facts, definition, years
         )
-        if not metric_history:
+        if not metric_history and definition in METRICS:
             missing.append(definition.label)
-        else:
+        elif metric_history:
             history[definition.name] = metric_history
+
+    if "Total liabilities" in missing:
+        equity_history = _annual_history_for_metric(
+            us_gaap_facts, EQUITY_DEFINITION, years
+        )
+        assets_by_period = {
+            fact.period_end: fact for fact in history.get("assets", [])
+        }
+        equity_by_period = {fact.period_end: fact for fact in equity_history}
+        common_periods = sorted(
+            set(assets_by_period) & set(equity_by_period), reverse=True
+        )[:years]
+        if common_periods:
+            history["liabilities"] = [
+                _derived_liabilities(
+                    assets_by_period[period], equity_by_period[period]
+                )
+                for period in common_periods
+            ]
+            missing.remove("Total liabilities")
 
     if missing:
         raise FinancialFactsError(

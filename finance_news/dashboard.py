@@ -12,10 +12,65 @@ from finance_news.events_pipeline import run_events_pipeline
 from finance_news.news_pipeline import NewsPipelineError, run_news_pipeline
 from finance_news.pipeline import PipelineError, run_pipeline
 from finance_news.quarterly_pipeline import run_quarterly_pipeline
+from finance_news.sec_companies import CompanyLookupError, resolve_ticker
+from finance_news.sec_filings import FilingLookupError, fetch_recent_filings
 
 
 class DashboardError(Exception):
     """Raised when Equity Compass cannot prepare the dashboard summary."""
+
+
+@dataclass(frozen=True)
+class TickerEligibility:
+    """Result of checking whether a ticker fits the current product scope."""
+
+    ticker: str
+    company_name: str
+    supported: bool
+    message: str
+
+
+def check_ticker_eligibility(ticker: str) -> TickerEligibility:
+    """Confirm that a ticker belongs to a supported U.S. domestic SEC filer."""
+    normalized_ticker = ticker.strip().upper()
+    try:
+        company = resolve_ticker(normalized_ticker)
+        filings = fetch_recent_filings(company.cik, limit=100)
+    except (CompanyLookupError, FilingLookupError) as exc:
+        return TickerEligibility(
+            ticker=normalized_ticker,
+            company_name="",
+            supported=False,
+            message=f"This ticker could not be verified: {exc}",
+        )
+
+    forms = {filing.form for filing in filings}
+    if "10-K" in forms:
+        return TickerEligibility(
+            ticker=company.ticker,
+            company_name=company.name,
+            supported=True,
+            message=f"{company.name} is a supported U.S. domestic SEC filer.",
+        )
+    if "20-F" in forms:
+        return TickerEligibility(
+            ticker=company.ticker,
+            company_name=company.name,
+            supported=False,
+            message=(
+                f"{company.name} is a foreign private issuer that files Form 20-F. "
+                "International IFRS issuers are not supported yet."
+            ),
+        )
+    return TickerEligibility(
+        ticker=company.ticker,
+        company_name=company.name,
+        supported=False,
+        message=(
+            f"{company.name} does not have a recent supported Form 10-K. "
+            "Equity Compass currently requires a U.S. domestic annual filing."
+        ),
+    )
 
 
 @dataclass(frozen=True)
@@ -71,6 +126,15 @@ class FinancialHistoryRow:
     assets: int | float
     liabilities: int | float
     operating_cash_flow: int | float
+    capital_expenditures: int | float | None = None
+    eps: int | float | None = None
+
+    @property
+    def free_cash_flow(self) -> int | float | None:
+        """Return cash left after capital investment."""
+        if self.capital_expenditures is None:
+            return None
+        return self.operating_cash_flow - abs(self.capital_expenditures)
 
 
 @dataclass(frozen=True)
@@ -131,6 +195,7 @@ class DashboardSummary:
     annual_sections: AnnualFilingSections
     quarterly_sections: QuarterlyFilingSections
     recent_events: tuple[RecentEventFiling, ...]
+    data_warnings: tuple[str, ...] = ()
 
 
 def build_financial_insights(
@@ -534,6 +599,10 @@ def _read_financial_history(path: Path) -> tuple[FinancialHistoryRow, ...]:
         common_periods = set.intersection(
             *(set(records) for records in indexed.values())
         )
+        optional_indexed = {
+            name: {record["period_end"]: record for record in metrics.get(name, [])}
+            for name in ("capital_expenditures", "eps")
+        }
         rows = tuple(
             FinancialHistoryRow(
                 fiscal_year=int(indexed["revenue"][period]["fiscal_year"]),
@@ -545,6 +614,10 @@ def _read_financial_history(path: Path) -> tuple[FinancialHistoryRow, ...]:
                 operating_cash_flow=indexed["operating_cash_flow"][period][
                     "value"
                 ],
+                capital_expenditures=(
+                    optional_indexed["capital_expenditures"].get(period, {}).get("value")
+                ),
+                eps=optional_indexed["eps"].get(period, {}).get("value"),
             )
             for period in sorted(common_periods, reverse=True)
         )
@@ -563,9 +636,12 @@ def _read_financial_history(path: Path) -> tuple[FinancialHistoryRow, ...]:
             row.assets,
             row.liabilities,
             row.operating_cash_flow,
+            row.capital_expenditures,
+            row.eps,
         )
         if any(
-            isinstance(value, bool) or not isinstance(value, (int, float))
+            value is not None
+            and (isinstance(value, bool) or not isinstance(value, (int, float)))
             for value in values
         ):
             raise DashboardError("Saved financial history contains a non-numeric value.")
@@ -580,18 +656,14 @@ def _read_annual_sections(paths: tuple[Path, ...]) -> AnnualFilingSections:
         "mda.txt": "mda",
     }
     files_by_name = {Path(path).name: Path(path) for path in paths}
-    missing = [name for name in required_files if name not in files_by_name]
-    if missing:
-        raise DashboardError(
-            "Saved 10-K sections are missing: " + ", ".join(missing) + "."
-        )
-
-    contents: dict[str, str] = {}
+    contents: dict[str, str] = {
+        field_name: "" for field_name in required_files.values()
+    }
     try:
         for filename, field_name in required_files.items():
+            if filename not in files_by_name or not files_by_name[filename].is_file():
+                continue
             content = files_by_name[filename].read_text(encoding="utf-8").strip()
-            if not content:
-                raise DashboardError(f"Saved 10-K section is empty: {filename}.")
             contents[field_name] = content
     except OSError as exc:
         raise DashboardError(f"Could not read saved 10-K sections: {exc}") from exc
@@ -606,18 +678,14 @@ def _read_quarterly_sections(paths: tuple[Path, ...]) -> QuarterlyFilingSections
         "mda.txt": "mda",
     }
     files_by_name = {Path(path).name: Path(path) for path in paths}
-    missing = [name for name in required_files if name not in files_by_name]
-    if missing:
-        raise DashboardError(
-            "Saved 10-Q sections are missing: " + ", ".join(missing) + "."
-        )
-
-    contents: dict[str, str] = {}
+    contents: dict[str, str] = {
+        field_name: "" for field_name in required_files.values()
+    }
     try:
         for filename, field_name in required_files.items():
+            if filename not in files_by_name or not files_by_name[filename].is_file():
+                continue
             content = files_by_name[filename].read_text(encoding="utf-8").strip()
-            if not content:
-                raise DashboardError(f"Saved 10-Q section is empty: {filename}.")
             contents[field_name] = content
     except OSError as exc:
         raise DashboardError(f"Could not read saved 10-Q sections: {exc}") from exc
@@ -679,43 +747,93 @@ def analyze_ticker(
         annual = run_pipeline(
             ticker, progress=lambda message: notify(f"Annual data: {message}")
         )
+    except PipelineError as exc:
+        raise DashboardError(str(exc)) from exc
+
+    warnings: list[str] = []
+    quarterly = None
+    news = None
+    events = None
+
+    try:
         notify("Starting quarterly data collection")
         quarterly = run_quarterly_pipeline(
             ticker, progress=lambda message: notify(f"Quarterly data: {message}")
         )
+    except PipelineError as exc:
+        warnings.append(f"Quarterly filing unavailable: {exc}")
+
+    try:
         notify("Starting recent news collection")
         news = run_news_pipeline(
             ticker, progress=lambda message: notify(f"News: {message}")
         )
+    except (PipelineError, NewsPipelineError) as exc:
+        warnings.append(f"Recent news unavailable: {exc}")
+
+    try:
         notify("Starting recent 8-K event collection")
         events = run_events_pipeline(
             ticker, progress=lambda message: notify(f"8-K events: {message}")
         )
     except (PipelineError, NewsPipelineError) as exc:
-        raise DashboardError(str(exc)) from exc
+        warnings.append(f"Recent 8-K events unavailable: {exc}")
 
-    article_count, recent_news = _read_news_results(news.articles_path)
+    article_count, recent_news = (
+        _read_news_results(news.articles_path) if news is not None else (0, ())
+    )
+    annual_sections = _read_annual_sections(getattr(annual, "section_paths", ()))
+    quarterly_sections = (
+        _read_quarterly_sections(getattr(quarterly, "section_paths", ()))
+        if quarterly is not None
+        else QuarterlyFilingSections(risk_factors="", mda="")
+    )
+    event_manifest = getattr(events, "manifest_path", None)
+    recent_events = (
+        _read_event_manifest(event_manifest)
+        if isinstance(event_manifest, Path)
+        else ()
+    )
+    missing_annual = [
+        label
+        for label, content in (
+            ("Business", annual_sections.business),
+            ("Risk Factors", annual_sections.risk_factors),
+            ("MD&A", annual_sections.mda),
+        )
+        if not content
+    ]
+    if missing_annual:
+        warnings.append(
+            "Some 10-K sections could not be extracted: "
+            + ", ".join(missing_annual)
+            + "."
+        )
     return DashboardSummary(
         ticker=annual.company.ticker,
         company_name=annual.company.name,
         cik=annual.company.cik,
         latest_10k_date=annual.filing.filing_date,
-        latest_10q_date=quarterly.filing.filing_date,
+        latest_10q_date=(
+            quarterly.filing.filing_date if quarterly is not None else "Not available"
+        ),
         news_article_count=article_count,
         financials=_read_financial_overview(
             annual.latest_facts_path, annual.derived_metrics_path
         ),
         financial_history=_read_financial_history(annual.history_path),
         recent_news=recent_news,
-        annual_sections=_read_annual_sections(annual.section_paths),
-        quarterly_sections=_read_quarterly_sections(quarterly.section_paths),
-        recent_events=_read_event_manifest(events.manifest_path),
+        annual_sections=annual_sections,
+        quarterly_sections=quarterly_sections,
+        recent_events=recent_events,
+        data_warnings=tuple(warnings),
     )
 
 
 __all__ = [
     "DashboardError",
     "DashboardSummary",
+    "TickerEligibility",
     "AnnualFilingSections",
     "QuarterlyFilingSections",
     "RecentEventFiling",
@@ -729,6 +847,7 @@ __all__ = [
     "NewsTopic",
     "build_financial_insights",
     "build_financial_snapshot_score",
+    "check_ticker_eligibility",
     "build_filing_preview",
     "detect_news_topics",
     "explain_8k_item",

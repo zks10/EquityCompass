@@ -20,6 +20,7 @@ from finance_news.dashboard import (
     build_filing_preview,
     build_financial_insights,
     build_financial_snapshot_score,
+    check_ticker_eligibility,
     detect_news_topics,
     explain_8k_item,
 )
@@ -31,6 +32,34 @@ from finance_news.sec_filings import Filing
 COMPANY = Company(ticker="AAPL", name="Apple Inc.", cik="0000320193")
 TEN_K = Filing("10-K", "2025-10-31", "annual", "10k.htm", "https://example/10k")
 TEN_Q = Filing("10-Q", "2026-08-01", "quarterly", "10q.htm", "https://example/10q")
+
+
+class TickerEligibilityTests(unittest.TestCase):
+    @patch("finance_news.dashboard.fetch_recent_filings")
+    @patch("finance_news.dashboard.resolve_ticker", return_value=COMPANY)
+    def test_accepts_domestic_10k_filer(
+        self, _mock_resolve: Mock, mock_filings: Mock
+    ) -> None:
+        mock_filings.return_value = [TEN_K]
+
+        result = check_ticker_eligibility("aapl")
+
+        self.assertTrue(result.supported)
+        self.assertIn("Apple", result.message)
+
+    @patch("finance_news.dashboard.fetch_recent_filings")
+    @patch("finance_news.dashboard.resolve_ticker", return_value=COMPANY)
+    def test_rejects_foreign_20f_filer(
+        self, _mock_resolve: Mock, mock_filings: Mock
+    ) -> None:
+        mock_filings.return_value = [
+            Filing("20-F", "2026-03-01", "foreign", "20f.htm", "https://example/20f")
+        ]
+
+        result = check_ticker_eligibility("nok")
+
+        self.assertFalse(result.supported)
+        self.assertIn("foreign private issuer", result.message)
 
 
 class FinancialInsightTests(unittest.TestCase):
@@ -278,6 +307,8 @@ class AnalyzeTickerTests(unittest.TestCase):
                                 ("assets", 300, 275),
                                 ("liabilities", 150, 140),
                                 ("operating_cash_flow", 30, 25),
+                                ("capital_expenditures", 8, 7),
+                                ("eps", 6.0, 5.0),
                             )
                         }
                     }
@@ -398,6 +429,8 @@ class AnalyzeTickerTests(unittest.TestCase):
         self.assertEqual(len(summary.financial_history), 2)
         self.assertEqual(summary.financial_history[0].fiscal_year, 2025)
         self.assertEqual(summary.financial_history[1].revenue, 100)
+        self.assertEqual(summary.financial_history[0].eps, 6.0)
+        self.assertEqual(summary.financial_history[0].free_cash_flow, 22)
         self.assertTrue(progress.called)
 
     @patch("finance_news.dashboard.run_pipeline")
@@ -558,11 +591,12 @@ class ReadAnnualSectionsTests(unittest.TestCase):
         self.assertEqual(sections.risk_factors, "Risk disclosures")
         self.assertEqual(sections.mda, "Management analysis")
 
-    def test_reports_missing_section(self) -> None:
-        with self.assertRaisesRegex(DashboardError, "risk_factors.txt"):
-            _read_annual_sections(
-                (Path("business.txt"), Path("mda.txt"))
-            )
+    def test_preserves_dashboard_when_section_is_missing(self) -> None:
+        sections = _read_annual_sections(
+            (Path("business.txt"), Path("mda.txt"))
+        )
+
+        self.assertEqual(sections.risk_factors, "")
 
 
 class ReadQuarterlySectionsTests(unittest.TestCase):
@@ -583,9 +617,10 @@ class ReadQuarterlySectionsTests(unittest.TestCase):
         self.assertEqual(sections.risk_factors, "Quarterly risk disclosures")
         self.assertEqual(sections.mda, "Quarterly management analysis")
 
-    def test_reports_missing_section(self) -> None:
-        with self.assertRaisesRegex(DashboardError, "risk_factors.txt"):
-            _read_quarterly_sections((Path("mda.txt"),))
+    def test_preserves_dashboard_when_section_is_missing(self) -> None:
+        sections = _read_quarterly_sections((Path("mda.txt"),))
+
+        self.assertEqual(sections.risk_factors, "")
 
 
 class ReadEventManifestTests(unittest.TestCase):

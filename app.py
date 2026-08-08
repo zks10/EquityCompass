@@ -15,6 +15,7 @@ from finance_news.dashboard import (
     analyze_ticker,
     build_filing_preview,
     build_financial_snapshot_score,
+    check_ticker_eligibility,
     detect_news_topics,
     explain_8k_item,
 )
@@ -23,6 +24,8 @@ from finance_news.market_data import (
     MarketOverview,
     fetch_market_overview,
 )
+
+FINANCIALS_SCHEMA_VERSION = 2
 
 
 def format_usd(value: int | float) -> str:
@@ -38,6 +41,216 @@ def format_usd(value: int | float) -> str:
 def format_percent(value: float | None) -> str:
     """Format a calculated percentage while preserving unavailable values."""
     return "N/A" if value is None else f"{value:.1f}%"
+
+
+def format_eps(value: int | float | None) -> str:
+    """Format annual earnings per share."""
+    return "N/A" if value is None else f"${value:,.2f}"
+
+
+def financial_history_value(row, field: str) -> int | float | None:
+    """Read new metrics safely from rows cached before Financials v1."""
+    if field == "free_cash_flow":
+        stored_value = getattr(row, "free_cash_flow", None)
+        if stored_value is not None:
+            return stored_value
+        capital_expenditures = getattr(row, "capital_expenditures", None)
+        if capital_expenditures is None:
+            return None
+        return row.operating_cash_flow - abs(capital_expenditures)
+    return getattr(row, field, None)
+
+
+def describe_financial_trend(history, field: str) -> tuple[str, str]:
+    """Summarize a five-year series without turning it into a score."""
+    rows = sorted(history, key=lambda row: row.fiscal_year)
+    points = [
+        (row.fiscal_year, financial_history_value(row, field)) for row in rows
+    ]
+    available = [(year, value) for year, value in points if value is not None]
+    if len(available) < 2:
+        if available:
+            year, value = available[-1]
+            latest = format_eps(value) if field == "eps" else format_usd(value)
+            return latest, f"Latest available annual figure ({year})."
+        return "Data unavailable", "No comparable annual SEC figures were found."
+
+    start_year, start_value = available[0]
+    end_year, end_value = available[-1]
+    if start_value == 0:
+        change_text = f"{format_usd(end_value) if field != 'eps' else format_eps(end_value)} latest"
+    else:
+        change = (end_value - start_value) / abs(start_value) * 100
+        direction = "up" if change > 0 else "down" if change < 0 else "flat"
+        change_text = f"{direction} {abs(change):.1f}%"
+    annual_moves = [
+        current - previous
+        for (_, previous), (_, current) in zip(available, available[1:])
+    ]
+    improving_years = sum(move > 0 for move in annual_moves)
+    consistency = f"rose in {improving_years} of {len(annual_moves)} year-to-year periods"
+    return change_text, f"From {start_year} to {end_year}; {consistency}."
+
+
+def financial_series_change(history, field: str) -> float | None:
+    """Return the full-period percentage change for one available series."""
+    values = [
+        financial_history_value(row, field)
+        for row in sorted(history, key=lambda row: row.fiscal_year)
+    ]
+    available = [value for value in values if value is not None]
+    if len(available) < 2 or available[0] == 0:
+        return None
+    return (available[-1] - available[0]) / abs(available[0]) * 100
+
+
+def build_financial_takeaway(history, field: str) -> str:
+    """Connect each chart to another financial signal in one useful sentence."""
+    rows = sorted(history, key=lambda row: row.fiscal_year)
+    latest = rows[-1]
+    revenue_change = financial_series_change(rows, "revenue")
+    income_change = financial_series_change(rows, "net_income")
+
+    if field == "revenue":
+        if revenue_change is None or income_change is None:
+            return "Sales provide the starting point for the company's financial story."
+        relationship = "faster" if income_change > revenue_change else "slower"
+        return (
+            f"Profit changed {relationship} than sales over the same period "
+            f"({income_change:+.1f}% versus {revenue_change:+.1f}%)."
+        )
+    if field == "net_income":
+        earliest = rows[0]
+        if earliest.revenue == 0 or latest.revenue == 0:
+            return "Profit shows how much of the company's sales remained after costs."
+        first_margin = earliest.net_income / earliest.revenue * 100
+        latest_margin = latest.net_income / latest.revenue * 100
+        direction = "expanded" if latest_margin > first_margin else "narrowed"
+        return (
+            f"Net margin {direction} from {first_margin:.1f}% to "
+            f"{latest_margin:.1f}% of revenue."
+        )
+    if field == "eps":
+        eps_change = financial_series_change(rows, "eps")
+        if eps_change is None or income_change is None:
+            return "Per-share earnings show how much profit growth reached each share."
+        relationship = "outpaced" if eps_change > income_change else "trailed"
+        return (
+            f"Per-share earnings {relationship} total profit growth "
+            f"({eps_change:+.1f}% versus {income_change:+.1f}%)."
+        )
+    latest_fcf = financial_history_value(latest, "free_cash_flow")
+    if latest_fcf is None or latest.net_income == 0:
+        return "Cash generation shows how much reported profit was backed by cash."
+    conversion = latest_fcf / latest.net_income * 100
+    return (
+        f"Latest free cash flow equaled {conversion:.1f}% of net income, "
+        "linking reported profit to cash generation."
+    )
+
+
+def assess_financial_signal(history, field: str) -> tuple[str, str]:
+    """Classify visible five-year evidence without creating an investment score."""
+    rows = sorted(history, key=lambda row: row.fiscal_year)
+    change = financial_series_change(rows, field)
+    if change is None:
+        return "Context limited", "neutral"
+
+    if field == "revenue":
+        values = [financial_history_value(row, field) for row in rows]
+        moves = [current - previous for previous, current in zip(values, values[1:])]
+        if change > 0 and sum(move > 0 for move in moves) >= len(moves) / 2:
+            return "Supportive", "positive"
+        if change > 0:
+            return "Mixed", "mixed"
+        return "Caution", "caution"
+
+    if field == "net_income":
+        first_margin = rows[0].net_income / rows[0].revenue if rows[0].revenue else None
+        latest_margin = rows[-1].net_income / rows[-1].revenue if rows[-1].revenue else None
+        margin_held = (
+            first_margin is not None
+            and latest_margin is not None
+            and latest_margin >= first_margin
+        )
+        if change > 0 and margin_held:
+            return "Supportive", "positive"
+        if change > 0 or margin_held:
+            return "Mixed", "mixed"
+        return "Caution", "caution"
+
+    if field == "eps":
+        income_change = financial_series_change(rows, "net_income")
+        if change > 0 and income_change is not None and change >= income_change:
+            return "Supportive", "positive"
+        if change > 0:
+            return "Mixed", "mixed"
+        return "Caution", "caution"
+
+    latest_fcf = financial_history_value(rows[-1], "free_cash_flow")
+    fcf_values = [financial_history_value(row, "free_cash_flow") for row in rows]
+    fcf_moves = [
+        current - previous
+        for previous, current in zip(fcf_values, fcf_values[1:])
+        if previous is not None and current is not None
+    ]
+    consistent_growth = (
+        bool(fcf_moves) and sum(move > 0 for move in fcf_moves) > len(fcf_moves) / 2
+    )
+    if latest_fcf is not None and latest_fcf > 0 and change > 0 and consistent_growth:
+        return "Supportive", "positive"
+    if latest_fcf is not None and latest_fcf > 0:
+        return "Mixed", "mixed"
+    return "Caution", "caution"
+
+
+def build_metric_trend_figure(
+    history, field: str, color: str, money: bool = True
+) -> go.Figure:
+    """Build one focused five-year trend chart for the Financials page."""
+    rows = sorted(history, key=lambda row: row.fiscal_year)
+    years = [str(row.fiscal_year) for row in rows]
+    values = [financial_history_value(row, field) for row in rows]
+    scaled = [
+        value / 1_000_000_000 if money and value is not None else value
+        for value in values
+    ]
+    figure = go.Figure(
+        go.Scatter(
+            x=years,
+            y=scaled,
+            mode="lines+markers",
+            line={"color": color, "width": 3},
+            marker={"color": color, "size": 8},
+            fill="tozeroy",
+            fillcolor="rgba(46, 111, 229, 0.07)",
+            hovertemplate=(
+                "<b>$%{y:.1f}B</b><extra></extra>"
+                if money
+                else "<b>$%{y:.2f}</b><extra></extra>"
+            ),
+        )
+    )
+    figure.update_layout(
+        height=245,
+        margin={"l": 8, "r": 12, "t": 10, "b": 15},
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
+        hovermode="x unified",
+        xaxis={"showgrid": False, "fixedrange": True, "tickfont": {"color": "#6F7784"}},
+        yaxis={
+            "tickprefix": "$",
+            "ticksuffix": "B" if money else "",
+            "showgrid": True,
+            "gridcolor": "rgba(120, 130, 150, 0.14)",
+            "zeroline": True,
+            "zerolinecolor": "rgba(120, 130, 150, 0.25)",
+            "fixedrange": True,
+            "tickfont": {"color": "#8A919D"},
+        },
+    )
+    return figure
 
 
 def show_news_article(article: RecentNewsArticle, key: str) -> None:
@@ -122,6 +335,12 @@ def build_financial_history_figure(history) -> go.Figure:
 def load_market_overview(ticker: str) -> MarketOverview:
     """Cache market prices briefly so tab reruns remain quick."""
     return fetch_market_overview(ticker)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def load_ticker_eligibility(ticker: str):
+    """Cache the quick SEC eligibility check for repeated searches."""
+    return check_ticker_eligibility(ticker)
 
 
 def select_price_points(market: MarketOverview, period: str):
@@ -463,89 +682,105 @@ def show_overview(summary: DashboardSummary) -> None:
 
 
 def show_financials(summary: DashboardSummary) -> None:
-    """Display current annual metrics and five-year history."""
+    """Explain the company's financial story through four investor questions."""
     financials = summary.financials
-    st.subheader("Financial Overview")
+    history = summary.financial_history
+    st.subheader("Financial story")
     st.caption(
         f"Fiscal year {financials.fiscal_year}, ended {financials.period_end} · "
         "Annual SEC figures"
     )
 
-    revenue, income, assets = st.columns(3)
-    revenue.metric("Revenue", format_usd(financials.revenue))
-    income.metric("Net income", format_usd(financials.net_income))
-    assets.metric("Total assets", format_usd(financials.assets))
-
-    liabilities, cash_flow = st.columns(2)
-    liabilities.metric("Total liabilities", format_usd(financials.liabilities))
-    cash_flow.metric(
-        "Operating cash flow", format_usd(financials.operating_cash_flow)
+    latest_eps = financial_history_value(history[0], "eps")
+    latest_fcf = financial_history_value(history[0], "free_cash_flow")
+    story_cards = (
+        ("1", "Is the business growing?", "Revenue", "revenue"),
+        ("2", "Is growth becoming profit?", "Net income", "net_income"),
+        ("3", "Are shareholders benefiting?", "Earnings per share", "eps"),
+        ("4", "Is the profit backed by cash?", "Free cash flow", "free_cash_flow"),
     )
-
-    with st.expander("What do these financial numbers mean?"):
-        st.markdown(
-            "- **Revenue:** money earned from selling products or services before expenses.\n"
-            "- **Net income:** profit left after expenses and taxes.\n"
-            "- **Total assets:** resources the company owns or controls.\n"
-            "- **Total liabilities:** amounts the company owes or must pay.\n"
-            "- **Operating cash flow:** cash generated by normal business operations."
+    available_story_cards = tuple(
+        card
+        for card in story_cards
+        if any(
+            financial_history_value(row, card[3]) is not None for row in history
+        )
+    )
+    card_columns = st.columns(len(available_story_cards))
+    for column, (number, question, label, field) in zip(
+        card_columns, available_story_cards
+    ):
+        change_text, _ = describe_financial_trend(history, field)
+        assessment, assessment_tone = assess_financial_signal(history, field)
+        column.markdown(
+            f"""
+            <div class="financial-story-card">
+              <span>{number}</span>
+              <small>{html.escape(question)}</small>
+              <strong>{html.escape(change_text)}</strong>
+              <i class="financial-assessment financial-{assessment_tone}">{html.escape(assessment)}</i>
+              <em>{html.escape(label)} · five years</em>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
-    st.subheader("Financial Ratios")
-    growth, margin, debt, cash_margin = st.columns(4)
-    growth.metric("Revenue growth", format_percent(financials.revenue_growth_percent))
-    margin.metric(
-        "Net profit margin", format_percent(financials.net_profit_margin_percent)
+    metric_sections = (
+        ("01", "Is the business growing?", "Revenue", "revenue", "#2E6FE5", True,
+         format_usd(history[0].revenue)),
+        ("02", "Is growth becoming profit?", "Net income", "net_income", "#0A8F6A", True,
+         format_usd(history[0].net_income)),
+        ("03", "Are shareholders benefiting?", "Earnings per share", "eps", "#D17A22", False,
+         format_eps(latest_eps)),
+        ("04", "Is the profit backed by cash?", "Free cash flow", "free_cash_flow", "#7A5AF8", True,
+         format_usd(latest_fcf) if latest_fcf is not None else "N/A"),
     )
-    debt.metric(
-        "Liabilities / assets",
-        format_percent(financials.liabilities_to_assets_percent),
-    )
-    cash_margin.metric(
-        "Operating cash flow margin",
-        format_percent(financials.operating_cash_flow_margin_percent),
-    )
-
-    with st.expander("What do these percentages mean?"):
-        st.markdown(
-            "- **Revenue growth:** change in revenue from the previous fiscal year.\n"
-            "- **Net profit margin:** net profit earned from each $100 of revenue.\n"
-            "- **Liabilities / assets:** the share of assets matched by liabilities.\n"
-            "- **Operating cash flow margin:** operating cash produced from each $100 of revenue."
+    for number, question, title, field, color, money, latest in metric_sections:
+        values_available = any(
+            financial_history_value(row, field) is not None for row in history
         )
+        if not values_available:
+            continue
+        change_text, context_text = describe_financial_trend(history, field)
+        takeaway = build_financial_takeaway(history, field)
+        assessment, assessment_tone = assess_financial_signal(history, field)
+        with st.container(border=True):
+            st.markdown(
+                f'<div class="financial-section-heading"><span>{number}</span><div>'
+                f'<small>{html.escape(question)}</small><h3>{html.escape(title)}</h3>'
+                f'</div></div>',
+                unsafe_allow_html=True,
+            )
+            chart_column, guide_column = st.columns([1.65, 1], gap="large")
+            with chart_column:
+                st.plotly_chart(
+                    build_metric_trend_figure(history, field, color, money),
+                    width="stretch",
+                    config={"displayModeBar": False},
+                    key=f"financial-trend-{field}",
+                )
+            with guide_column:
+                st.markdown(
+                    f"""
+                    <div class="financial-answer">
+                      <small>LATEST ANNUAL VALUE</small>
+                      <strong>{html.escape(latest)}</strong>
+                      <div class="financial-trend-label">{html.escape(change_text)}</div>
+                      <div class="financial-assessment financial-{assessment_tone}">{html.escape(assessment)} evidence</div>
+                      <p>{html.escape(context_text)}</p>
+                      <hr>
+                      <p class="financial-takeaway">{html.escape(takeaway)}</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 
-    st.subheader("Five-Year Financial History")
-    history = pd.DataFrame(
-        [
-            {
-                "Fiscal year": row.fiscal_year,
-                "Period end": row.period_end,
-                "Revenue": row.revenue,
-                "Net income": row.net_income,
-                "Total assets": row.assets,
-                "Total liabilities": row.liabilities,
-                "Operating cash flow": row.operating_cash_flow,
-            }
-            for row in summary.financial_history
-        ]
+    st.caption(
+        "Free cash flow = operating cash flow − capital expenditures. Values are "
+        "based on annual SEC filings and may use company-reported GAAP tags. "
+        "Evidence labels reflect the company's five-year direction and financial "
+        "relationships; they do not assess valuation or provide a buy/sell view."
     )
-    displayed_history = history.copy()
-    money_columns = [
-        "Revenue",
-        "Net income",
-        "Total assets",
-        "Total liabilities",
-        "Operating cash flow",
-    ]
-    for column in money_columns:
-        displayed_history[column] = displayed_history[column].map(format_usd)
-    st.dataframe(displayed_history, hide_index=True, width="stretch")
-
-    chart_history = history.sort_values("Fiscal year").set_index("Fiscal year")
-    st.write("Revenue and net income")
-    st.line_chart(chart_history[["Revenue", "Net income"]])
-    st.write("Assets and liabilities")
-    st.line_chart(chart_history[["Total assets", "Total liabilities"]])
 
 
 def show_filings(summary: DashboardSummary) -> None:
@@ -564,25 +799,25 @@ def show_filings(summary: DashboardSummary) -> None:
     st.caption(
         "Extracted directly from the latest annual SEC filing; not summarized or analyzed."
     )
-    st.markdown("**Quick previews from the filing**")
-    st.markdown(
-        "**Business:** " + build_filing_preview(summary.annual_sections.business)
+    annual_sections = (
+        ("Business", "how the company makes money", summary.annual_sections.business),
+        ("Risk Factors", "what could hurt the business", summary.annual_sections.risk_factors),
+        ("MD&A", "management's explanation of performance", summary.annual_sections.mda),
     )
-    st.markdown(
-        "**Risk Factors:** "
-        + build_filing_preview(summary.annual_sections.risk_factors)
-    )
-    st.markdown("**MD&A:** " + build_filing_preview(summary.annual_sections.mda))
-    st.caption(
-        "These previews select sentences from the filing. They are incomplete; open "
-        "each section for full context."
-    )
-    with st.expander("Business — how the company makes money"):
-        st.write(summary.annual_sections.business)
-    with st.expander("Risk Factors — what could hurt the business"):
-        st.write(summary.annual_sections.risk_factors)
-    with st.expander("MD&A — management's explanation of performance"):
-        st.write(summary.annual_sections.mda)
+    available_annual = tuple(section for section in annual_sections if section[2])
+    if available_annual:
+        st.markdown("**Quick previews from the filing**")
+        for label, _description, content in available_annual:
+            st.markdown(f"**{label}:** " + build_filing_preview(content))
+        st.caption(
+            "These previews select sentences from the filing. They are incomplete; "
+            "open each section for full context."
+        )
+        for label, description, content in available_annual:
+            with st.expander(f"{label} — {description}"):
+                st.write(content)
+    else:
+        st.info("The 10-K is available, but its main text sections could not be separated reliably.")
 
     st.divider()
     st.subheader("Latest 10-Q Sections")
@@ -593,23 +828,26 @@ def show_filings(summary: DashboardSummary) -> None:
     st.caption(
         "Extracted directly from the latest quarterly SEC filing; not summarized or analyzed."
     )
-    st.markdown("**Quick previews from the filing**")
-    st.markdown(
-        "**Quarterly MD&A:** "
-        + build_filing_preview(summary.quarterly_sections.mda)
+    quarterly_sections = (
+        ("Quarterly MD&A", "what changed this quarter", summary.quarterly_sections.mda),
+        ("Quarterly Risk Factors", "updated risks", summary.quarterly_sections.risk_factors),
     )
-    st.markdown(
-        "**Quarterly risks:** "
-        + build_filing_preview(summary.quarterly_sections.risk_factors)
+    available_quarterly = tuple(
+        section for section in quarterly_sections if section[2]
     )
-    st.caption(
-        "These previews select sentences from the filing. They are incomplete; open "
-        "each section for full context."
-    )
-    with st.expander("Quarterly MD&A — what changed this quarter"):
-        st.write(summary.quarterly_sections.mda)
-    with st.expander("Quarterly Risk Factors — updated risks"):
-        st.write(summary.quarterly_sections.risk_factors)
+    if available_quarterly:
+        st.markdown("**Quick previews from the filing**")
+        for label, _description, content in available_quarterly:
+            st.markdown(f"**{label}:** " + build_filing_preview(content))
+        st.caption(
+            "These previews select sentences from the filing. They are incomplete; "
+            "open each section for full context."
+        )
+        for label, description, content in available_quarterly:
+            with st.expander(f"{label} — {description}"):
+                st.write(content)
+    else:
+        st.info("No reliably extracted quarterly filing sections are available.")
 
 
 def show_news_and_events(summary: DashboardSummary) -> None:
@@ -650,6 +888,8 @@ def show_news_and_events(summary: DashboardSummary) -> None:
     st.caption(
         "Extracted from the three most recent 8-K filings; not ranked or analyzed."
     )
+    if not summary.recent_events:
+        st.info("No recent extractable 8-K events were found for this company.")
     for filing in summary.recent_events:
         st.write(
             f"8-K filed {filing.filing_date} · {len(filing.items)} extracted item(s)"
@@ -670,6 +910,10 @@ def show_news_and_events(summary: DashboardSummary) -> None:
 
 def show_dashboard(summary: DashboardSummary) -> None:
     """Organize the collected results into four focused tabs."""
+    if summary.data_warnings:
+        with st.expander(f"Source availability notes ({len(summary.data_warnings)})"):
+            for warning in summary.data_warnings:
+                st.write(f"• {warning}")
     overview_tab, financials_tab, filings_tab, news_tab = st.tabs(
         ["Overview", "Financials", "Filings", "News & Events"]
     )
@@ -1019,6 +1263,144 @@ st.markdown(
     .factor-middle { color: #95630B; background: rgba(217, 154, 38, 0.14); }
     .factor-watch { color: #B13D4C; background: rgba(208, 91, 104, 0.13); }
     .factor-neutral { color: #6F7784; background: rgba(120, 130, 150, 0.12); }
+    .financial-story-card {
+        display: grid;
+        grid-template-rows: 22px 44px 28px 22px 28px;
+        row-gap: 6px;
+        height: 190px;
+        margin-bottom: 20px;
+        padding: 16px 15px 14px;
+        box-sizing: border-box;
+        border: 1px solid rgba(120, 130, 150, 0.2);
+        border-radius: 11px;
+        background: linear-gradient(145deg, #FFFFFF, #F8FAFD);
+    }
+    .financial-story-card > span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 7px;
+        color: #17654F;
+        background: #E6F4EF;
+        font-size: 0.7rem;
+        font-weight: 800;
+        align-self: start;
+    }
+    .financial-story-card small {
+        display: block;
+        margin: 0;
+        color: #626B78;
+        font-size: 0.72rem;
+        font-weight: 650;
+        line-height: 1.35;
+        align-self: center;
+    }
+    .financial-story-card strong {
+        display: block;
+        margin: 0;
+        color: #2F3541;
+        font-size: 1.02rem;
+        line-height: 1.25;
+        text-transform: capitalize;
+        align-self: end;
+    }
+    .financial-story-card em {
+        display: block;
+        margin: 0;
+        color: #8A919D;
+        font-size: 0.68rem;
+        font-style: normal;
+        line-height: 1.35;
+        align-self: start;
+    }
+    .financial-assessment {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 3px 7px;
+        border-radius: 999px;
+        font-size: 0.66rem;
+        font-style: normal;
+        font-weight: 750;
+        line-height: 1.25;
+    }
+    .financial-positive { color: #08785A; background: #E4F3EE; }
+    .financial-mixed { color: #95630B; background: rgba(217, 154, 38, 0.14); }
+    .financial-caution { color: #B13D4C; background: rgba(208, 91, 104, 0.13); }
+    .financial-neutral { color: #68717E; background: rgba(120, 130, 150, 0.12); }
+    .financial-section-heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 2px 0 5px;
+    }
+    .financial-section-heading > span {
+        color: #0A8F6A;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+    }
+    .financial-section-heading small {
+        display: block;
+        color: #6F7784;
+        font-size: 0.72rem;
+        font-weight: 650;
+    }
+    .financial-section-heading h3 {
+        margin: 1px 0 0;
+        color: #303641;
+        font-size: 1.25rem;
+    }
+    .financial-answer { padding: 13px 2px 5px; }
+    .financial-answer > small {
+        color: #858D99;
+        font-size: 0.67rem;
+        font-weight: 750;
+        letter-spacing: 0.045em;
+    }
+    .financial-answer > strong {
+        display: block;
+        margin: 2px 0 7px;
+        color: #303641;
+        font-size: 1.8rem;
+        line-height: 1.08;
+    }
+    .financial-trend-label {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        color: #08785A;
+        background: #E4F3EE;
+        font-size: 0.72rem;
+        font-weight: 750;
+        text-transform: capitalize;
+    }
+    .financial-answer .financial-assessment {
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+    .financial-answer p {
+        margin: 6px 0 12px;
+        color: #626B78;
+        font-size: 0.78rem;
+        line-height: 1.5;
+    }
+    .financial-answer .financial-takeaway {
+        margin: 0 0 14px;
+        padding: 10px 11px;
+        border-radius: 8px;
+        color: #31584D;
+        background: rgba(10, 143, 106, 0.06);
+        font-weight: 600;
+    }
+    .financial-answer hr {
+        margin: 15px 0;
+        border: 0;
+        border-top: 1px solid rgba(120, 130, 150, 0.18);
+    }
+    .financial-answer b { color: #3D4551; font-size: 0.76rem; }
     @media (max-width: 640px) {
         .profile-summary { padding: 21px 18px; gap: 12px; }
         .profile-mark { width: 38px; height: 38px; flex-basis: 38px; }
@@ -1033,6 +1415,7 @@ st.markdown(
         .factor-table th, .factor-row td { padding-left: 9px; padding-right: 9px; }
         .factor-reading { padding: 3px 6px; }
         .score-summary { padding: 4px 2px 12px; }
+        .financial-story-card { height: 186px; }
     }
     </style>
     """,
@@ -1053,18 +1436,31 @@ if st.button("Analyze", type="primary"):
         st.warning("Please enter a ticker symbol.")
     else:
         progress_message = st.empty()
-        try:
-            with st.spinner(f"Analyzing {ticker}..."):
-                dashboard_summary = analyze_ticker(
-                    ticker, progress=progress_message.write
-                )
-        except DashboardError as error:
-            progress_message.empty()
-            st.error(f"Equity Compass could not complete the analysis: {error}")
+        eligibility = load_ticker_eligibility(ticker)
+        if not eligibility.supported:
+            st.warning(eligibility.message)
         else:
-            progress_message.empty()
-            st.session_state[f"price-range-{dashboard_summary.ticker}"] = "1D"
-            st.session_state["dashboard_summary"] = dashboard_summary
+            st.success(f"Supported ticker · {eligibility.company_name} ({eligibility.ticker})")
+            try:
+                with st.spinner(f"Analyzing {ticker}..."):
+                    dashboard_summary = analyze_ticker(
+                        ticker, progress=progress_message.write
+                    )
+            except DashboardError as error:
+                progress_message.empty()
+                st.error(f"Equity Compass could not complete the analysis: {error}")
+            else:
+                progress_message.empty()
+                st.session_state[f"price-range-{dashboard_summary.ticker}"] = "1D"
+                st.session_state["dashboard_summary"] = dashboard_summary
+                st.session_state["financials_schema_version"] = FINANCIALS_SCHEMA_VERSION
+
+if (
+    "dashboard_summary" in st.session_state
+    and st.session_state.get("financials_schema_version")
+    != FINANCIALS_SCHEMA_VERSION
+):
+    del st.session_state["dashboard_summary"]
 
 if "dashboard_summary" in st.session_state:
     show_dashboard(st.session_state["dashboard_summary"])

@@ -13,7 +13,7 @@ from finance_news.sec_companies import DEFAULT_USER_AGENT
 
 SEC_SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 SEC_ARCHIVES_URL = "https://www.sec.gov/Archives/edgar/data"
-SUPPORTED_FORMS = frozenset({"10-K", "10-Q", "8-K"})
+SUPPORTED_FORMS = frozenset({"10-K", "10-Q", "8-K", "20-F"})
 
 
 class FilingLookupError(Exception):
@@ -30,7 +30,7 @@ class Filing:
 
 
 def fetch_recent_filings(cik: str, limit: int = 10) -> list[Filing]:
-    """Return up to ``limit`` recent 10-K, 10-Q, and 8-K filings for a CIK."""
+    """Return recent domestic filings plus 20-Fs used for scope detection."""
     normalized_cik = str(cik).strip().zfill(10)
     if not normalized_cik.isdigit() or len(normalized_cik) != 10:
         raise FilingLookupError("CIK must contain between 1 and 10 digits.")

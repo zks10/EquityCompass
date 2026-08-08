@@ -108,6 +108,28 @@ class Extract10KSectionsTests(unittest.TestCase):
         with self.assertRaisesRegex(SectionExtractionError, "empty"):
             extract_10k_sections("  ")
 
+    def test_extracts_descriptive_heading_layout_without_item_numbers(self) -> None:
+        filing = """Our Business
+The company develops processors and related technology for customers worldwide.
+It competes across several large and changing markets.
+Management's Discussion and Analysis
+Revenue changed during the year and management discusses operating performance.
+Liquidity and capital resources remained important to the business.
+Properties
+The company owns and leases facilities.
+Risk Factors
+Competition, manufacturing complexity, and economic uncertainty could materially
+and adversely affect the company's operations, cash flows, and financial results.
+Financial Statements and Supplemental Details
+The audited statements follow.
+"""
+
+        sections = extract_10k_sections(filing)
+
+        self.assertIn("develops processors", sections["business.txt"])
+        self.assertIn("Liquidity", sections["mda.txt"])
+        self.assertIn("manufacturing complexity", sections["risk_factors.txt"])
+
 
 class ExtractSectionsFileTests(unittest.TestCase):
     def test_writes_separate_section_files(self) -> None:

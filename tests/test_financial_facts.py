@@ -20,7 +20,7 @@ from finance_news.financial_facts import (
 )
 
 
-def annual_record(value: int, end: str, filed: str, fiscal_year: int) -> dict:
+def annual_record(value: int | float, end: str, filed: str, fiscal_year: int) -> dict:
     return {
         "val": value,
         "fy": fiscal_year,
@@ -49,12 +49,22 @@ def company_facts_payload() -> dict:
         "NetCashProvidedByUsedInOperatingActivities": [
             annual_record(90, "2025-09-27", "2025-10-31", 2025)
         ],
+        "PaymentsToAcquirePropertyPlantAndEquipment": [
+            annual_record(20, "2025-09-27", "2025-10-31", 2025)
+        ],
     }
     return {
         "entityName": "Example Corp.",
         "facts": {
             "us-gaap": {
-                tag: {"units": {"USD": records}} for tag, records in concepts.items()
+                **{tag: {"units": {"USD": records}} for tag, records in concepts.items()},
+                "EarningsPerShareDiluted": {
+                    "units": {
+                        "USD/shares": [
+                            annual_record(2.5, "2025-09-27", "2025-10-31", 2025)
+                        ]
+                    }
+                },
             }
         },
     }
@@ -79,12 +89,20 @@ class FetchCompanyFactsTests(unittest.TestCase):
 
 
 class ExtractLatestAnnualFactsTests(unittest.TestCase):
-    def test_extracts_five_metrics(self) -> None:
+    def test_extracts_financials_page_metrics(self) -> None:
         facts = extract_latest_annual_facts(company_facts_payload())
 
         self.assertEqual(
             [fact.metric for fact in facts],
-            ["revenue", "net_income", "assets", "liabilities", "operating_cash_flow"],
+            [
+                "revenue",
+                "net_income",
+                "assets",
+                "liabilities",
+                "operating_cash_flow",
+                "capital_expenditures",
+                "eps",
+            ],
         )
 
     def test_selects_latest_10k_instead_of_quarterly_value(self) -> None:
@@ -112,6 +130,26 @@ class ExtractLatestAnnualFactsTests(unittest.TestCase):
 
         with self.assertRaisesRegex(FinancialFactsError, "Total liabilities"):
             extract_latest_annual_facts(payload)
+
+    def test_derives_liabilities_from_assets_and_equity(self) -> None:
+        payload = company_facts_payload()
+        concepts = payload["facts"]["us-gaap"]
+        del concepts["Liabilities"]
+        concepts["StockholdersEquity"] = {
+            "units": {
+                "USD": [
+                    annual_record(350, "2025-09-27", "2025-10-31", 2025)
+                ]
+            }
+        }
+
+        extracted = extract_latest_annual_facts(payload)
+        liabilities = next(
+            fact for fact in extracted if fact.metric == "liabilities"
+        )
+
+        self.assertEqual(liabilities.value, 150)
+        self.assertTrue(liabilities.tag.startswith("derived:"))
 
     def test_reports_non_us_gaap_payload(self) -> None:
         with self.assertRaisesRegex(FinancialFactsError, "US-GAAP"):
@@ -147,6 +185,22 @@ class ExtractAnnualHistoryTests(unittest.TestCase):
 
         self.assertTrue(all(len(facts) == 1 for facts in history.values()))
 
+    def test_uses_period_year_for_later_filed_comparative_value(self) -> None:
+        payload = company_facts_payload()
+        revenue_records = payload["facts"]["us-gaap"][
+            "RevenueFromContractWithCustomerExcludingAssessedTax"
+        ]["units"]["USD"]
+        revenue_records.append(
+            annual_record(80, "2021-12-31", "2024-02-01", 2023)
+        )
+
+        history = extract_annual_history(payload, years=5)
+        historical_revenue = next(
+            fact for fact in history["revenue"] if fact.period_end == "2021-12-31"
+        )
+
+        self.assertEqual(historical_revenue.fiscal_year, 2021)
+
     def test_rejects_invalid_year_count(self) -> None:
         with self.assertRaisesRegex(FinancialFactsError, "between 1 and 20"):
             extract_annual_history(company_facts_payload(), years=0)
@@ -172,7 +226,7 @@ class SaveFinancialFactsTests(unittest.TestCase):
             normalized = json.loads(processed_path.read_text(encoding="utf-8"))
             self.assertEqual(normalized["ticker"], "EXAM")
             self.assertEqual(normalized["cik"], "0000001234")
-            self.assertEqual(len(normalized["facts"]), 5)
+            self.assertEqual(len(normalized["facts"]), 7)
             self.assertFalse(any(root.rglob("*.part")))
 
     def test_saves_normalized_history(self) -> None:

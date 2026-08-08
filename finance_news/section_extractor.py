@@ -11,6 +11,11 @@ ITEM_HEADING = re.compile(
     r"^\s*item\s+([0-9]{1,2}[a-z]?)\s*[.\-:]?\s*(.*?)\s*$", re.IGNORECASE
 )
 MIN_SECTION_CHARACTERS = 80
+FALLBACK_END_TITLES = {
+    "business.txt": ("risk factors", "management", "discussion"),
+    "mda.txt": ("risk factors", "properties"),
+    "risk_factors.txt": ("financial statements",),
+}
 
 
 class SectionExtractionError(Exception):
@@ -110,6 +115,38 @@ def _extract_section(lines: list[str], definition: SectionDefinition) -> str | N
         if len(content) >= MIN_SECTION_CHARACTERS:
             candidates.append((len(content), content))
 
+    # Some issuers organize the body by descriptive headings and include the
+    # traditional Item numbers only in a cross-reference index. Consider titled
+    # sections alongside Item-based candidates and keep the most substantive one.
+    if not candidates or max(length for length, _content in candidates) < 500:
+        fallback_ends = FALLBACK_END_TITLES.get(definition.filename, ())
+        for start_index, line in enumerate(lines):
+            title = line.strip().lower()
+            if (
+                not title
+                or title.startswith("item ")
+                or title.endswith((".", "?", "!", ";"))
+                or len(title.split()) > 8
+                or not _matches_title(title, definition.title_terms)
+            ):
+                continue
+            end_index = None
+            for candidate_index in range(start_index + 1, len(lines)):
+                candidate = lines[candidate_index].strip().lower()
+                if (
+                    candidate
+                    and len(candidate) <= 100
+                    and not candidate.startswith("item ")
+                    and any(end_title in candidate for end_title in fallback_ends)
+                ):
+                    end_index = candidate_index
+                    break
+            if end_index is None:
+                continue
+            content = "\n".join(lines[start_index:end_index]).strip()
+            if len(content) >= MIN_SECTION_CHARACTERS:
+                candidates.append((len(content), content))
+
     if not candidates:
         return None
 
@@ -141,6 +178,20 @@ def _extract_required_sections(
     return sections
 
 
+def _extract_available_sections(
+    text: str, definitions: tuple[SectionDefinition, ...]
+) -> dict[str, str]:
+    """Return every section that can be identified without requiring all of them."""
+    if not text.strip():
+        raise SectionExtractionError("The processed filing is empty.")
+    lines = text.splitlines()
+    return {
+        definition.filename: content
+        for definition in definitions
+        if (content := _extract_section(lines, definition)) is not None
+    }
+
+
 def extract_10k_sections(text: str) -> dict[str, str]:
     """Extract Business, Risk Factors, and MD&A from cleaned 10-K text."""
     return _extract_required_sections(text, SECTION_DEFINITIONS)
@@ -165,7 +216,7 @@ def extract_sections_file(
 
     try:
         filing_text = source.read_text(encoding="utf-8")
-        sections = extract_10k_sections(filing_text)
+        sections = _extract_available_sections(filing_text, SECTION_DEFINITIONS)
         destination_directory.mkdir(parents=True, exist_ok=True)
 
         saved_paths = []
@@ -196,7 +247,9 @@ def extract_quarterly_sections_file(
     )
 
     try:
-        sections = extract_10q_sections(source.read_text(encoding="utf-8"))
+        sections = _extract_available_sections(
+            source.read_text(encoding="utf-8"), QUARTERLY_SECTION_DEFINITIONS
+        )
         destination_directory.mkdir(parents=True, exist_ok=True)
         saved_paths = []
         for filename, content in sections.items():

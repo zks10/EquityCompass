@@ -94,6 +94,24 @@ class RunPipelineTests(unittest.TestCase):
         with self.assertRaisesRegex(PipelineError, "Select latest 10-K failed"):
             run_pipeline("AAPL")
 
+    @patch("finance_news.pipeline.fetch_recent_filings")
+    @patch("finance_news.pipeline.resolve_ticker", return_value=COMPANY)
+    def test_explains_foreign_20f_issuer_scope(
+        self, _mock_resolve: Mock, mock_filings: Mock
+    ) -> None:
+        mock_filings.return_value = [
+            Filing(
+                form="20-F",
+                filing_date="2026-03-01",
+                accession_number="0000000000-26-000001",
+                primary_document="foreign.htm",
+                document_url="https://www.sec.gov/foreign.htm",
+            )
+        ]
+
+        with self.assertRaisesRegex(PipelineError, "foreign private issuer"):
+            run_pipeline("AAPL")
+
     @patch("finance_news.pipeline.resolve_ticker")
     def test_reports_resolver_stage_failure(self, mock_resolve: Mock) -> None:
         mock_resolve.side_effect = CompanyLookupError("SEC unavailable")

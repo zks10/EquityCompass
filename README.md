@@ -58,6 +58,10 @@ net-income, and operating-
 cash-flow chart with the overall score. Component scores are combined with their
 current results in one aligned factor table. SEC CIK and latest 10-K/10-Q dates
 live in the Filings tab, where that metadata has the right context.
+The **Financials** tab presents separate five-year trends for Revenue, Net Income,
+EPS, and Free Cash Flow, with a short beginner-friendly explanation below each
+chart. Free Cash Flow is calculated as operating cash flow minus capital
+expenditures; no new 0–100 score is added on this page.
 
 ## Resolve a company ticker
 

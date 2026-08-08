@@ -13,15 +13,16 @@ from finance_news.sec_filings import FilingLookupError, fetch_recent_filings
 RECENT_FILINGS = {
     "filings": {
         "recent": {
-            "form": ["8-K", "4", "10-Q", "10-K"],
-            "filingDate": ["2026-08-01", "2026-07-31", "2026-07-30", "2025-10-31"],
+            "form": ["8-K", "4", "10-Q", "10-K", "20-F"],
+            "filingDate": ["2026-08-01", "2026-07-31", "2026-07-30", "2025-10-31", "2025-03-01"],
             "accessionNumber": [
                 "0000320193-26-000001",
                 "0000320193-26-000002",
                 "0000320193-26-000003",
                 "0000320193-25-000004",
+                "0000320193-25-000005",
             ],
-            "primaryDocument": ["aapl-8k.htm", "ownership.xml", "aapl-10q.htm", "aapl-10k.htm"],
+            "primaryDocument": ["aapl-8k.htm", "ownership.xml", "aapl-10q.htm", "aapl-10k.htm", "foreign-20f.htm"],
         }
     }
 }
@@ -42,7 +43,9 @@ class FetchRecentFilingsTests(unittest.TestCase):
 
         filings = fetch_recent_filings("320193", limit=10)
 
-        self.assertEqual([filing.form for filing in filings], ["8-K", "10-Q", "10-K"])
+        self.assertEqual(
+            [filing.form for filing in filings], ["8-K", "10-Q", "10-K", "20-F"]
+        )
         self.assertEqual(filings[0].filing_date, "2026-08-01")
         self.assertEqual(filings[0].accession_number, "0000320193-26-000001")
         self.assertEqual(

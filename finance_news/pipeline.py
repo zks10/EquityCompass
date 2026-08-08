@@ -80,6 +80,13 @@ def run_pipeline(
         filings = fetch_recent_filings(company.cik, limit=100)
         filing = next((item for item in filings if item.form == "10-K"), None)
         if filing is None:
+            if any(item.form == "20-F" for item in filings):
+                raise FilingLookupError(
+                    f"{company.ticker} is a foreign private issuer that files Form "
+                    "20-F instead of Form 10-K. Equity Compass currently supports "
+                    "U.S. domestic SEC filers; international IFRS coverage is planned "
+                    "for a later phase."
+                )
             raise FilingLookupError(
                 f"No recent 10-K filing was found for {company.ticker}."
             )
