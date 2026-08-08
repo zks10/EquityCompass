@@ -25,6 +25,11 @@ class MarketOverview:
     as_of: str
     points: tuple[PricePoint, ...]
     intraday_points: tuple[PricePoint, ...]
+    sector: str | None = None
+    industry: str | None = None
+    headquarters: str | None = None
+    employees: int | None = None
+    website: str | None = None
 
     @property
     def price_change(self) -> float:
@@ -73,6 +78,20 @@ def fetch_market_overview(ticker: str) -> MarketOverview:
     except Exception:
         # Intraday data is an enhancement. Daily history should remain usable.
         pass
+    profile: dict = {}
+    try:
+        profile = ticker_client.get_info() or {}
+    except Exception:
+        # Company profile fields are optional and must not block price history.
+        pass
+    city = str(profile.get("city", "")).strip()
+    country = str(profile.get("country", "")).strip()
+    headquarters = ", ".join(part for part in (city, country) if part) or None
+    employee_value = profile.get("fullTimeEmployees")
+    try:
+        employees = int(employee_value) if employee_value is not None else None
+    except (TypeError, ValueError):
+        employees = None
     return MarketOverview(
         ticker=normalized_ticker,
         latest_price=points[-1].close,
@@ -80,6 +99,11 @@ def fetch_market_overview(ticker: str) -> MarketOverview:
         as_of=points[-1].date,
         points=points,
         intraday_points=intraday_points,
+        sector=str(profile.get("sector", "")).strip() or None,
+        industry=str(profile.get("industry", "")).strip() or None,
+        headquarters=headquarters,
+        employees=employees,
+        website=str(profile.get("website", "")).strip() or None,
     )
 
 

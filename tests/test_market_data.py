@@ -22,6 +22,14 @@ class MarketOverviewTests(unittest.TestCase):
             index=pd.to_datetime(["2026-08-07 09:30", "2026-08-07 09:35"]),
         )
         mock_ticker.return_value.history.side_effect = [daily, intraday]
+        mock_ticker.return_value.get_info.return_value = {
+            "sector": "Technology",
+            "industry": "Consumer Electronics",
+            "city": "Cupertino",
+            "country": "United States",
+            "fullTimeEmployees": 164000,
+            "website": "https://www.apple.com",
+        }
 
         result = fetch_market_overview(" aapl ")
 
@@ -33,6 +41,9 @@ class MarketOverviewTests(unittest.TestCase):
         self.assertEqual(result.as_of, "2026-08-07")
         self.assertEqual(len(result.points), 3)
         self.assertEqual(len(result.intraday_points), 2)
+        self.assertEqual(result.industry, "Consumer Electronics")
+        self.assertEqual(result.headquarters, "Cupertino, United States")
+        self.assertEqual(result.employees, 164000)
 
     @patch("finance_news.market_data.yf.Ticker")
     def test_rejects_missing_price_history(self, mock_ticker: Mock) -> None:

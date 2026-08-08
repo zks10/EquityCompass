@@ -1,6 +1,7 @@
 """Equity Compass Streamlit dashboard."""
 
 import html
+from urllib.parse import quote
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -13,7 +14,6 @@ from finance_news.dashboard import (
     RecentNewsArticle,
     analyze_ticker,
     build_filing_preview,
-    build_financial_insights,
     build_financial_snapshot_score,
     detect_news_topics,
     explain_8k_item,
@@ -265,19 +265,6 @@ def show_price_chart(market: MarketOverview, ticker: str) -> None:
     )
 
 
-def short_signal_help(component_name: str, value: float | None) -> str:
-    """Return one short, beginner-friendly explanation for a signal card."""
-    if value is None:
-        return "There is not enough data to calculate this signal."
-    if component_name == "Revenue growth":
-        return f"Revenue changed {value:.1f}% from the previous year."
-    if component_name == "Net profit margin":
-        return f"About ${value:.0f} of net profit came from each $100 of revenue."
-    if component_name == "Liabilities / assets":
-        return f"Liabilities equal {value:.1f}% of assets; industry context matters."
-    return f"Operations produced about ${value:.0f} of cash per $100 of revenue."
-
-
 def show_overview(summary: DashboardSummary) -> None:
     """Display the market story first, then curated cross-section takeaways."""
     financials = summary.financials
@@ -302,105 +289,58 @@ def show_overview(summary: DashboardSummary) -> None:
         st.caption(f"As of {market.as_of} · Daily closing prices")
         show_price_chart(market, summary.ticker)
 
-    st.subheader("Company highlights")
-    latest_event = summary.recent_events[0] if summary.recent_events else None
-    event_item = latest_event.items[0] if latest_event and latest_event.items else None
-    event_headlines = {
-        "2.02": "New financial results",
-        "5.02": "Leadership change",
-        "8.01": "Important company update",
-        "9.01": "Supporting filing documents",
-    }
-    event_name = (
-        event_headlines.get(
-            event_item.item_number,
-            event_item.title or "New official company update",
-        )
-        if event_item
-        else "No recent official update"
+    st.subheader("Company at a glance")
+    business_summary = build_filing_preview(
+        summary.annual_sections.business, max_sentences=1
     )
-    event_description = (
-        "Updated operating performance was reported."
-        if event_item
-        else "No recent 8-K event was collected."
+    if len(business_summary) > 300:
+        business_summary = business_summary[:297].rsplit(" ", 1)[0] + "…"
+    sector = market.sector if market and market.sector else "Not available"
+    industry = market.industry if market and market.industry else "Not available"
+    headquarters = (
+        market.headquarters if market and market.headquarters else "Not available"
     )
-    event_meta = f"8-K · {latest_event.filing_date}" if latest_event else "SEC filing"
-    event_link = (
-        f'<a class="highlight-link" href="{html.escape(latest_event.document_url, quote=True)}" '
-        'target="_blank">View filing</a>'
-        if latest_event
+    employees = (
+        f"{market.employees:,}" if market and market.employees else "Not available"
+    )
+    website_link = (
+        f'<a class="profile-website" href="{html.escape(market.website, quote=True)}" '
+        'target="_blank">Official website ↗</a>'
+        if market and market.website
         else ""
     )
-
-    article = summary.recent_news[0] if summary.recent_news else None
-    news_title = article.title if article else "No recent headline"
-    if article:
-        news_title = news_title.removesuffix(f" - {article.publisher}")
-    news_description = (
-        ""
-        if article
-        else "No recent company news was collected."
-    )
-    news_meta = (
-        f"{article.publisher} · {article.published_at[:10]}" if article else "Recent news"
-    )
-    news_link = (
-        f'<a class="highlight-link" href="{html.escape(article.url, quote=True)}" '
-        'target="_blank">Read article</a>'
-        if article
+    logo_url = (
+        "https://www.google.com/s2/favicons?sz=128&domain_url="
+        f"{quote(market.website, safe='')}"
+        if market and market.website
         else ""
     )
-    component_names = {
-        "Revenue growth": "Revenue growth",
-        "Net profit margin": "Profitability",
-        "Liabilities / assets": "Balance sheet",
-        "Operating cash flow margin": "Cash generation",
-    }
-    available_highlight_components = [
-        component for component in snapshot_score.components if component.score is not None
-    ]
-    if available_highlight_components:
-        highest_score = max(component.score or 0 for component in available_highlight_components)
-        lowest_component = min(
-            available_highlight_components, key=lambda component: component.score or 0
-        )
-        strongest_names = [
-            component_names[component.name]
-            for component in available_highlight_components
-            if component.score == highest_score
-        ]
-        strongest_text = " and ".join(strongest_names)
-        watch_text = component_names[lowest_component.name]
+    company_initials = "".join(
+        word[0] for word in summary.company_name.split()[:2] if word
+    ).upper()
+    company_mark = (
+        f'<img src="{html.escape(logo_url, quote=True)}" '
+        f'alt="{html.escape(summary.company_name, quote=True)} logo" '
+        'onerror="this.style.display=\'none\'">'
+        if logo_url
+        else ""
+    )
     st.markdown(
         f"""
-        <div class="highlight-panel">
-          <div class="highlight-row">
-            <div class="highlight-icon highlight-positive">↗</div>
-            <div class="highlight-copy">
-              <div class="highlight-label">FUNDAMENTAL TAKEAWAY</div>
-              <div class="takeaway-grid">
-                <div class="takeaway-item"><span class="takeaway-dot takeaway-strength"></span><div><small>STRENGTH</small><strong>{html.escape(strongest_text if available_highlight_components else 'Unavailable')}</strong></div></div>
-                <div class="takeaway-item"><span class="takeaway-dot takeaway-risk"></span><div><small>WATCH AREA</small><strong>{html.escape(watch_text if available_highlight_components else 'Unavailable')}</strong></div></div>
-              </div>
+        <div class="profile-panel">
+          <div class="profile-summary">
+            <div class="profile-mark"><span>{html.escape(company_initials)}</span>{company_mark}</div>
+            <div class="profile-copy">
+              <div class="highlight-label">WHAT THE COMPANY DOES</div>
+              <div class="profile-description">{html.escape(business_summary)}</div>
+              {website_link}
             </div>
           </div>
-          <div class="highlight-row">
-            <div class="highlight-icon highlight-official">▤</div>
-            <div class="highlight-copy">
-              <div class="highlight-label">OFFICIAL COMPANY UPDATE</div>
-              <div class="highlight-title">{html.escape(event_name)}</div>
-              <div class="highlight-description">{html.escape(event_description)}</div>
-              <div class="highlight-meta">{html.escape(event_meta)} · {event_link}</div>
-            </div>
-          </div>
-          <div class="highlight-row">
-            <div class="highlight-icon highlight-news">●</div>
-            <div class="highlight-copy">
-              <div class="highlight-label">LATEST COVERAGE</div>
-              <div class="highlight-title">{html.escape(news_title)}</div>
-              <div class="highlight-description">{html.escape(news_description)}</div>
-              <div class="highlight-meta">{html.escape(news_meta)} · {news_link}</div>
-            </div>
+          <div class="profile-facts">
+            <div class="profile-fact"><div class="profile-fact-heading"><i>◈</i><span>SECTOR</span></div><strong>{html.escape(sector)}</strong></div>
+            <div class="profile-fact"><div class="profile-fact-heading"><i>▦</i><span>INDUSTRY</span></div><strong>{html.escape(industry)}</strong></div>
+            <div class="profile-fact"><div class="profile-fact-heading"><i>⌖</i><span>HEADQUARTERS</span></div><strong>{html.escape(headquarters)}</strong></div>
+            <div class="profile-fact"><div class="profile-fact-heading"><i>●</i><span>EMPLOYEES</span></div><strong>{employees}</strong></div>
           </div>
         </div>
         """,
@@ -747,6 +687,114 @@ st.markdown(
     """
     <style>
     [data-testid="stHeaderActionElements"] { display: none !important; }
+    .profile-panel {
+        position: relative;
+        border: 1px solid rgba(39, 117, 98, 0.20);
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, rgba(232, 248, 243, 0.24) 0%, rgba(255, 255, 255, 0.99) 48%);
+        box-shadow: 0 10px 30px rgba(32, 67, 59, 0.07);
+    }
+    .profile-panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #07815F, #38B28E 48%, rgba(56, 178, 142, 0));
+    }
+    .profile-summary {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 25px 26px 23px;
+    }
+    .profile-mark {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        border-radius: 12px;
+        color: #087A5A;
+        overflow: hidden;
+        background: rgba(10, 143, 106, 0.07);
+        border: 1px solid rgba(10, 143, 106, 0.10);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+    .profile-mark span { position: absolute; z-index: 0; }
+    .profile-mark img {
+        position: relative;
+        z-index: 1;
+        width: 27px;
+        height: 27px;
+        object-fit: contain;
+    }
+    .profile-copy { min-width: 0; }
+    .profile-description {
+        max-width: 760px;
+        margin-top: 6px;
+        color: #525A68;
+        font-size: 1rem;
+        line-height: 1.55;
+    }
+    .profile-website {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 13px;
+        padding: 6px 11px;
+        border: 1px solid rgba(10, 143, 106, 0.22);
+        border-radius: 8px;
+        color: #087A5A;
+        background: rgba(10, 143, 106, 0.07);
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+    .profile-website:hover {
+        color: #05664A;
+        background: rgba(10, 143, 106, 0.13);
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+    .profile-facts {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-top: 1px solid rgba(120, 130, 150, 0.20);
+        background: rgba(255, 255, 255, 0.68);
+    }
+    .profile-fact {
+        min-width: 0;
+        padding: 16px 18px;
+        border-right: 1px solid rgba(120, 130, 150, 0.18);
+        transition: background 160ms ease;
+    }
+    .profile-fact:hover { background: rgba(10, 143, 106, 0.045); }
+    .profile-fact:last-child { border-right: none; }
+    .profile-fact-heading { display: flex; align-items: center; gap: 7px; }
+    .profile-fact-heading i {
+        color: #15916F;
+        font-size: 0.72rem;
+        font-style: normal;
+    }
+    .profile-fact-heading span {
+        color: #858C98;
+        font-size: 0.68rem;
+        font-weight: 750;
+        letter-spacing: 0.05em;
+    }
+    .profile-fact strong {
+        display: block;
+        margin-top: 5px;
+        overflow-wrap: anywhere;
+        line-height: 1.35;
+    }
     .highlight-panel {
         border: 1px solid rgba(120, 130, 150, 0.28);
         border-radius: 14px;
@@ -776,6 +824,7 @@ st.markdown(
     .highlight-positive { color: #087A5A; background: rgba(10, 143, 106, 0.13); }
     .highlight-official { color: #2E6FE5; background: rgba(46, 111, 229, 0.13); }
     .highlight-news { color: #7A5AF8; background: rgba(122, 90, 248, 0.13); }
+    .highlight-risk { color: #B13D4C; background: rgba(208, 91, 104, 0.13); }
     .highlight-copy { flex: 1; min-width: 0; }
     .highlight-label {
         color: #7A8291;
@@ -787,32 +836,6 @@ st.markdown(
     .highlight-title { font-size: 1.05rem; font-weight: 700; line-height: 1.35; }
     .highlight-description { color: #5F6673; margin-top: 4px; line-height: 1.5; }
     .highlight-description:empty { display: none; }
-    .takeaway-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        margin-top: 8px;
-    }
-    .takeaway-item {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        padding: 11px 13px;
-        border: 1px solid rgba(120, 130, 150, 0.18);
-        border-radius: 9px;
-        background: rgba(120, 130, 150, 0.035);
-    }
-    .takeaway-item small {
-        display: block;
-        color: #8A919D;
-        font-size: 0.66rem;
-        font-weight: 750;
-        letter-spacing: 0.045em;
-    }
-    .takeaway-item strong { display: block; margin-top: 1px; }
-    .takeaway-dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 9px; }
-    .takeaway-strength { background: #0A8F6A; }
-    .takeaway-risk { background: #D05B68; }
     .highlight-meta { color: #858C98; font-size: 0.82rem; margin-top: 7px; }
     .highlight-badge {
         border-radius: 999px;
@@ -949,9 +972,15 @@ st.markdown(
     .factor-watch { color: #B13D4C; background: rgba(208, 91, 104, 0.13); }
     .factor-neutral { color: #6F7784; background: rgba(120, 130, 150, 0.12); }
     @media (max-width: 640px) {
+        .profile-summary { padding: 21px 18px; gap: 12px; }
+        .profile-mark { width: 38px; height: 38px; flex-basis: 38px; }
+        .profile-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .profile-fact:nth-child(2) { border-right: none; }
+        .profile-fact:nth-child(-n+2) {
+            border-bottom: 1px solid rgba(120, 130, 150, 0.18);
+        }
         .highlight-row { padding: 17px 16px; gap: 12px; }
         .highlight-badge { font-size: 0.82rem; }
-        .takeaway-grid { grid-template-columns: 1fr; }
         .factor-table { font-size: 0.82rem; }
         .factor-table th, .factor-row td { padding-left: 9px; padding-right: 9px; }
         .factor-reading { padding: 3px 6px; }
