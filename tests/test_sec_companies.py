@@ -11,6 +11,7 @@ from finance_news.sec_companies import (
     CompanyLookupError,
     SEC_TICKERS_URL,
     TickerNotFoundError,
+    resolve_company_query,
     resolve_ticker,
 )
 
@@ -87,6 +88,33 @@ class ResolveTickerTests(unittest.TestCase):
 
         with self.assertRaisesRegex(CompanyLookupError, "unreadable response"):
             resolve_ticker("AAPL")
+
+
+class ResolveCompanyQueryTests(unittest.TestCase):
+    @patch("finance_news.sec_companies.requests.get")
+    def test_resolves_company_name(self, mock_get: Mock) -> None:
+        mock_get.return_value = successful_response()
+
+        company = resolve_company_query("Apple")
+
+        self.assertEqual(company.ticker, "AAPL")
+        self.assertEqual(company.name, "Apple Inc.")
+
+    @patch("finance_news.sec_companies.requests.get")
+    def test_resolves_ticker_through_existing_path(self, mock_get: Mock) -> None:
+        mock_get.return_value = successful_response()
+
+        company = resolve_company_query("msft")
+
+        self.assertEqual(company.ticker, "MSFT")
+        mock_get.assert_called_once()
+
+    @patch("finance_news.sec_companies.requests.get")
+    def test_reports_unknown_company_name(self, mock_get: Mock) -> None:
+        mock_get.return_value = successful_response()
+
+        with self.assertRaisesRegex(TickerNotFoundError, "Unknown Company"):
+            resolve_company_query("Unknown Company")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,10 @@
 """Equity Compass Streamlit dashboard."""
 
+import base64
 import html
+import re
+import time
+from pathlib import Path
 from urllib.parse import quote
 
 import pandas as pd
@@ -24,8 +28,18 @@ from finance_news.market_data import (
     MarketOverview,
     fetch_market_overview,
 )
+from finance_news.sec_companies import CompanyLookupError, resolve_company_query
 
 FINANCIALS_SCHEMA_VERSION = 2
+POPULAR_TICKERS = ("AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA")
+LOGO_PATH = Path(__file__).with_name("assets") / "equity-compass-logo-cropped.png"
+FAVICON_PATH = Path(__file__).with_name("assets") / "equity-compass-favicon.png"
+LOGO_DATA_URI = (
+    "data:image/png;base64," + base64.b64encode(LOGO_PATH.read_bytes()).decode("ascii")
+)
+FAVICON_DATA_URI = (
+    "data:image/png;base64," + base64.b64encode(FAVICON_PATH.read_bytes()).decode("ascii")
+)
 
 
 def format_usd(value: int | float) -> str:
@@ -343,6 +357,12 @@ def load_ticker_eligibility(ticker: str):
     return check_ticker_eligibility(ticker)
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def resolve_search_query(query: str):
+    """Resolve a company-name-or-ticker search before starting analysis."""
+    return resolve_company_query(query)
+
+
 def select_price_points(market: MarketOverview, period: str):
     """Select the appropriate daily or intraday points for one chart range."""
     intraday = pd.DataFrame(
@@ -488,9 +508,6 @@ def show_overview(summary: DashboardSummary) -> None:
     """Display company context, market history, and financial signals."""
     financials = summary.financials
     snapshot_score = build_financial_snapshot_score(financials)
-    st.caption(f"{summary.ticker} · U.S. public company")
-    st.header(summary.company_name)
-
     try:
         market = load_market_overview(summary.ticker)
     except MarketDataError:
@@ -910,6 +927,15 @@ def show_news_and_events(summary: DashboardSummary) -> None:
 
 def show_dashboard(summary: DashboardSummary) -> None:
     """Organize the collected results into four focused tabs."""
+    st.markdown(
+        f"""
+        <header class="company-context">
+          <div class="company-meta"><span class="company-ticker">{html.escape(summary.ticker)}</span><i>U.S. public company</i></div>
+          <div class="company-name">{html.escape(summary.company_name)}</div>
+        </header>
+        """,
+        unsafe_allow_html=True,
+    )
     if summary.data_warnings:
         with st.expander(f"Source availability notes ({len(summary.data_warnings)})"):
             for warning in summary.data_warnings:
@@ -927,12 +953,470 @@ def show_dashboard(summary: DashboardSummary) -> None:
         show_news_and_events(summary)
 
 
-st.set_page_config(page_title="Equity Compass", page_icon="📈")
+st.set_page_config(page_title="Equity Compass", page_icon=str(FAVICON_PATH))
 
 st.markdown(
     """
     <style>
+    [data-testid="stHeader"] { display: none !important; }
     [data-testid="stHeaderActionElements"] { display: none !important; }
+    .stApp { background: #FFFFFF; color: #102A43; }
+    .block-container { max-width: 1120px; padding-top: 2.2rem; }
+    .brand-lockup {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 1.65rem;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(16, 42, 67, 0.07);
+        color: #102A43;
+        font-size: 1.05rem;
+        font-weight: 780;
+        letter-spacing: -0.02em;
+    }
+    .brand-lockup img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+    .landing-backdrop {
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        right: calc((100vw - min(1120px, 100vw)) / -2);
+        width: min(680px, 54vw);
+        height: 640px;
+        overflow: hidden;
+        pointer-events: none;
+        opacity: 0.8;
+        background:
+            linear-gradient(90deg, rgba(255,255,255,0.04), #FFFFFF 96%),
+            linear-gradient(rgba(10,143,106,0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(10,143,106,0.055) 1px, transparent 1px);
+        background-size: auto, 56px 56px, 56px 56px;
+        mask-image: linear-gradient(to left, #000 12%, transparent 92%);
+    }
+    .landing-backdrop svg { width: 100%; height: 100%; }
+    .landing-hero {
+        position: relative;
+        z-index: 1;
+        max-width: 880px;
+        margin: -1rem auto 0;
+        text-align: center;
+    }
+    .hero-approved-logo {
+        width: 300px;
+        height: 286px;
+        margin: -12px auto -4px;
+        overflow: hidden;
+    }
+    .hero-approved-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+    .landing-eyebrow {
+        color: #08785A;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+    }
+    .landing-hero h1 {
+        max-width: 760px;
+        margin: 22px auto 8px;
+        color: #102A43;
+        font-size: clamp(1.55rem, 3.2vw, 2.25rem);
+        font-weight: 780;
+        letter-spacing: -0.035em;
+        line-height: 1.15;
+    }
+    .landing-hero h1 em { color: #08785A; font-style: normal; }
+    .landing-hero > p {
+        max-width: 680px;
+        margin: 0 auto 24px;
+        color: #5E6C7B;
+        font-size: 1.05rem;
+        line-height: 1.65;
+    }
+    [data-testid="stForm"] {
+        position: relative;
+        z-index: 2;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 24px 26px 20px;
+        border: 1px solid rgba(16, 42, 67, 0.14);
+        border-radius: 17px;
+        background: rgba(255,255,255,0.94);
+        box-shadow: 0 4px 16px rgba(16, 42, 67, 0.045);
+        backdrop-filter: blur(8px);
+    }
+    .search-panel-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 15px; }
+    .search-panel-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        flex: 0 0 48px;
+        border-radius: 50%;
+        color: #08785A;
+        background: #E8F6F1;
+        font-size: 1.5rem;
+    }
+    .search-panel-heading strong { display: block; color: #102A43; font-size: 1.05rem; }
+    .search-panel-heading span { display: block; margin-top: 2px; color: #657586; font-size: 0.78rem; }
+    [data-testid="stForm"] [data-testid="stHorizontalBlock"] { align-items: end; }
+    [data-testid="stForm"] [data-testid="stTextInput"] label { display: none; }
+    [data-testid="stForm"] [data-baseweb="input"] {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+    [data-testid="stForm"] input { font-size: 1rem; }
+    [data-testid="stForm"] [data-testid="stFormSubmitButton"] button {
+        min-height: 46px;
+        border: 0;
+        border-radius: 11px;
+        padding: 0 22px;
+        background: #0A8F6A;
+        font-weight: 750;
+    }
+    [data-testid="stForm"] [data-testid="stFormSubmitButton"] button:hover {
+        background: #08785A;
+        color: #FFFFFF;
+    }
+    .popular-label { margin: 15px 0 4px; color: #687789; font-size: 0.78rem; text-align: center; }
+    div[data-testid="stHorizontalBlock"] .stButton button[kind="secondary"] {
+        border-color: rgba(16, 42, 67, 0.12);
+        border-radius: 999px;
+        color: #31465A;
+        background: #F8FAFB;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+    .research-preview {
+        position: relative;
+        z-index: 1;
+        margin: 2.2rem auto 0;
+        padding-top: 0;
+    }
+    .research-preview-intro { margin-bottom: 14px; color: #687789; font-size: 0.78rem; font-weight: 700; }
+    .preview-card {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        column-gap: 13px;
+        min-height: 128px;
+        padding: 20px 17px;
+        border: 1px solid rgba(16, 42, 67, 0.09);
+        border-radius: 14px;
+        background: rgba(255,255,255,0.92);
+        box-shadow: 0 8px 24px rgba(16,42,67,0.055);
+    }
+    .preview-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        grid-row: 1 / span 2;
+        border-radius: 50%;
+        color: #08785A;
+        background: #E9F6F1;
+        font-size: 1.35rem;
+    }
+    .preview-card strong { display: block; align-self: end; color: #17324B; font-size: 0.91rem; }
+    .preview-card p { margin: 4px 0 0; color: #6E7C89; font-size: 0.74rem; line-height: 1.5; }
+    .landing-disclaimer {
+        margin: 2rem 0 0;
+        padding: 16px;
+        border: 1px solid rgba(10,143,106,0.12);
+        border-radius: 13px;
+        color: #637383;
+        background: linear-gradient(90deg, rgba(232,248,243,.62), rgba(243,249,252,.82));
+        font-size: 0.76rem;
+        text-align: center;
+    }
+    .landing-disclaimer strong { color: #08785A; }
+    [data-testid="stStatusWidget"] {
+        border: 1px solid rgba(10, 143, 106, 0.16);
+        border-radius: 14px;
+        background: linear-gradient(135deg, #FBFEFD, #F4FAF8);
+        box-shadow: none;
+    }
+    [data-testid="stStatusWidget"] summary { color: #17324B; font-weight: 750; }
+    [data-testid="stProgressBar"] > div > div > div { background-color: #0A8F6A; }
+    .research-loader {
+        position: relative;
+        overflow: hidden;
+        margin-top: 24px;
+        padding: 24px 26px 22px;
+        border: 1px solid rgba(16, 42, 67, 0.10);
+        border-radius: 16px;
+        background: linear-gradient(145deg, #FFFFFF 0%, #F7FBF9 100%);
+        box-shadow: 0 8px 28px rgba(16, 42, 67, 0.055);
+    }
+    .research-loader::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.68) 47%, transparent 64%);
+        transform: translateX(-100%);
+        animation: research-shimmer 2.8s ease-in-out infinite;
+    }
+    @keyframes research-shimmer { 55%, 100% { transform: translateX(100%); } }
+    .research-loader.is-complete {
+        border-color: rgba(10, 143, 106, 0.24);
+        background: linear-gradient(145deg, #FFFFFF 0%, #F0FAF6 100%);
+        animation: loader-ready 480ms cubic-bezier(.2,.75,.3,1) both;
+    }
+    .research-loader.is-complete::after { animation: none; opacity: 0; }
+    @keyframes loader-ready {
+        0% { transform: scale(1); }
+        52% { transform: scale(1.008); box-shadow: 0 12px 32px rgba(10,143,106,.10); }
+        100% { transform: scale(1); box-shadow: 0 8px 28px rgba(16,42,67,.045); }
+    }
+    .loader-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .loader-brand { display: flex; align-items: center; gap: 13px; }
+    .loader-compass {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        pointer-events: none;
+        user-select: none;
+        filter: drop-shadow(0 3px 7px rgba(16, 42, 67, 0.10));
+    }
+    .loader-compass .compass-needle {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: compass-needle-search 2.35s cubic-bezier(.45, 0, .22, 1) infinite;
+    }
+    .research-loader.is-complete .compass-needle {
+        animation: none;
+        transform: rotate(360deg);
+    }
+    @keyframes compass-needle-search {
+        0% { transform: rotate(0deg); }
+        55% { transform: rotate(310deg); }
+        72% { transform: rotate(368deg); }
+        84% { transform: rotate(356deg); }
+        93% { transform: rotate(362deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .loader-kicker {
+        display: block;
+        color: #08785A;
+        font-size: 0.64rem;
+        font-weight: 820;
+        letter-spacing: 0.10em;
+    }
+    .loader-heading h3 { margin: 3px 0 0; color: #17324B; font-size: 1.12rem; }
+    .loader-percent { color: #08785A; font-size: 1.35rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .loader-progress {
+        height: 7px;
+        margin: 18px 0 20px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #E6EEEB;
+    }
+    .loader-progress span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #08785A, #34B78B);
+        transition: width 350ms ease;
+    }
+    .research-loader.is-complete .loader-progress span {
+        box-shadow: 0 0 12px rgba(52,183,139,.32);
+    }
+    .loader-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .loader-stage {
+        min-height: 60px;
+        padding: 10px 11px;
+        border: 1px solid rgba(16,42,67,.07);
+        border-radius: 10px;
+        color: #8A969F;
+        background: rgba(255,255,255,.58);
+        font-size: 0.72rem;
+        font-weight: 680;
+    }
+    .loader-stage i {
+        display: block;
+        width: 8px;
+        height: 8px;
+        margin-bottom: 7px;
+        border-radius: 50%;
+        background: #CCD5D2;
+    }
+    .loader-stage.done { color: #45675D; background: #F0F8F5; }
+    .loader-stage.done i { background: #34B78B; }
+    .loader-stage.active { border-color: rgba(10,143,106,.28); color: #08785A; background: #E8F5F0; }
+    .loader-stage.active i { background: #08785A; box-shadow: 0 0 0 5px rgba(10,143,106,.10); animation: loader-pulse 1.4s ease-in-out infinite; }
+    @keyframes loader-pulse { 50% { box-shadow: 0 0 0 8px rgba(10,143,106,0); } }
+    .loader-task { margin: 16px 0 0; color: #657586; font-size: 0.76rem; }
+    .loader-task strong { color: #344C5F; }
+    .research-loader.is-complete .loader-kicker,
+    .research-loader.is-complete .loader-task strong { color: #08785A; }
+
+    .stApp:has(.dashboard-mode) [data-testid="stMainBlockContainer"] {
+        animation: workspace-enter 520ms cubic-bezier(.2,.72,.28,1) both;
+    }
+    @keyframes workspace-enter {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .loader-compass .compass-needle,
+        .research-loader::after,
+        .loader-stage.active i,
+        .research-loader.is-complete,
+        .stApp:has(.dashboard-mode) [data-testid="stMainBlockContainer"] { animation: none; }
+    }
+    .stTabs [role="tablist"] {
+        width: 100%;
+        gap: 0;
+        padding: 0;
+        border: 0;
+        border-bottom: 1px solid rgba(16, 42, 67, 0.12);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+    .stTabs [data-testid="stTab"] {
+        flex: 0 0 auto;
+        justify-content: center;
+        height: 44px;
+        padding: 0 20px;
+        border-bottom: 2px solid transparent;
+        border-radius: 0;
+        color: #657586;
+        font-size: 0.82rem;
+        font-weight: 680;
+        transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+    .stTabs [data-testid="stTab"]:hover { color: #08785A; background: #F2F8F6; }
+    .stTabs [data-testid="stTab"][aria-selected="true"] {
+        color: #08785A;
+        border-bottom-color: #0A8F6A;
+        background: transparent;
+        box-shadow: none;
+    }
+    .stTabs .react-aria-SelectionIndicator { display: none; }
+    .stTabs { margin-top: 10px; }
+    .stTabs [data-testid="stTabPanel"] {
+        padding-top: 28px;
+        animation: tab-panel-enter 230ms cubic-bezier(.2,.7,.3,1) both;
+    }
+    @keyframes tab-panel-enter {
+        from { opacity: 0; transform: translateX(10px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .result-search-heading { margin: 0 0 12px; }
+    .result-search-heading small {
+        display: block;
+        margin-bottom: 3px;
+        color: #08785A;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+    }
+    .result-search-heading strong {
+        color: #17324B;
+        font-size: 1.35rem;
+        letter-spacing: -0.025em;
+    }
+    .stApp:has(.dashboard-mode) [data-testid="stForm"] {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        max-width: none;
+        width: 100%;
+        margin: 0 0 30px;
+        padding: 7px 8px 7px 13px;
+        border-radius: 12px;
+        background: #FFFFFF;
+        box-shadow: none;
+    }
+    .company-switcher-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 38px;
+        flex: 0 0 auto;
+        padding-right: 14px;
+        border-right: 1px solid rgba(16,42,67,.10);
+        color: #385166;
+        font-size: 0.74rem;
+        font-weight: 760;
+        white-space: nowrap;
+    }
+    .stApp:has(.dashboard-mode) [data-testid="stForm"] [data-testid="stElementContainer"]:has(.company-switcher-label) {
+        flex: 0 0 auto;
+        width: auto;
+        align-self: center;
+        transform: translateY(-7px);
+    }
+    .company-switcher-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        color: #08785A;
+        background: #E8F5F0;
+    }
+    .company-switcher-icon svg { width: 15px; height: 15px; }
+    .stApp:has(.dashboard-mode) [data-testid="stForm"] > [data-testid="stHorizontalBlock"] {
+        flex: 1 1 auto;
+    }
+    .stApp:has(.dashboard-mode) [data-testid="stForm"] > [data-testid="stVerticalBlock"] {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+    }
+    .stApp:has(.dashboard-mode) [data-testid="stForm"] > [data-testid="stVerticalBlock"] > [data-testid="stLayoutWrapper"] {
+        flex: 1 1 auto;
+    }
+    .stApp:has(.dashboard-mode) [data-testid="stForm"] [data-baseweb="input"],
+    .stApp:has(.dashboard-mode) [data-testid="stForm"] [data-testid="stFormSubmitButton"] button {
+        min-height: 38px;
+        height: 38px;
+    }
+    .company-context { margin: 6px 0 4px; }
+    .company-meta { display: flex; align-items: center; gap: 9px; }
+    .company-ticker {
+        color: #08785A;
+        font-size: 0.72rem;
+        font-weight: 820;
+        letter-spacing: 0.06em;
+    }
+    .company-meta i {
+        padding-left: 9px;
+        border-left: 1px solid rgba(16,42,67,.14);
+        color: #7A8996;
+        font-size: 0.72rem;
+        font-style: normal;
+    }
+    .company-name {
+        margin: 8px 0 0;
+        color: #102A43;
+        font-size: 2.15rem;
+        font-weight: 760;
+        letter-spacing: -0.045em;
+        line-height: 1.15;
+    }
     .profile-panel {
         position: relative;
         border: 1px solid rgba(39, 117, 98, 0.20);
@@ -1402,6 +1886,37 @@ st.markdown(
     }
     .financial-answer b { color: #3D4551; font-size: 0.76rem; }
     @media (max-width: 640px) {
+        .block-container { padding-top: 1.2rem; }
+        .brand-lockup { margin-bottom: 2.6rem; }
+        .hero-approved-logo { width: 250px; height: 238px; }
+        .landing-hero h1 { margin-top: 18px; font-size: 1.65rem; }
+        .landing-hero > p { font-size: 0.95rem; }
+        [data-testid="stForm"] { padding: 18px 15px 16px; }
+        .search-panel-heading { margin-bottom: 10px; }
+        .research-preview { margin-top: 2rem; }
+        .landing-backdrop { width: 88vw; opacity: 0.48; }
+        .research-loader { padding: 20px 17px; }
+        .loader-stages { grid-template-columns: repeat(2, 1fr); }
+        .stApp:has(.dashboard-mode) [data-testid="stForm"] {
+            display: block;
+            max-width: none;
+            margin: 0 0 24px;
+        }
+        .stApp:has(.dashboard-mode) [data-testid="stForm"] > [data-testid="stVerticalBlock"] {
+            display: block;
+        }
+        .company-switcher-label {
+            height: auto;
+            margin-bottom: 9px;
+            padding: 0 0 9px;
+            border-right: 0;
+            border-bottom: 1px solid rgba(16,42,67,.10);
+        }
+        .stApp:has(.dashboard-mode) [data-testid="stForm"] [data-testid="stElementContainer"]:has(.company-switcher-label) {
+            transform: none;
+        }
+        .company-name { font-size: 1.8rem; }
+        .stTabs [data-testid="stTab"] { padding: 0 11px; font-size: 0.76rem; }
         .profile-summary { padding: 21px 18px; gap: 12px; }
         .profile-mark { width: 38px; height: 38px; flex-basis: 38px; }
         .profile-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1422,39 +1937,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("📈 Equity Compass")
-st.write("Enter a U.S. public-company ticker to collect its latest research data.")
-
-ticker = st.text_input(
-    "Ticker",
-    value="AAPL",
-    placeholder="Examples: AAPL, MSFT, NVDA",
-).strip().upper()
-
-if st.button("Analyze", type="primary"):
-    if not ticker:
-        st.warning("Please enter a ticker symbol.")
-    else:
-        progress_message = st.empty()
-        eligibility = load_ticker_eligibility(ticker)
-        if not eligibility.supported:
-            st.warning(eligibility.message)
-        else:
-            st.success(f"Supported ticker · {eligibility.company_name} ({eligibility.ticker})")
-            try:
-                with st.spinner(f"Analyzing {ticker}..."):
-                    dashboard_summary = analyze_ticker(
-                        ticker, progress=progress_message.write
-                    )
-            except DashboardError as error:
-                progress_message.empty()
-                st.error(f"Equity Compass could not complete the analysis: {error}")
-            else:
-                progress_message.empty()
-                st.session_state[f"price-range-{dashboard_summary.ticker}"] = "1D"
-                st.session_state["dashboard_summary"] = dashboard_summary
-                st.session_state["financials_schema_version"] = FINANCIALS_SCHEMA_VERSION
-
 if (
     "dashboard_summary" in st.session_state
     and st.session_state.get("financials_schema_version")
@@ -1462,7 +1944,270 @@ if (
 ):
     del st.session_state["dashboard_summary"]
 
+has_dashboard = "dashboard_summary" in st.session_state
+if not has_dashboard:
+    st.markdown(
+        f"""
+        <div class="landing-backdrop" aria-hidden="true">
+          <svg viewBox="0 0 680 640" preserveAspectRatio="none">
+            <path d="M0 570 C90 535 105 552 170 475 S280 415 315 380 S390 330 430 280 S525 235 565 180 S630 126 680 64" fill="none" stroke="#8BD5B8" stroke-width="3" opacity=".42"/>
+            <g fill="#71CDA5" opacity=".34">
+              <rect x="170" y="454" width="10" height="45"/><rect x="205" y="430" width="10" height="56"/>
+              <rect x="240" y="405" width="10" height="48"/><rect x="275" y="370" width="10" height="64"/>
+              <rect x="310" y="350" width="10" height="58"/><rect x="345" y="315" width="10" height="70"/>
+              <rect x="380" y="285" width="10" height="61"/><rect x="415" y="248" width="10" height="74"/>
+              <rect x="450" y="220" width="10" height="66"/><rect x="485" y="184" width="10" height="77"/>
+              <rect x="520" y="151" width="10" height="70"/><rect x="555" y="112" width="10" height="82"/>
+              <rect x="590" y="86" width="10" height="73"/><rect x="625" y="42" width="10" height="94"/>
+            </g>
+          </svg>
+        </div>
+        <section class="landing-hero">
+          <div class="hero-approved-logo"><img src="{LOGO_DATA_URI}" alt="Equity Compass" draggable="false"></div>
+          <h1>Navigate markets. <em>Research with confidence.</em></h1>
+          <p>Financial data, SEC filings and credible news—organized into clear, evidence-first research.</p>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+else:
+    st.markdown('<div class="dashboard-mode"></div>', unsafe_allow_html=True)
+    st.markdown(
+        f'<div class="brand-lockup"><img src="{FAVICON_DATA_URI}" alt="" draggable="false"><span>Equity Compass</span></div>',
+        unsafe_allow_html=True,
+    )
+
+
+def select_popular_ticker(ticker_symbol: str) -> None:
+    st.session_state["company_search"] = ticker_symbol
+    st.session_state["popular_search_requested"] = True
+
+
+with st.form("company-search", clear_on_submit=False):
+    if not has_dashboard:
+        st.markdown(
+            """
+            <div class="search-panel-heading">
+              <div class="search-panel-icon">⌕</div>
+              <div><strong>Search a U.S. public company</strong><span>Enter a company name or ticker to begin your research</span></div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            """
+            <div class="company-switcher-label">
+              <span class="company-switcher-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path>
+                </svg>
+              </span>
+              <span>Company search</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    search_column, action_column = st.columns([6, 1.35], gap="small")
+    with search_column:
+        search_query = st.text_input(
+            "Company name or ticker",
+            key="company_search",
+            placeholder="Search Apple, NVIDIA, Microsoft or a ticker…",
+        )
+    with action_column:
+        search_submitted = st.form_submit_button(
+            "Analyze  →", type="primary", use_container_width=True
+        )
+
+if not has_dashboard:
+    st.markdown('<div class="popular-label">Popular companies</div>', unsafe_allow_html=True)
+    chip_spacer_left, *chip_columns, chip_spacer_right = st.columns(
+        [0.65, 1, 1, 1, 1, 1, 1, 1, 0.65], gap="small"
+    )
+    for chip_column, popular_ticker in zip(chip_columns, POPULAR_TICKERS):
+        with chip_column:
+            st.button(
+                popular_ticker,
+                key=f"popular-{popular_ticker}",
+                use_container_width=True,
+                on_click=select_popular_ticker,
+                args=(popular_ticker,),
+            )
+
+popular_search_requested = st.session_state.pop("popular_search_requested", False)
+if search_submitted or popular_search_requested:
+    cleaned_query = st.session_state.get("company_search", "").strip()
+    if not cleaned_query:
+        st.warning("Enter a company name or ticker to begin.")
+    else:
+        progress_message = st.empty()
+        try:
+            company = resolve_search_query(cleaned_query)
+        except CompanyLookupError as error:
+            st.warning(str(error))
+        else:
+            ticker = company.ticker
+            eligibility = load_ticker_eligibility(ticker)
+            if not eligibility.supported:
+                st.warning(eligibility.message)
+            else:
+                stage_ranges = {
+                    "Annual data": (8, 45, "Annual report"),
+                    "Quarterly data": (46, 66, "Quarterly update"),
+                    "News": (67, 82, "Company news"),
+                    "8-K events": (83, 96, "Recent company events"),
+                }
+                stage_labels = [item[2] for item in stage_ranges.values()]
+                research_loader = st.empty()
+                loader_state = {
+                    "percent": 5,
+                    "stage_index": 0,
+                    "detail": "Confirming company and SEC coverage",
+                }
+
+                def render_research_loader(
+                    percent: int, stage_index: int, detail: str
+                ) -> None:
+                    loader_state.update(
+                        percent=percent, stage_index=stage_index, detail=detail
+                    )
+                    stages_html = "".join(
+                        (
+                            f'<div class="loader-stage '
+                            f'{"done" if index < stage_index else "active" if index == stage_index else ""}">'
+                            f'<i></i>{html.escape(label)}</div>'
+                        )
+                        for index, label in enumerate(stage_labels)
+                    )
+                    is_complete = percent >= 100
+                    loader_class = "research-loader is-complete" if is_complete else "research-loader"
+                    loader_kicker = (
+                        "RESEARCH WORKSPACE READY"
+                        if is_complete
+                        else "BUILDING RESEARCH WORKSPACE"
+                    )
+                    task_label = "Ready:" if is_complete else "Now working:"
+                    research_loader.markdown(
+                        f"""
+                        <div class="{loader_class}">
+                          <div class="loader-heading">
+                            <div class="loader-brand">
+                              <svg class="loader-compass" viewBox="0 0 64 64" role="img" aria-label="Compass searching">
+                                <circle cx="32" cy="32" r="28" fill="#F7FCFA" stroke="#17324B" stroke-width="4"/>
+                                <circle cx="32" cy="32" r="21.5" fill="none" stroke="#B8DED2" stroke-width="1.8"/>
+                                <path d="M32 1.5l3.2 8h-6.4z M62.5 32l-8 3.2v-6.4z M32 62.5l-3.2-8h6.4z M1.5 32l8-3.2v6.4z" fill="#17324B"/>
+                                <g class="compass-needle">
+                                  <path d="M32 9.5l5.2 22.5H32z" fill="#0A8F6A"/>
+                                  <path d="M32 54.5L26.8 32H32z" fill="#17324B"/>
+                                  <path d="M32 9.5L26.8 32H32z" fill="#35B88C" opacity=".58"/>
+                                  <path d="M32 54.5L37.2 32H32z" fill="#274A65" opacity=".55"/>
+                                </g>
+                                <circle cx="32" cy="32" r="5.2" fill="#FFFFFF" stroke="#17324B" stroke-width="2.5"/>
+                                <circle cx="32" cy="32" r="1.8" fill="#0A8F6A"/>
+                              </svg>
+                              <div><span class="loader-kicker">{loader_kicker}</span><h3>{html.escape(eligibility.company_name)}</h3></div>
+                            </div>
+                            <div class="loader-percent">{percent}%</div>
+                          </div>
+                          <div class="loader-progress"><span style="width:{percent}%"></span></div>
+                          <div class="loader-stages">{stages_html}</div>
+                          <p class="loader-task"><strong>{task_label}</strong> {html.escape(detail)}</p>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+
+                render_research_loader(5, 0, "Confirming company and SEC coverage")
+
+                try:
+                    def show_research_progress(message: str) -> None:
+                        """Show one branded overall indicator for the research pipeline."""
+                        lower, upper, stage_index = 5, 96, 0
+                        detail = message
+                        for index, (prefix, (start, end, _label)) in enumerate(
+                            stage_ranges.items()
+                        ):
+                            if message.startswith(prefix):
+                                lower, upper, stage_index = start, end, index
+                                detail = message.split(":", 1)[-1].strip()
+                                break
+
+                        starting_stage = {
+                            "Starting annual": 0,
+                            "Starting quarterly": 1,
+                            "Starting recent news": 2,
+                            "Starting recent 8-K": 3,
+                        }
+                        for prefix, index in starting_stage.items():
+                            if message.startswith(prefix):
+                                stage_index = index
+                                lower, upper, _ = list(stage_ranges.values())[index]
+                                detail = message.removeprefix("Starting ").strip()
+                                break
+
+                        fraction = re.search(r"(\d+)/(\d+)", detail)
+                        if fraction:
+                            current, total = map(int, fraction.groups())
+                            percent = lower + round((upper - lower) * current / total)
+                            detail = re.sub(r"^\d+/\d+\s*", "", detail)
+                        else:
+                            percent = lower
+
+                        render_research_loader(
+                            min(percent, 96), stage_index, detail
+                        )
+
+                    dashboard_summary = analyze_ticker(
+                        ticker, progress=show_research_progress
+                    )
+                except DashboardError as error:
+                    progress_message.empty()
+                    research_loader.empty()
+                    st.error(f"Equity Compass could not complete the analysis: {error}")
+                else:
+                    progress_message.empty()
+                    final_start = int(loader_state["percent"])
+                    for percent in range(final_start + 1, 101, 3):
+                        render_research_loader(
+                            min(percent, 100),
+                            min(len(stage_labels), int(loader_state["stage_index"]) + 1),
+                            "Finalizing the research workspace",
+                        )
+                        time.sleep(0.035)
+                    render_research_loader(
+                        100, len(stage_labels), "Research workspace ready"
+                    )
+                    time.sleep(0.58)
+                    st.session_state[f"price-range-{dashboard_summary.ticker}"] = "1D"
+                    st.session_state["dashboard_summary"] = dashboard_summary
+                    st.session_state["financials_schema_version"] = FINANCIALS_SCHEMA_VERSION
+                    st.rerun()
+
+if not has_dashboard:
+    st.markdown(
+        '<section class="research-preview"><div class="research-preview-intro">What your research includes</div></section>',
+        unsafe_allow_html=True,
+    )
+    preview_columns = st.columns(4, gap="small")
+    preview_cards = (
+        ("▥", "Financials", "Revenue, profitability, cash flow and key ratios."),
+        ("▤", "SEC Filings", "10-K, 10-Q and 8-K information from official filings."),
+        ("◎", "Company News", "Recent developments from credible sources."),
+        ("⌖", "Clear Analysis", "Complex financial information explained plainly."),
+    )
+    for column, (icon, title, description) in zip(preview_columns, preview_cards):
+        column.markdown(
+            f'<div class="preview-card"><span class="preview-icon">{icon}</span><strong>{title}</strong><p>{description}</p></div>',
+            unsafe_allow_html=True,
+        )
+    st.markdown(
+        '<div class="landing-disclaimer">◈&nbsp;&nbsp; Equity Compass is for <strong>education and research purposes only</strong>, not financial advice.</div>',
+        unsafe_allow_html=True,
+    )
+
 if "dashboard_summary" in st.session_state:
     show_dashboard(st.session_state["dashboard_summary"])
 
-st.caption("Equity Compass is for education and research, not financial advice.")
+if has_dashboard:
+    st.caption("Equity Compass is for education and research, not financial advice.")
