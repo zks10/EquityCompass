@@ -196,6 +196,8 @@ class DashboardSummary:
     quarterly_sections: QuarterlyFilingSections
     recent_events: tuple[RecentEventFiling, ...]
     data_warnings: tuple[str, ...] = ()
+    latest_10k_url: str = ""
+    latest_10q_url: str = ""
 
 
 def build_financial_insights(
@@ -827,6 +829,10 @@ def analyze_ticker(
         quarterly_sections=quarterly_sections,
         recent_events=recent_events,
         data_warnings=tuple(warnings),
+        latest_10k_url=annual.filing.document_url,
+        latest_10q_url=(
+            quarterly.filing.document_url if quarterly is not None else ""
+        ),
     )
 
 

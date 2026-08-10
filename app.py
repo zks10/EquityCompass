@@ -32,6 +32,12 @@ from finance_news.sec_companies import CompanyLookupError, resolve_company_query
 
 FINANCIALS_SCHEMA_VERSION = 2
 POPULAR_TICKERS = ("AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA")
+DASHBOARD_SECTIONS = {
+    "overview": "Overview",
+    "financials": "Financials",
+    "filings": "Filings",
+    "news": "News & Events",
+}
 LOGO_PATH = Path(__file__).with_name("assets") / "equity-compass-logo-cropped.png"
 FAVICON_PATH = Path(__file__).with_name("assets") / "equity-compass-favicon.png"
 LOGO_DATA_URI = (
@@ -361,6 +367,26 @@ def load_ticker_eligibility(ticker: str):
 def resolve_search_query(query: str):
     """Resolve a company-name-or-ticker search before starting analysis."""
     return resolve_company_query(query)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def load_dashboard_analysis(ticker: str, _progress=None) -> DashboardSummary:
+    """Reuse a completed company workspace when the page is refreshed."""
+    return analyze_ticker(ticker, progress=_progress)
+
+
+def remember_dashboard_section(state_key: str) -> None:
+    """Keep the selected company tab in the shareable page URL."""
+    selected_label = st.session_state.get(state_key, "Overview")
+    selected_slug = next(
+        (
+            slug
+            for slug, label in DASHBOARD_SECTIONS.items()
+            if label == selected_label
+        ),
+        "overview",
+    )
+    st.query_params["section"] = selected_slug
 
 
 def select_price_points(market: MarketOverview, period: str):
@@ -801,70 +827,538 @@ def show_financials(summary: DashboardSummary) -> None:
 
 
 def show_filings(summary: DashboardSummary) -> None:
-    """Display annual and quarterly filing guidance and source text."""
-    st.subheader("SEC Filing Overview")
-    st.caption(f"SEC CIK: {summary.cik}")
-    ten_k, ten_q = st.columns(2)
-    ten_k.metric("Latest 10-K", summary.latest_10k_date)
-    ten_q.metric("Latest 10-Q", summary.latest_10q_date)
-    st.divider()
-    st.subheader("Latest 10-K Sections")
-    st.write(
-        "A 10-K is the company's detailed annual report to the SEC. It explains the "
-        "business, major risks, and management's view of annual performance."
-    )
-    st.caption(
-        "Extracted directly from the latest annual SEC filing; not summarized or analyzed."
-    )
-    annual_sections = (
-        ("Business", "how the company makes money", summary.annual_sections.business),
-        ("Risk Factors", "what could hurt the business", summary.annual_sections.risk_factors),
-        ("MD&A", "management's explanation of performance", summary.annual_sections.mda),
-    )
-    available_annual = tuple(section for section in annual_sections if section[2])
-    if available_annual:
-        st.markdown("**Quick previews from the filing**")
-        for label, _description, content in available_annual:
-            st.markdown(f"**{label}:** " + build_filing_preview(content))
-        st.caption(
-            "These previews select sentences from the filing. They are incomplete; "
-            "open each section for full context."
-        )
-        for label, description, content in available_annual:
-            with st.expander(f"{label} — {description}"):
-                st.write(content)
-    else:
-        st.info("The 10-K is available, but its main text sections could not be separated reliably.")
+    """Turn filing sections into a concise briefing with source text on demand."""
+    annual = summary.annual_sections
+    quarterly = summary.quarterly_sections
 
-    st.divider()
-    st.subheader("Latest 10-Q Sections")
-    st.write(
-        "A 10-Q is a shorter quarterly update. Use it to spot recent changes in "
-        "performance, liquidity, and risks since the annual report."
+    display_name = re.sub(
+        r",?\s+(?:Inc\.?|Incorporated|Corporation|Corp\.?|Ltd\.?)$",
+        "",
+        summary.company_name,
+        flags=re.IGNORECASE,
     )
-    st.caption(
-        "Extracted directly from the latest quarterly SEC filing; not summarized or analyzed."
-    )
-    quarterly_sections = (
-        ("Quarterly MD&A", "what changed this quarter", summary.quarterly_sections.mda),
-        ("Quarterly Risk Factors", "updated risks", summary.quarterly_sections.risk_factors),
-    )
-    available_quarterly = tuple(
-        section for section in quarterly_sections if section[2]
-    )
-    if available_quarterly:
-        st.markdown("**Quick previews from the filing**")
-        for label, _description, content in available_quarterly:
-            st.markdown(f"**{label}:** " + build_filing_preview(content))
-        st.caption(
-            "These previews select sentences from the filing. They are incomplete; "
-            "open each section for full context."
+
+    def readable_date(value: str) -> str:
+        try:
+            return time.strftime("%b %d, %Y", time.strptime(value, "%Y-%m-%d"))
+        except ValueError:
+            return value
+
+    def has_any(text: str, terms: tuple[str, ...]) -> bool:
+        lowered = text.lower()
+        return any(term in lowered for term in terms)
+
+    def short_evidence(text: str, terms: tuple[str, ...] = ()) -> str:
+        normalized = re.sub(r"\$(\d+)\s+\.(\d+)", r"$\1.\2", text)
+        sentences = re.split(r"(?<=[.!?])\s+", re.sub(r"\s+", " ", normalized).strip())
+        useful = [
+            sentence for sentence in sentences
+            if 55 <= len(sentence) <= 420
+            and not has_any(sentence, ("can be found", "not included", "part ii", "item 7"))
+        ]
+        if terms and useful:
+            useful.sort(
+                key=lambda sentence: (
+                    has_any(sentence, ("increase", "decrease", "higher", "lower", "grew", "declined")),
+                    sum(term in sentence.lower() for term in terms),
+                    bool(re.search(r"[$%]|\b\d+(?:\.\d+)?\b", sentence)),
+                ),
+                reverse=True,
+            )
+        if not useful:
+            return build_filing_preview(text, max_sentences=1)
+        sentence = useful[0]
+        return sentence if len(sentence) <= 280 else sentence[:277].rsplit(" ", 1)[0] + "…"
+
+    def evidence_excerpt(text: str, label: str) -> str:
+        term_map = {
+            "Business overview": ("revenue", "customer", "product", "service", "advertising", "sales"),
+            "Risk factors": ("could", "may", "depend", "adverse", "risk"),
+            "Management analysis": ("revenue", "sales", "margin", "operating income", "cash flow"),
+            "Quarterly performance": ("revenue", "sales", "margin", "operating income", "cash flow"),
+            "Quarterly risk update": ("could", "may", "depend", "adverse", "risk"),
+        }
+        normalized = re.sub(r"\$(\d+)\s+\.(\d+)", r"$\1.\2", text)
+        sentences = re.split(r"(?<=[.!?])\s+", re.sub(r"\s+", " ", normalized).strip())
+        excluded = (
+            "forward-looking statement",
+            "this item and other sections",
+            "the following summarizes",
+            "can be found in",
+            "not included",
         )
-        for label, description, content in available_quarterly:
-            with st.expander(f"{label} — {description}"):
-                st.write(content)
+        useful = [
+            sentence for sentence in sentences
+            if 55 <= len(sentence) <= 420 and not has_any(sentence, excluded)
+        ]
+        terms = term_map.get(label, ())
+        if useful:
+            prioritize_change = label in {"Management analysis", "Quarterly performance"}
+            useful.sort(
+                key=lambda sentence: (
+                    has_any(sentence, ("increase", "decrease", "higher", "lower", "grew", "declined"))
+                    if prioritize_change else False,
+                    sum(term in sentence.lower() for term in terms),
+                    bool(re.search(r"[$%]|\b\d+(?:\.\d+)?\b", sentence)),
+                ),
+                reverse=True,
+            )
+            excerpt = useful[0]
+        else:
+            excerpt = short_evidence(text, terms)
+        excerpt = re.sub(
+            r"^(?:Business\s+Company Background\s+|Risk Factors\s+|Management['’]s Discussion and Analysis(?: of Financial Condition and Results of Operations)?\s+)",
+            "",
+            excerpt,
+            flags=re.IGNORECASE,
+        )
+        words = excerpt.split()
+        for prefix_size in range(min(5, len(words) // 2), 1, -1):
+            if [word.lower() for word in words[:prefix_size]] == [
+                word.lower() for word in words[prefix_size : prefix_size * 2]
+            ]:
+                excerpt = " ".join(words[prefix_size:])
+                break
+        return excerpt if len(excerpt) <= 260 else excerpt[:257].rsplit(" ", 1)[0] + "…"
+
+    def explain_evidence(label: str, excerpt: str) -> str:
+        lowered = excerpt.lower()
+        if label == "Business overview":
+            if business_categories:
+                return "The company operates across " + ", ".join(
+                    category.lower() for category in business_categories
+                ) + "."
+            return "This describes the products and services at the center of the business."
+        if "gross margin" in lowered and has_any(lowered, ("increase", "higher")):
+            return "Profitability improved in this area, helped by stronger sales or a more favorable mix."
+        if "operating income" in lowered and has_any(lowered, ("increase", "higher")):
+            return "The company generated more profit from its core operations than in the comparison period."
+        if has_any(lowered, ("revenue", "net sales")) and has_any(
+            lowered, ("increase", "higher", "grew")
+        ):
+            return "The company reported stronger sales than in the comparison period."
+        if "cash flow" in lowered and has_any(lowered, ("increase", "higher")):
+            return "The business generated more cash from its operations than in the comparison period."
+        if has_any(lowered, ("investigation", "litigation", "fine")):
+            return "Legal or regulatory cases could lead to fines and force changes to the business."
+        if has_any(lowered, ("defect", "reputation")):
+            return "Product problems could hurt customer trust, the brand, and financial results."
+        if has_any(lowered, ("component", "computing resources", "supplier")):
+            return "The company depends on reliable access to components and computing capacity."
+        if label in {"Risk factors", "Quarterly risk update"}:
+            return "This is one way the company says its operations or financial results could be harmed."
+        return "This provides management’s explanation of the company’s reported performance."
+
+    business_text = annual.business or ""
+    business_catalog = (
+        ("Digital advertising", ("advertising", "advertisements", "ad impressions")),
+        ("Cloud services", ("cloud services", "cloud computing", "cloud platform", "amazon web services", "aws")),
+        ("Software & subscriptions", ("software", "subscription", "license")),
+        ("Online retail", ("e-commerce", "online store", "online stores", "retail", "marketplace")),
+        ("Automotive", ("vehicle", "automotive", "electric car")),
+        ("Energy", ("energy generation", "energy storage", "solar")),
+        ("Consumer devices", ("smartphone", "personal computer", "tablet", "device")),
+        ("Digital services", ("digital service", "payment service", "streaming service")),
+        ("AR/VR hardware", ("virtual reality", "augmented reality", "wearable")),
+    )
+    lowered_business = business_text.lower()
+    ranked_business = sorted(
+        (
+            (sum(lowered_business.count(term) for term in terms), label)
+            for label, terms in business_catalog
+        ),
+        reverse=True,
+    )
+    business_categories = [label for count, label in ranked_business if count > 0][:3]
+    business_takeaway = (
+        " · ".join(business_categories)
+        if business_categories
+        else short_evidence(business_text)
+    )
+
+    risk_catalog = (
+        ("Regulation & legal", ("regulat", "legal proceeding", "antitrust", "government")),
+        ("Supply chain", ("supply chain", "supplier", "manufactur", "component")),
+        ("Competition", ("competition", "competitive")),
+        ("Cybersecurity", ("cyber", "security breach", "data security")),
+        ("Geographic exposure", ("china", "international", "foreign exchange", "geopolitical")),
+        ("Product dependence", ("depend", "concentration", "significant portion")),
+    )
+    detected_risks = [label for label, terms in risk_catalog if has_any(annual.risk_factors, terms)]
+    risk_takeaway = (
+        " · ".join(detected_risks[:4])
+        if detected_risks
+        else "No risk themes were classified from the extracted section."
+    )
+    management_evidence = short_evidence(
+        quarterly.mda or annual.mda,
+        ("net sales", "revenue", "margin", "operating income", "liquidity", "cash flow"),
+    )
+
+    def split_operating_signal(value: str) -> tuple[str, str]:
+        cleaned = re.sub(r"\s+", " ", value).strip()
+        words = cleaned.split()
+        for prefix_size in range(min(6, len(words) // 2), 1, -1):
+            prefix = " ".join(words[:prefix_size])
+            repeated = " ".join(words[prefix_size : prefix_size * 2])
+            if prefix.lower() == repeated.lower():
+                cleaned = " ".join(words[prefix_size:])
+                break
+        driven_change = re.search(
+            r"^The (increase|decrease) in (.+?) was (?:primarily |mainly )?driven by (.+)",
+            cleaned,
+            flags=re.IGNORECASE,
+        )
+        if driven_change:
+            direction, metric, drivers = driven_change.groups()
+            headline = f"{metric.capitalize()} {'increased' if direction.lower() == 'increase' else 'decreased'}"
+            detail = "Driven by " + drivers.rstrip(".… ") + "."
+            if len(detail) > 190:
+                detail = detail[:187].rsplit(" ", 1)[0] + "…"
+            return headline, detail
+        simple_change = re.search(
+            r"^The (increase|decrease) in (.+?)(?=\s+(?:for|during|compared|was)\b)",
+            cleaned,
+            flags=re.IGNORECASE,
+        )
+        if simple_change:
+            direction, metric = simple_change.groups()
+            headline = f"{metric.capitalize()} {'increased' if direction.lower() == 'increase' else 'decreased'}"
+            driver = re.search(r"(?:primarily|mainly) due to (.+)", cleaned, flags=re.IGNORECASE)
+            detail = "Driven mainly by " + driver.group(1).rstrip(".… ") + "." if driver else ""
+            if len(detail) > 190:
+                detail = detail[:187].rsplit(" ", 1)[0] + "…"
+            return headline, detail
+        direction = re.search(
+            r"^(.+?\b(?:increased|decreased|grew|declined|was higher|was lower)\b)",
+            cleaned,
+            flags=re.IGNORECASE,
+        )
+        headline = direction.group(1).strip() if direction else cleaned.split(".", 1)[0]
+        driver = re.search(r"(?:primarily|mainly) due to (.+)", cleaned, flags=re.IGNORECASE)
+        if driver:
+            detail = "Driven mainly by " + driver.group(1).rstrip(".… ") + "."
+        else:
+            remainder = cleaned[len(headline):].lstrip(" ,;:-")
+            detail = remainder
+        if not detail.strip(" .,…;:-"):
+            detail = ""
+        if len(headline) > 105:
+            headline = headline[:102].rsplit(" ", 1)[0] + "…"
+        if len(detail) > 190:
+            detail = detail[:187].rsplit(" ", 1)[0] + "…"
+        return headline, detail
+
+    operating_headline, operating_detail = split_operating_signal(management_evidence)
+    normalized_management = re.sub(
+        r"\$(\d+)\s+\.(\d+)", r"$\1.\2", management_evidence
+    )
+
+    def canonical_operating_headline(text: str, fallback: str) -> str:
+        lowered = text.lower()
+        year_over_year = re.search(
+            r"year-over-year (increase|decrease) in ([^,.;]+)",
+            text,
+            flags=re.IGNORECASE,
+        )
+        if year_over_year:
+            direction, subject = year_over_year.groups()
+            subject = re.sub(r"\bthe\b\s*$", "", subject, flags=re.IGNORECASE).strip()
+            if len(subject) <= 70:
+                return f"{subject.capitalize()} {'increased' if direction.lower() == 'increase' else 'decreased'} year over year"
+
+        metric_catalog = (
+            ("Operating cash flow", ("operating cash flow", "cash provided by operating activities")),
+            ("Operating income", ("operating income",)),
+            ("Gross margin", ("gross margin",)),
+            ("Revenue", ("total revenues", "revenue", "net sales")),
+            ("Net income", ("net income",)),
+        )
+        positive_terms = ("increased", "increase", "grew", "higher")
+        negative_terms = ("decreased", "decrease", "declined", "lower")
+        for label, terms in metric_catalog:
+            if any(term in lowered for term in terms):
+                if any(term in lowered for term in positive_terms):
+                    return f"{label} increased"
+                if any(term in lowered for term in negative_terms):
+                    return f"{label} decreased"
+
+        clean_fallback = fallback.rstrip(".… ")
+        if "…" in fallback or len(clean_fallback) > 90:
+            return "Latest quarterly operating update"
+        return clean_fallback
+
+    operating_headline = canonical_operating_headline(
+        normalized_management, operating_headline
+    )
+    if not operating_detail.strip(" .,…;:-"):
+        operating_detail = "Reported in the latest quarterly management discussion."
+
+    st.markdown("### Filing summary")
+    st.caption(f"Official SEC disclosures · {display_name} · CIK {summary.cik}")
+    risk_tags = "".join(f"<em>{html.escape(risk)}</em>" for risk in detected_risks)
+    business_tags = "".join(
+        f"<em>{html.escape(category)}</em>" for category in business_categories
+    )
+    business_content = business_tags or (
+        f'<strong>{html.escape(business_takeaway)}</strong>'
+    )
+    annual_baseline_groups = (
+        '<div class="change-log-groups annual-baseline-groups">'
+        '<div class="change-log-tags"><small>BUSINESS LINES</small>'
+        f'<div class="point-tags">{business_content}</div></div>'
+        '<div class="change-log-tags"><small>DISCLOSED RISK AREAS</small>'
+        f'<div class="point-tags">{risk_tags or html.escape(risk_takeaway)}</div></div>'
+        '</div>'
+    )
+    annual_entry = (
+        '<div class="change-log-entry filing-baseline-entry">'
+        '<div class="change-log-marker filing-form-marker">10-K</div>'
+        '<div class="change-log-content">'
+        f'<div class="standout-label">ANNUAL BASELINE · {html.escape(readable_date(summary.latest_10k_date).upper())}</div>'
+        f'<strong>{len(business_categories)} business lines · {len(detected_risks)} disclosed risk areas</strong>'
+        f'{annual_baseline_groups}'
+        '</div></div>'
+    )
+
+    if quarterly.mda or quarterly.risk_factors:
+        quarterly_risks = [
+            label for label, terms in risk_catalog
+            if has_any(quarterly.risk_factors, terms)
+        ]
+        carried_risks = [risk for risk in quarterly_risks if risk in detected_risks]
+        new_mentions = [risk for risk in quarterly_risks if risk not in detected_risks]
+        annual_only_risks = [risk for risk in detected_risks if risk not in quarterly_risks]
+        additional_tags = "".join(f"<em>{html.escape(risk)}</em>" for risk in new_mentions)
+        annual_only_tags = "".join(f"<em>{html.escape(risk)}</em>" for risk in annual_only_risks)
+        quarterly_signal = (
+            operating_headline
+            if quarterly.mda
+            else "No quarterly operating discussion was extracted"
+        )
+        quarterly_signal_detail = (
+            operating_detail
+            if quarterly.mda
+            else "Only the available quarterly risk text is shown below."
+        )
+        if new_mentions:
+            risk_change_headline = (
+                f"{len(new_mentions)} additional risk "
+                f"{'theme appears' if len(new_mentions) == 1 else 'themes appear'} in the 10-Q"
+            )
+            risk_change_detail = "Only the categories that differ from the annual filing are shown below."
+        elif annual_only_risks:
+            risk_change_headline = (
+                f"{len(annual_only_risks)} annual risk "
+                f"{'theme was' if len(annual_only_risks) == 1 else 'themes were'} not repeated in the 10-Q"
+            )
+            risk_change_detail = "Not being repeated does not necessarily mean the underlying risk disappeared."
+        elif quarterly.risk_factors:
+            risk_change_headline = "Risk categories were unchanged"
+            risk_change_detail = (
+                f"All {len(carried_risks)} annual risk categories were repeated in the 10-Q."
+            )
+        else:
+            risk_change_headline = "No separate quarterly risk section was extracted"
+            risk_change_detail = "A category comparison could not be completed."
+        additional_group = (
+            '<div class="change-log-tags"><small>ADDITIONAL 10-Q THEMES</small>'
+            f'<div class="point-tags">{additional_tags}</div></div>'
+            if additional_tags else ""
+        )
+        annual_only_group = (
+            '<div class="change-log-tags"><small>NOT REPEATED IN THE 10-Q</small>'
+            f'<div class="point-tags muted-tags">{annual_only_tags}</div></div>'
+            if annual_only_tags else ""
+        )
+        risk_groups_html = additional_group + annual_only_group
+        risk_groups_block = (
+            f'<div class="change-log-groups">{risk_groups_html}</div>'
+            if risk_groups_html
+            else ""
+        )
+        quarterly_entry = (
+            '<div class="change-log-entry">'
+            '<div class="change-log-marker filing-form-marker">10-Q</div>'
+            '<div class="change-log-content">'
+            f'<div class="standout-label">LATEST QUARTERLY UPDATE · {html.escape(readable_date(summary.latest_10q_date).upper())}</div>'
+            f'<strong>{html.escape(quarterly_signal)}</strong>'
+            f'<p>{html.escape(quarterly_signal_detail)}</p>'
+            '<div class="quarterly-risk-result">'
+            '<div class="standout-label">RISK UPDATE</div>'
+            f'<strong>{html.escape(risk_change_headline)}</strong>'
+            f'<p>{html.escape(risk_change_detail)}</p>'
+            f'{risk_groups_block}'
+            '</div></div></div>'
+        )
     else:
-        st.info("No reliably extracted quarterly filing sections are available.")
+        quarterly_entry = (
+            '<div class="change-log-entry">'
+            '<div class="change-log-marker filing-form-marker">10-Q</div>'
+            '<div class="change-log-content">'
+            f'<div class="standout-label">LATEST QUARTERLY UPDATE · {html.escape(readable_date(summary.latest_10q_date).upper())}</div>'
+            '<strong>No reliably extracted quarterly sections are available</strong>'
+            '<p>The annual baseline remains available above.</p>'
+            '</div></div>'
+        )
+    st.markdown(
+        f'<div class="filing-change-log filing-story">{annual_entry}{quarterly_entry}</div>',
+        unsafe_allow_html=True,
+    )
+
+    def cached_filing_url(form: str) -> str:
+        filing_root = Path("data") / "processed" / "sec" / summary.cik
+        if not filing_root.exists():
+            return ""
+        candidates = []
+        for directory in filing_root.iterdir():
+            if not directory.is_dir() or not re.fullmatch(r"\d{18}", directory.name):
+                continue
+            has_business = (directory / "sections" / "business.txt").exists()
+            has_mda = (directory / "sections" / "mda.txt").exists()
+            if (form == "10-K" and has_business) or (
+                form == "10-Q" and has_mda and not has_business
+            ):
+                candidates.append(directory.name)
+        if not candidates:
+            return ""
+        accession = sorted(candidates)[-1]
+        dashed_accession = f"{accession[:10]}-{accession[10:12]}-{accession[12:]}"
+        return (
+            f"https://www.sec.gov/Archives/edgar/data/{int(summary.cik)}/"
+            f"{accession}/{dashed_accession}-index.html"
+        )
+
+    annual_filing_url = getattr(summary, "latest_10k_url", "") or cached_filing_url("10-K")
+    quarterly_filing_url = getattr(summary, "latest_10q_url", "") or cached_filing_url("10-Q")
+    annual_badge = (
+        f'<a href="{html.escape(annual_filing_url, quote=True)}" target="_blank"><b>Open annual filing</b><small>10-K ↗</small></a>'
+        if annual_filing_url
+        else '<span><b>Annual report</b><small>10-K</small></span>'
+    )
+    quarterly_badge = (
+        f'<a href="{html.escape(quarterly_filing_url, quote=True)}" target="_blank"><b>Open quarterly filing</b><small>10-Q ↗</small></a>'
+        if quarterly_filing_url
+        else '<span><b>Quarterly update</b><small>10-Q</small></span>'
+    )
+    evidence_sections = (
+        ("Annual report", "10-K", "Item 1", "Business overview", summary.annual_sections.business),
+        ("Annual report", "10-K", "Item 1A", "Risk factors", summary.annual_sections.risk_factors),
+        ("Annual report", "10-K", "Item 7", "Management analysis", summary.annual_sections.mda),
+        ("Quarterly update", "10-Q", "Item 2", "Quarterly performance", summary.quarterly_sections.mda),
+        ("Quarterly update", "10-Q", "Item 1A", "Quarterly risk update", summary.quarterly_sections.risk_factors),
+    )
+    available_evidence = tuple(section for section in evidence_sections if section[4])
+    st.markdown(
+        f"""
+        <div class="evidence-hero">
+          <div class="evidence-hero-copy">
+            <div class="standout-label">OFFICIAL SOURCE EVIDENCE</div>
+            <h3>Evidence behind the summary</h3>
+            <p>{html.escape(display_name)} · SEC CIK {html.escape(summary.cik)}</p>
+          </div>
+          <div class="evidence-filing-badges">
+            {annual_badge}
+            {quarterly_badge}
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    if available_evidence:
+        evidence_row_parts = [
+            '<div class="evidence-reader-heading">'
+            '<span>SECTION</span><span>COMPANY EVIDENCE</span><span>EQUITY COMPASS READ</span>'
+            '</div>'
+        ]
+        for report_name, form, item, label, content in available_evidence:
+            excerpt = evidence_excerpt(content, label)
+            explanation = explain_evidence(label, excerpt)
+            evidence_row_parts.append(
+                '<div class="evidence-row">'
+                '<div class="evidence-row-source">'
+                f'<small>{html.escape(report_name)}</small>'
+                f'<strong>{html.escape(label)}</strong>'
+                f'<span>{html.escape(form)} · {html.escape(item)}</span>'
+                '</div>'
+                f'<blockquote>{html.escape(excerpt)}</blockquote>'
+                '<div class="evidence-explanation">'
+                f'<p>{html.escape(explanation)}</p>'
+                '</div>'
+                '</div>'
+            )
+        evidence_rows = "".join(evidence_row_parts)
+        st.markdown(
+            f'<div class="evidence-reader">{evidence_rows}</div>',
+            unsafe_allow_html=True,
+        )
+        evidence_options = {
+            f"{form} · {item} · {label}": (form, item, label, content)
+            for _report_name, form, item, label, content in available_evidence
+        }
+        reader_shell = st.container(border=False, key="source-reader-shell")
+        with reader_shell:
+            reader_identity, reader_selector = st.columns(
+                [0.75, 2.25], vertical_alignment="center"
+            )
+            with reader_identity:
+                st.markdown(
+                    '<div class="source-reader-intro"><small>SOURCE READER</small><strong>Browse filing context</strong></div>',
+                    unsafe_allow_html=True,
+                )
+            with reader_selector:
+                selected_evidence = st.selectbox(
+                    "Choose a filing section",
+                    tuple(evidence_options),
+                    key=f"evidence-section-{summary.ticker}",
+                    label_visibility="collapsed",
+                )
+        selected_form, selected_item, selected_label, selected_content = (
+            evidence_options[selected_evidence]
+        )
+        selected_context = re.sub(r"\s+", " ", selected_content).strip()
+        focused_evidence = evidence_excerpt(selected_content, selected_label)
+        search_phrase = focused_evidence.rstrip("…")
+        match_index = selected_context.lower().find(search_phrase.lower())
+        if match_index < 0:
+            search_phrase = " ".join(search_phrase.split()[:10])
+            match_index = selected_context.lower().find(search_phrase.lower())
+        if match_index >= 0:
+            passage_start = max(0, match_index - 320)
+            previous_stop = selected_context.rfind(". ", 0, passage_start)
+            if previous_stop >= 0:
+                passage_start = previous_stop + 2
+            passage_end = min(
+                len(selected_context), match_index + len(search_phrase) + 720
+            )
+            next_stop = selected_context.find(". ", passage_end)
+            if next_stop >= 0:
+                passage_end = next_stop + 1
+            passage = selected_context[passage_start:passage_end]
+            local_match = passage.lower().find(search_phrase.lower())
+            passage_html = (
+                html.escape(passage[:local_match])
+                + f"<mark>{html.escape(passage[local_match:local_match + len(search_phrase)])}</mark>"
+                + html.escape(passage[local_match + len(search_phrase):])
+            )
+        else:
+            passage = selected_context[:1100]
+            passage_html = (
+                f"<mark>{html.escape(focused_evidence)}</mark> "
+                + html.escape(passage)
+            )
+        source_reader_html = (
+            '<div class="source-reader-document">'
+            '<header>'
+            f'<div><small>{html.escape(selected_form)} · {html.escape(selected_item)}</small><strong>{html.escape(selected_label)}</strong></div>'
+            '<span>SEC FILING EXCERPT</span>'
+            '</header>'
+            f'<div class="source-reader-text"><p>{passage_html}</p></div>'
+            '</div>'
+        )
+        reader_shell.markdown(source_reader_html, unsafe_allow_html=True)
+    else:
+        st.info("No reliably extracted filing evidence is available.")
 
 
 def show_news_and_events(summary: DashboardSummary) -> None:
@@ -940,8 +1434,15 @@ def show_dashboard(summary: DashboardSummary) -> None:
         with st.expander(f"Source availability notes ({len(summary.data_warnings)})"):
             for warning in summary.data_warnings:
                 st.write(f"• {warning}")
+    requested_section = str(st.query_params.get("section", "overview")).lower()
+    default_section = DASHBOARD_SECTIONS.get(requested_section, "Overview")
+    section_state_key = f"dashboard-section-{summary.ticker}"
     overview_tab, financials_tab, filings_tab, news_tab = st.tabs(
-        ["Overview", "Financials", "Filings", "News & Events"]
+        list(DASHBOARD_SECTIONS.values()),
+        default=default_section,
+        key=section_state_key,
+        on_change=remember_dashboard_section,
+        args=(section_state_key,),
     )
     with overview_tab:
         show_overview(summary)
@@ -967,12 +1468,27 @@ st.markdown(
         align-items: center;
         gap: 11px;
         margin-bottom: 1.65rem;
-        padding-bottom: 16px;
-        border-bottom: 1px solid rgba(16, 42, 67, 0.07);
         color: #102A43;
         font-size: 1.05rem;
         font-weight: 780;
         letter-spacing: -0.02em;
+        text-decoration: none !important;
+        width: fit-content;
+        cursor: pointer;
+    }
+    a.brand-lockup,
+    a.brand-lockup:link,
+    a.brand-lockup:visited,
+    a.brand-lockup:hover,
+    a.brand-lockup:active {
+        color: #102A43 !important;
+        text-decoration: none !important;
+    }
+    a.brand-lockup span { text-decoration: none !important; }
+    .brand-lockup:focus-visible {
+        outline: 3px solid rgba(10, 143, 106, 0.22);
+        outline-offset: 5px;
+        border-radius: 8px;
     }
     .brand-lockup img {
         width: 40px;
@@ -1837,6 +2353,418 @@ st.markdown(
         color: #303641;
         font-size: 1.25rem;
     }
+    .filing-standouts {
+        margin: 3px 0 28px;
+        border: 1px solid rgba(16,42,67,.11);
+        border-radius: 14px;
+        overflow: hidden;
+        background: #FFFFFF;
+        box-shadow: 0 7px 22px rgba(24,55,70,.055);
+    }
+    .standout-primary {
+        padding: 23px 28px 24px;
+        border-bottom: 1px solid rgba(16,42,67,.09);
+        background: linear-gradient(135deg, rgba(232,245,240,.62), #FFFFFF 68%);
+    }
+    .standout-primary-copy { min-width: 0; }
+    .standout-label {
+        color: #087A5A;
+        font-size: .64rem;
+        font-weight: 820;
+        letter-spacing: .085em;
+    }
+    .standout-primary-copy > strong {
+        display: block;
+        max-width: 650px;
+        margin-top: 10px;
+        color: #17324B;
+        font-size: 1.12rem;
+        line-height: 1.42;
+        letter-spacing: -.015em;
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+    .standout-primary-copy p {
+        max-width: 650px;
+        margin: 9px 0 0;
+        color: #596978;
+        font-size: .82rem;
+        line-height: 1.52;
+    }
+    .standout-bottom { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .standout-bottom section { min-height: 88px; padding: 18px 28px; }
+    .standout-bottom section + section { border-left: 1px solid rgba(16,42,67,.085); }
+    .standout-bottom strong {
+        display: block;
+        margin-top: 9px;
+        color: #17324B;
+        font-size: .84rem;
+        line-height: 1.45;
+    }
+    .point-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .point-tags em {
+        padding: 5px 8px;
+        border-radius: 6px;
+        color: #596978;
+        background: #F3F6F7;
+        font-size: .72rem;
+        font-style: normal;
+        font-weight: 650;
+    }
+    .evidence-hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        margin: 8px 0 14px;
+        padding: 22px 24px;
+        border: 1px solid rgba(10,143,106,.16);
+        border-left: 4px solid #0A8F6A;
+        border-radius: 11px;
+        background: #F4F9F7;
+    }
+    .evidence-hero h3 {
+        margin: 7px 0 4px;
+        color: #17324B;
+        font-size: 1.25rem;
+        letter-spacing: -.025em;
+    }
+    .evidence-hero p { margin: 0; color: #7A8996; font-size: .68rem; }
+    .evidence-filing-badges { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .evidence-filing-badges span,
+    .evidence-filing-badges a {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 10px;
+        border: 1px solid rgba(16,42,67,.09);
+        border-radius: 8px;
+        color: #596978;
+        background: #FFFFFF;
+        font-size: .7rem;
+        text-decoration: none;
+    }
+    .evidence-filing-badges a:hover { border-color: rgba(10,143,106,.30); background: #FBFEFD; }
+    .evidence-filing-badges a { cursor: pointer; }
+    .evidence-filing-badges b { color: #17324B; }
+    .evidence-filing-badges small {
+        padding-left: 7px;
+        border-left: 1px solid rgba(16,42,67,.12);
+        color: #087A5A;
+        font-size: .62rem;
+        font-weight: 790;
+    }
+    .evidence-reader {
+        margin-bottom: 10px;
+        border: 1px solid rgba(16,42,67,.10);
+        border-radius: 11px;
+        overflow: hidden;
+        background: #FFFFFF;
+    }
+    .evidence-reader-heading {
+        display: grid;
+        grid-template-columns: 170px minmax(0,1.25fr) minmax(240px,.85fr);
+        gap: 22px;
+        padding: 10px 20px;
+        border-bottom: 1px solid rgba(16,42,67,.09);
+        color: #7A8996;
+        background: #FAFBFB;
+        font-size: .58rem;
+        font-weight: 800;
+        letter-spacing: .065em;
+    }
+    .evidence-row {
+        display: grid;
+        grid-template-columns: 170px minmax(0,1.25fr) minmax(240px,.85fr);
+        gap: 22px;
+        align-items: stretch;
+        padding: 0 20px;
+        border-bottom: 1px solid rgba(16,42,67,.08);
+    }
+    .evidence-row:last-child { border-bottom: 0; }
+    .evidence-row-source small {
+        display: block;
+        color: #087A5A;
+        font-size: .61rem;
+        font-weight: 800;
+        letter-spacing: .05em;
+    }
+    .evidence-row-source strong {
+        display: block;
+        margin-top: 4px;
+        color: #17324B;
+        font-size: .8rem;
+    }
+    .evidence-row-source { padding: 18px 0; }
+    .evidence-row-source a,
+    .evidence-row-source span {
+        display: inline-block;
+        margin-top: 6px;
+        color: #087A5A;
+        font-size: .65rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+    .evidence-row-source a:hover { text-decoration: underline; }
+    .evidence-row blockquote {
+        align-self: center;
+        margin: 16px 0;
+        padding: 0 0 0 14px;
+        border-left: 2px solid rgba(10,143,106,.28);
+        color: #2F4659 !important;
+        font-size: .82rem;
+        font-weight: 500;
+        line-height: 1.5;
+        font-style: normal;
+    }
+    .evidence-explanation {
+        display: flex;
+        align-items: center;
+        margin-right: -20px;
+        padding: 17px 18px;
+        background: #F3F8F6;
+    }
+    .evidence-explanation p {
+        margin: 0;
+        color: #294256;
+        font-size: .78rem;
+        font-weight: 560;
+        line-height: 1.48;
+    }
+    .source-reader-intro {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 3px;
+        min-height: 40px;
+        margin: 0;
+        padding-left: 39px;
+        transform: translateY(-2px);
+    }
+    .source-reader-intro::before {
+        content: "▤";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 29px;
+        height: 29px;
+        border: 1px solid rgba(10,143,106,.16);
+        border-radius: 8px;
+        color: #087A5A;
+        background: #E8F5F0;
+        font-size: .8rem;
+        transform: translateY(-50%);
+    }
+    .source-reader-intro small {
+        color: #087A5A;
+        font-size: .58rem;
+        font-weight: 820;
+        letter-spacing: .06em;
+        line-height: 1;
+    }
+    .source-reader-intro strong {
+        color: #17324B;
+        font-size: .88rem;
+        letter-spacing: -.01em;
+        line-height: 1.2;
+    }
+    div[data-testid="stHorizontalBlock"]:has(.source-reader-intro) {
+        align-items: center;
+        margin-top: 24px;
+        padding: 15px 16px;
+        border: 1px solid rgba(16,42,67,.11);
+        border-bottom: 0;
+        border-left: 3px solid #0A8F6A;
+        border-radius: 12px 12px 0 0;
+        background: linear-gradient(90deg, #F3F9F6 0%, #F8FBFA 68%, #FFFFFF 100%);
+    }
+    div[data-testid="stHorizontalBlock"]:has(.source-reader-intro) [data-baseweb="select"] > div {
+        min-height: 40px;
+        border-color: rgba(16,42,67,.12);
+        border-radius: 8px;
+        background: #FFFFFF;
+        box-shadow: none;
+    }
+    .source-reader-document {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-top: -16px;
+        border: 1px solid rgba(16,42,67,.11);
+        border-top: 1px solid rgba(16,42,67,.09);
+        border-radius: 0 0 12px 12px;
+        overflow: hidden;
+        background: #FFFFFF;
+        box-shadow: 0 12px 30px rgba(24,55,70,.07);
+    }
+    .source-reader-document::after {
+        content: "";
+        display: block;
+        height: 12px;
+        border-top: 1px solid rgba(16,42,67,.06);
+        background: #FFFFFF;
+    }
+    .source-reader-document header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 14px 17px;
+        border-bottom: 1px solid rgba(16,42,67,.09);
+        background: #FCFDFD;
+    }
+    .source-reader-document header small {
+        display: block;
+        color: #087A5A;
+        font-size: .6rem;
+        font-weight: 800;
+        letter-spacing: .055em;
+    }
+    .source-reader-document header strong {
+        display: block;
+        margin-top: 3px;
+        color: #17324B;
+        font-size: .82rem;
+    }
+    .source-reader-document header > span {
+        color: #8A96A0;
+        font-size: .57rem;
+        font-weight: 780;
+        letter-spacing: .06em;
+    }
+    .source-reader-text {
+        max-height: 260px;
+        overflow-y: auto;
+        padding: 18px 20px;
+        scrollbar-color: rgba(10,143,106,.28) transparent;
+    }
+    .source-reader-text p {
+        margin: 0;
+        color: #294256;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: .9rem;
+        line-height: 1.78;
+        letter-spacing: .002em;
+    }
+    .source-reader-text mark {
+        padding: 2px 1px;
+        color: #17324B;
+        background: linear-gradient(180deg, transparent 5%, #DDF2E9 5%, #DDF2E9 94%, transparent 94%);
+        box-shadow: 0 0 0 1px rgba(10,143,106,.04);
+    }
+    .filing-change-log {
+        position: relative;
+        margin: 4px 0 34px;
+    }
+    .filing-change-log::before {
+        content: "";
+        position: absolute;
+        top: 19px;
+        bottom: 21px;
+        left: 18px;
+        width: 1px;
+        background: rgba(10,143,106,.24);
+    }
+    .change-log-entry {
+        position: relative;
+        display: grid;
+        grid-template-columns: 38px minmax(0,1fr);
+        gap: 19px;
+    }
+    .change-log-entry + .change-log-entry { margin-top: 4px; }
+    .change-log-marker {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 37px;
+        height: 37px;
+        border: 1px solid rgba(10,143,106,.25);
+        border-radius: 50%;
+        color: #087A5A;
+        background: #FFFFFF;
+        font-size: .62rem;
+        font-weight: 820;
+    }
+    .filing-form-marker {
+        width: 41px;
+        height: 41px;
+        font-size: .58rem;
+        letter-spacing: -.01em;
+    }
+    .change-log-content {
+        padding: 4px 0 24px;
+        border-bottom: 1px solid rgba(16,42,67,.10);
+    }
+    .change-log-entry:last-child .change-log-content { border-bottom: 0; }
+    .change-log-content > strong {
+        display: block;
+        margin-top: 8px;
+        color: #17324B;
+        font-size: .98rem;
+        line-height: 1.45;
+    }
+    .change-log-content > p {
+        max-width: 820px;
+        margin: 6px 0 0;
+        color: #596978;
+        font-size: .8rem;
+        line-height: 1.55;
+    }
+    .change-log-groups {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 20px;
+        margin-top: 16px;
+    }
+    .annual-baseline-groups {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        max-width: 900px;
+    }
+    .quarterly-risk-result {
+        max-width: 900px;
+        margin-top: 18px;
+        padding: 15px 17px;
+        border-left: 3px solid rgba(10,143,106,.55);
+        border-radius: 3px 9px 9px 3px;
+        background: #F5F9F7;
+    }
+    .quarterly-risk-result > strong {
+        display: block;
+        margin-top: 7px;
+        color: #17324B;
+        font-size: .84rem;
+    }
+    .quarterly-risk-result > p {
+        margin: 5px 0 0;
+        color: #657586;
+        font-size: .75rem;
+    }
+    .change-log-tags > small {
+        color: #7A8996;
+        font-size: .6rem;
+        font-weight: 760;
+        letter-spacing: .055em;
+    }
+    .muted-tags em { color: #7E8992; background: #F6F7F8; }
+    .no-risk-change { color: #87939D; font-size: .72rem; }
+    @media (max-width: 700px) {
+        .standout-bottom { grid-template-columns: 1fr; }
+        .standout-bottom section + section { border-left: 0; border-top: 1px solid rgba(16,42,67,.085); }
+        .evidence-hero { align-items: flex-start; flex-direction: column; }
+        .evidence-filing-badges { justify-content: flex-start; }
+        .evidence-reader-heading { display: none; }
+        .evidence-row { grid-template-columns: 1fr; gap: 0; padding: 0 16px; }
+        .evidence-row blockquote { margin: 0 0 14px; }
+        .evidence-explanation { margin: 0 -16px; }
+        .change-log-groups { grid-template-columns: 1fr; gap: 13px; }
+        .annual-baseline-groups { grid-template-columns: 1fr; }
+    }
     .financial-answer { padding: 13px 2px 5px; }
     .financial-answer > small {
         color: #858D99;
@@ -1944,7 +2872,39 @@ if (
 ):
     del st.session_state["dashboard_summary"]
 
+home_requested = "home" in st.query_params
+if home_requested:
+    st.session_state.pop("dashboard_summary", None)
+    st.session_state.pop("company_search", None)
+    st.session_state.pop("popular_search_requested", None)
+    for state_key in list(st.session_state):
+        if state_key.startswith("dashboard-section-"):
+            del st.session_state[state_key]
+    st.query_params.clear()
+    st.rerun()
+
+query_ticker_value = st.query_params.get("ticker", "")
+if isinstance(query_ticker_value, list):
+    query_ticker_value = query_ticker_value[0] if query_ticker_value else ""
+query_ticker = str(query_ticker_value).strip().upper()
+
 has_dashboard = "dashboard_summary" in st.session_state
+restore_error = None
+if query_ticker and not has_dashboard:
+    try:
+        restored_summary = load_dashboard_analysis(query_ticker)
+    except DashboardError as error:
+        restore_error = error
+    else:
+        st.session_state["dashboard_summary"] = restored_summary
+        st.session_state["financials_schema_version"] = FINANCIALS_SCHEMA_VERSION
+        st.session_state["company_search"] = restored_summary.ticker
+        has_dashboard = True
+
+restore_from_url = bool(query_ticker and not has_dashboard and restore_error is None)
+if restore_from_url:
+    st.session_state["company_search"] = query_ticker
+
 if not has_dashboard:
     st.markdown(
         f"""
@@ -1973,7 +2933,7 @@ if not has_dashboard:
 else:
     st.markdown('<div class="dashboard-mode"></div>', unsafe_allow_html=True)
     st.markdown(
-        f'<div class="brand-lockup"><img src="{FAVICON_DATA_URI}" alt="" draggable="false"><span>Equity Compass</span></div>',
+        f'<a class="brand-lockup" href="?home=1" target="_self" aria-label="Return to Equity Compass home"><img src="{FAVICON_DATA_URI}" alt="" draggable="false"><span>Equity Compass</span></a>',
         unsafe_allow_html=True,
     )
 
@@ -2036,7 +2996,7 @@ if not has_dashboard:
             )
 
 popular_search_requested = st.session_state.pop("popular_search_requested", False)
-if search_submitted or popular_search_requested:
+if search_submitted or popular_search_requested or restore_from_url:
     cleaned_query = st.session_state.get("company_search", "").strip()
     if not cleaned_query:
         st.warning("Enter a company name or ticker to begin.")
@@ -2158,8 +3118,8 @@ if search_submitted or popular_search_requested:
                             min(percent, 96), stage_index, detail
                         )
 
-                    dashboard_summary = analyze_ticker(
-                        ticker, progress=show_research_progress
+                    dashboard_summary = load_dashboard_analysis(
+                        ticker, _progress=show_research_progress
                     )
                 except DashboardError as error:
                     progress_message.empty()
@@ -2182,6 +3142,7 @@ if search_submitted or popular_search_requested:
                     st.session_state[f"price-range-{dashboard_summary.ticker}"] = "1D"
                     st.session_state["dashboard_summary"] = dashboard_summary
                     st.session_state["financials_schema_version"] = FINANCIALS_SCHEMA_VERSION
+                    st.query_params["ticker"] = dashboard_summary.ticker
                     st.rerun()
 
 if not has_dashboard:
