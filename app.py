@@ -369,10 +369,21 @@ def resolve_search_query(query: str):
     return resolve_company_query(query)
 
 
-@st.cache_data(ttl=3600, show_spinner=False)
-def load_dashboard_analysis(ticker: str, _progress=None) -> DashboardSummary:
-    """Reuse a completed company workspace when the page is refreshed."""
-    return analyze_ticker(ticker, progress=_progress)
+@st.cache_resource(show_spinner=False)
+def dashboard_analysis_cache() -> dict[str, DashboardSummary]:
+    """Store completed workspaces without caching their loading-screen effects."""
+    return {}
+
+
+def load_dashboard_analysis(ticker: str, progress=None) -> DashboardSummary:
+    """Reuse completed company data while keeping progress UI outside the cache."""
+    normalized_ticker = ticker.strip().upper()
+    completed_workspaces = dashboard_analysis_cache()
+    if normalized_ticker not in completed_workspaces:
+        completed_workspaces[normalized_ticker] = analyze_ticker(
+            normalized_ticker, progress=progress
+        )
+    return completed_workspaces[normalized_ticker]
 
 
 def remember_dashboard_section(state_key: str) -> None:
@@ -3119,7 +3130,7 @@ if search_submitted or popular_search_requested or restore_from_url:
                         )
 
                     dashboard_summary = load_dashboard_analysis(
-                        ticker, _progress=show_research_progress
+                        ticker, progress=show_research_progress
                     )
                 except DashboardError as error:
                     progress_message.empty()
