@@ -10,7 +10,9 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "beautifulsoup4>=4.12,<5",
+    "googlenewsdecoder>=0.1.7,<0.2",
     "pandas",
+    "pillow",
     "plotly",
     "requests>=2.32,<3",
     "streamlit",

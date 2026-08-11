@@ -4,6 +4,7 @@ import base64
 import html
 import re
 import time
+from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote
 
@@ -28,6 +29,7 @@ from finance_news.market_data import (
     MarketOverview,
     fetch_market_overview,
 )
+from finance_news.news_score import calculate_news_score
 from finance_news.sec_companies import CompanyLookupError, resolve_company_query
 
 FINANCIALS_SCHEMA_VERSION = 2
@@ -273,11 +275,82 @@ def build_metric_trend_figure(
     return figure
 
 
+def describe_news_relevance(article: RecentNewsArticle) -> tuple[str, str, str, str]:
+    """Add cautious, headline-only context without creating a news score."""
+    headline = article.title.lower()
+    topic_rules = (
+        ("Earnings", ("earnings", "revenue", "profit", "quarter", "guidance", "eps"),
+         "Updates expectations about recent performance or management's near-term outlook.", "High"),
+        ("Company event", ("acquisition", "merger", "launch", "appoint", "ceo", "deal", "partnership"),
+         "Describes a company-specific development that investors may reassess in the near term.", "High"),
+        ("Regulation", ("regulator", "lawsuit", "court", "antitrust", "investigation", "sec ", "ban", "tariff"),
+         "Flags a legal or policy development that may affect risk, costs, or operations.", "High"),
+        ("Analyst view", ("analyst", "upgrade", "downgrade", "price target", "rating"),
+         "Reflects a market participant's opinion, not a change in the company's fundamentals by itself.", "Medium"),
+        ("Market context", ("stock", "shares", "market", "investor", "nasdaq", "dow "),
+         "Provides near-term market context; price attention alone does not change business quality.", "Medium"),
+    )
+    for topic, keywords, explanation, relevance in topic_rules:
+        if any(keyword in headline for keyword in keywords):
+            return topic, explanation, relevance, "Headline signal"
+    return (
+        "Company update",
+        "Adds recent context about the company; open the source to confirm the details and significance.",
+        "Medium",
+        "Headline signal",
+    )
+
+
+def format_news_timestamp(value: str) -> str:
+    """Turn normalized ISO timestamps into a compact reader-friendly label."""
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return value
+    return parsed.strftime("%b %d, %Y · %I:%M %p %Z").replace(" 0", " ")
+
+
 def show_news_article(article: RecentNewsArticle, key: str) -> None:
-    """Display one normalized news article."""
-    st.markdown(f"**{article.title}**")
-    st.caption(f"{article.publisher} · {article.published_at}")
-    st.link_button("Read article", article.url, key=key)
+    """Display one normalized article as a scannable, headline-only card."""
+    topic, explanation, relevance, cue_label = describe_news_relevance(article)
+    safe_url = html.escape(article.url, quote=True)
+    publisher_mark = "".join(
+        word[0] for word in article.publisher.split()[:2] if word
+    ).upper() or "N"
+    image_url = html.escape(getattr(article, "image_url", ""), quote=True)
+    article_image = (
+        f'<div class="news-card-image"><span>{html.escape(publisher_mark)}</span>'
+        f'<img src="{image_url}" alt="Preview image for {html.escape(article.title, quote=True)}" '
+        'loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'"></div>'
+        if image_url
+        else ""
+    )
+    layout_class = "news-card-layout has-image" if image_url else "news-card-layout"
+    st.markdown(
+        f"""
+        <article class="news-card">
+          <div class="{layout_class}">
+            <div class="news-card-content">
+              <div class="news-card-meta">
+                <span class="news-source">{html.escape(article.publisher)}</span>
+                <span>{html.escape(format_news_timestamp(article.published_at))}</span>
+              </div>
+              <h3>{html.escape(article.title)}</h3>
+              <p>{html.escape(explanation)}</p>
+              <div class="news-card-footer">
+                <div class="news-cues">
+                  <span class="news-topic">{html.escape(topic)}</span>
+                  <span class="news-relevance news-relevance-{relevance.lower()}">{cue_label}: {relevance} relevance</span>
+                </div>
+                <a class="news-read-link" href="{safe_url}" target="_blank" rel="noopener noreferrer" aria-label="Read article: {html.escape(article.title, quote=True)}">Read source <span>↗</span></a>
+              </div>
+            </div>
+            {article_image}
+          </div>
+        </article>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def build_financial_history_figure(history) -> go.Figure:
@@ -1212,8 +1285,58 @@ def show_filings(summary: DashboardSummary) -> None:
             '<p>The annual baseline remains available above.</p>'
             '</div></div>'
         )
+
+    recent_events = tuple(summary.recent_events)
+    if recent_events:
+        latest_event = recent_events[0]
+        event_items = [
+            (filing, item)
+            for filing in recent_events
+            for item in filing.items
+        ]
+        latest_items = tuple(latest_event.items)
+        lead_item = latest_items[0] if latest_items else None
+        lead_event_title = (
+            lead_item.title or explain_8k_item(lead_item.item_number)
+            if lead_item
+            else "Latest current report filed"
+        )
+        earlier_filing_count = max(0, len(recent_events) - 1)
+        earlier_item_count = max(0, len(event_items) - len(latest_items))
+        activity_detail = (
+            f'{len(latest_items)} disclosed item{"" if len(latest_items) == 1 else "s"} in the latest filing'
+        )
+        if earlier_filing_count:
+            activity_detail += (
+                f' · {earlier_item_count} more across {earlier_filing_count} earlier '
+                f'filing{"" if earlier_filing_count == 1 else "s"}'
+            )
+        events_entry = (
+            '<div class="change-log-entry filing-current-entry">'
+            '<div class="change-log-marker filing-form-marker">8-K</div>'
+            '<div class="change-log-content">'
+            f'<div class="standout-label">LATEST CURRENT REPORT · {html.escape(readable_date(latest_event.filing_date).upper())}</div>'
+            f'<strong>{html.escape(lead_event_title.rstrip("."))}</strong>'
+            '<p>An official company disclosure filed between regular annual and quarterly reports.</p>'
+            '<div class="quarterly-risk-result current-report-result">'
+            '<div class="standout-label">RECENT 8-K ACTIVITY</div>'
+            f'<strong>{len(recent_events)} recent filing{"" if len(recent_events) == 1 else "s"}</strong>'
+            f'<p>{html.escape(activity_detail)}. Provided as filing context, not sentiment.</p>'
+            '</div>'
+            '</div></div>'
+        )
+    else:
+        events_entry = (
+            '<div class="change-log-entry filing-current-entry">'
+            '<div class="change-log-marker filing-form-marker">8-K</div>'
+            '<div class="change-log-content">'
+            '<div class="standout-label">CURRENT REPORTS</div>'
+            '<strong>No recent extractable 8-K events</strong>'
+            '<p>No separate current-report disclosure is available for this company.</p>'
+            '</div></div>'
+        )
     st.markdown(
-        f'<div class="filing-change-log filing-story">{annual_entry}{quarterly_entry}</div>',
+        f'<div class="filing-change-log filing-story">{annual_entry}{quarterly_entry}{events_entry}</div>',
         unsafe_allow_html=True,
     )
 
@@ -1252,6 +1375,12 @@ def show_filings(summary: DashboardSummary) -> None:
         if quarterly_filing_url
         else '<span><b>Quarterly update</b><small>10-Q</small></span>'
     )
+    current_filing_url = recent_events[0].document_url if recent_events else ""
+    current_badge = (
+        f'<a href="{html.escape(current_filing_url, quote=True)}" target="_blank"><b>Open current report</b><small>8-K ↗</small></a>'
+        if current_filing_url
+        else '<span><b>Current report</b><small>8-K</small></span>'
+    )
     evidence_sections = (
         ("Annual report", "10-K", "Item 1", "Business overview", summary.annual_sections.business),
         ("Annual report", "10-K", "Item 1A", "Risk factors", summary.annual_sections.risk_factors),
@@ -1271,6 +1400,7 @@ def show_filings(summary: DashboardSummary) -> None:
           <div class="evidence-filing-badges">
             {annual_badge}
             {quarterly_badge}
+            {current_badge}
           </div>
         </div>
         """,
@@ -1373,61 +1503,125 @@ def show_filings(summary: DashboardSummary) -> None:
 
 
 def show_news_and_events(summary: DashboardSummary) -> None:
-    """Display recent headlines and material 8-K events."""
-    st.subheader("Recent News")
-    st.write(
-        "News can explain recent price movement, opportunities, or risks. Headlines "
-        "are not proof that a company is a good or bad investment."
+    """Display recent headlines and official events as short-term context."""
+    st.markdown(
+        f"""
+        <section class="news-hero">
+          <div><span class="news-eyebrow">SHORT-TERM CONTEXT</span><h2>What is happening around {html.escape(summary.ticker)}?</h2>
+          <p>Use recent coverage to understand what may be shaping attention now. News can move a stock quickly, but it does not change the long-term Equity Score.</p></div>
+          <aside class="score-separation-note"><span aria-hidden="true">◇</span><div><strong>Separate from Equity Score</strong><small>Headlines, topics, and relevance cues are not included in the long-term fundamentals assessment.</small></div></aside>
+        </section>
+        """,
+        unsafe_allow_html=True,
     )
-    news_topics = detect_news_topics(summary.recent_news)
-    if news_topics:
-        st.markdown("**Topics appearing in recent headlines**")
-        st.write(
-            " · ".join(
-                f"{topic.label}: {topic.article_count}" for topic in news_topics
-            )
-        )
-        st.caption(
-            "Detected from headline keywords. One article can appear in multiple "
-            "topics; this is not sentiment analysis."
-        )
-    if not summary.recent_news:
-        st.info("No recent articles were found for this company.")
-    for index, article in enumerate(summary.recent_news[:5]):
-        show_news_article(article, key=f"news-{index}")
-    remaining_news = summary.recent_news[5:]
-    if remaining_news:
-        with st.expander(f"Show {len(remaining_news)} more recent articles"):
-            for index, article in enumerate(remaining_news, start=5):
-                show_news_article(article, key=f"news-{index}")
+    score_company_name = re.sub(
+        r"\s+(inc\.?|incorporated|corp\.?|corporation|company|ltd\.?)$",
+        "", summary.company_name, flags=re.IGNORECASE,
+    )
+    news_score = calculate_news_score(
+        summary.recent_news,
+        company_terms=(summary.ticker, score_company_name),
+    )
+    score_position = max(0, min(100, (news_score.value + 100) / 2))
+    score_text = f"{news_score.value:+d}" if news_score.value else "0"
+    score_tone = (
+        "positive" if news_score.value >= 20
+        else "negative" if news_score.value <= -20
+        else "neutral"
+    )
+    st.markdown(
+        f"""
+        <section class="news-score-card news-score-{score_tone}">
+          <div class="news-score-main">
+            <div class="news-score-kicker">NEWS SCORE <span>SHORT-TERM · HEADLINE-BASED</span></div>
+            <div class="news-score-reading"><strong>{score_text}</strong><div><h3>{html.escape(news_score.label)}</h3><p>{html.escape(news_score.summary)}</p></div></div>
+          </div>
+          <div class="news-score-evidence">
+            <div><small>CONFIDENCE</small><strong>{html.escape(news_score.confidence)}</strong><span>{news_score.confidence_value}/100 evidence confidence</span></div>
+            <div><small>STORY BASE</small><strong>{news_score.independent_story_count} independent</strong><span>{news_score.article_count} company-specific articles after duplicate control</span></div>
+          </div>
+          <div class="news-score-scale" aria-label="News Score {score_text} on a scale from negative 100 to positive 100">
+            <div class="news-score-track"><span class="news-score-center"></span><i style="left:{score_position:.1f}%"></i></div>
+            <div class="news-score-scale-labels"><span>−100 Negative</span><span>0 Neutral</span><span>+100 Positive</span></div>
+          </div>
+          <div class="news-score-breakdown"><span class="positive">{news_score.positive_count} positive</span><span class="neutral">{news_score.neutral_count} neutral</span><span class="negative">{news_score.negative_count} negative</span><em>Does not affect the Equity Score</em></div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+    with st.expander("How the News Score works"):
+        st.markdown(
+            """
+            The News Score measures the **direction of recent headlines**, from −100 to +100. It is not a prediction of the stock price.
 
-    st.divider()
-    st.subheader("Recent 8-K Events")
-    st.write(
-        "An 8-K reports an important event between regular quarterly and annual "
-        "reports. The item number identifies the event category."
-    )
-    st.caption(
-        "Extracted from the three most recent 8-K filings; not ranked or analyzed."
-    )
-    if not summary.recent_events:
-        st.info("No recent extractable 8-K events were found for this company.")
-    for filing in summary.recent_events:
-        st.write(
-            f"8-K filed {filing.filing_date} · {len(filing.items)} extracted item(s)"
+            - Company results, guidance, legal events, contracts, and other directly relevant topics receive more weight than general market commentary.
+            - Newer coverage matters more, using a 72-hour half-life. Publisher reliability also adjusts each headline's weight.
+            - Near-duplicate headlines are grouped into one story, so syndicated coverage cannot overwhelm the result.
+            - Financial phrases and nearby negations determine direction. Headlines with no clear directional language remain neutral.
+            - Confidence is separate from direction and reflects evidence volume, source diversity, headline agreement, and the share of articles with a directional signal.
+
+            The score uses headlines only and may miss nuance contained in the full article. It remains completely separate from the long-term Equity Score.
+            """
         )
-        st.link_button(
-            "Open SEC filing",
-            filing.document_url,
-            key=f"8k-{filing.accession_number}",
+    news_topics = detect_news_topics(summary.recent_news)
+    topic_summary = "".join(
+        f'<span><strong>{html.escape(topic.label)}</strong> {topic.article_count}</span>'
+        for topic in news_topics[:4]
+    ) or '<span><strong>No repeated topics</strong> yet</span>'
+    st.markdown(
+        f'<div class="news-overview-strip"><div><small>RECENT COVERAGE</small><strong>{len(summary.recent_news)} articles</strong></div><div class="news-topic-summary"><small>HEADLINE THEMES</small><section>{topic_summary}</section></div><div><small>ANALYSIS TYPE</small><strong>Short-term signal</strong></div></div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        '<div class="news-feed-heading"><div><span>LATEST COVERAGE</span><h3>Recent company news</h3><p>Review the full news feed or focus on potentially meaningful headlines.</p></div></div>',
+        unsafe_allow_html=True,
+    )
+    view_column, result_column = st.columns([3.2, 1], gap="large")
+    with view_column:
+        selected_view = st.segmented_control(
+            "Choose a news view",
+            ["All coverage", "Focused coverage"],
+            default="All coverage",
+            key=f"news-view-{summary.ticker}",
+            label_visibility="collapsed",
         )
-        for item in filing.items:
-            item_title = f" — {item.title}" if item.title else ""
-            with st.expander(
-                f"{filing.filing_date} · Item {item.item_number}{item_title}"
-            ):
-                st.info(explain_8k_item(item.item_number))
-                st.write(item.text)
+
+    visible_articles = tuple(summary.recent_news)
+    if selected_view == "Focused coverage":
+        visible_articles = tuple(
+            article for article in visible_articles
+            if describe_news_relevance(article)[0]
+            in {"Earnings", "Company event", "Regulation", "Analyst view"}
+        )
+    with result_column:
+        st.markdown(
+            f'<div class="news-results-meta"><span>{len(visible_articles)} article(s)</span><span>Newest first</span></div>',
+            unsafe_allow_html=True,
+        )
+    if not visible_articles:
+        st.info("No articles match this view. Try All coverage.")
+    articles_per_page = 5
+    total_pages = max(1, (len(visible_articles) + articles_per_page - 1) // articles_per_page)
+    page_key = f"news-page-{summary.ticker}-{(selected_view or 'all').lower().replace(' ', '-')}"
+    current_page = min(max(int(st.session_state.get(page_key, 1)), 1), total_pages)
+    page_start = (current_page - 1) * articles_per_page
+    page_end = min(page_start + articles_per_page, len(visible_articles))
+    page_articles = visible_articles[page_start:page_end]
+    for index, article in enumerate(page_articles, start=page_start):
+        show_news_article(article, key=f"news-{index}")
+    if len(visible_articles) > articles_per_page:
+        st.markdown(
+            f'<div class="news-pagination-summary">Showing {page_start + 1}–{page_end} of {len(visible_articles)} articles</div>',
+            unsafe_allow_html=True,
+        )
+        st.segmented_control(
+            "Article page",
+            list(range(1, total_pages + 1)),
+            default=current_page,
+            key=page_key,
+            label_visibility="collapsed",
+        )
+    st.caption("Article topics and relevance cues summarize what each headline is about. The News Score separately estimates short-term headline direction; neither changes the Equity Score.")
 
 
 def show_dashboard(summary: DashboardSummary) -> None:
@@ -2824,7 +3018,140 @@ st.markdown(
         border-top: 1px solid rgba(120, 130, 150, 0.18);
     }
     .financial-answer b { color: #3D4551; font-size: 0.76rem; }
+    .news-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(280px, .8fr);
+        gap: 28px;
+        align-items: center;
+        margin: 12px 0 22px;
+        padding: 28px 30px;
+        border: 1px solid rgba(16,42,67,.10);
+        border-radius: 16px;
+        background: linear-gradient(135deg, #F7FBFA 0%, #FFFFFF 68%);
+        box-shadow: 0 8px 26px rgba(16,42,67,.045);
+    }
+    .news-eyebrow { color: #087A5A; font-size: .68rem; font-weight: 820; letter-spacing: .09em; }
+    .news-hero h2 { margin: 7px 0 8px; color: #17324B; font-size: 1.55rem; letter-spacing: -.025em; }
+    .news-hero p { max-width: 660px; margin: 0; color: #5F7080; font-size: .88rem; line-height: 1.6; }
+    .score-separation-note { display: flex; gap: 12px; padding: 16px; border: 1px solid rgba(10,143,106,.17); border-radius: 12px; background: #FFFFFF; }
+    .score-separation-note > span { display: grid; place-items: center; width: 32px; height: 32px; flex: 0 0 32px; border-radius: 50%; color: #087A5A; background: #E7F5F0; }
+    .score-separation-note strong, .score-separation-note small { display: block; }
+    .score-separation-note strong { color: #17324B; font-size: .8rem; }
+    .score-separation-note small { margin-top: 4px; color: #657586; font-size: .69rem; line-height: 1.45; }
+    .news-score-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(280px, .75fr);
+        gap: 18px 28px;
+        margin: 0 0 10px;
+        padding: 22px 24px 18px;
+        border: 1px solid rgba(16,42,67,.11);
+        border-radius: 15px;
+        background: #FFFFFF;
+        box-shadow: 0 7px 22px rgba(16,42,67,.035);
+        animation: news-score-arrive 260ms cubic-bezier(.2,.72,.3,1) both;
+    }
+    @keyframes news-score-arrive { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .news-score-kicker { color: #087A5A; font-size: .65rem; font-weight: 820; letter-spacing: .08em; }
+    .news-score-kicker span { margin-left: 8px; color: #8A96A0; font-weight: 720; letter-spacing: .045em; }
+    .news-score-reading { display: flex; align-items: center; gap: 17px; margin-top: 11px; }
+    .news-score-reading > strong { min-width: 78px; color: #17324B; font-size: 2.7rem; line-height: 1; letter-spacing: -.055em; }
+    .news-score-positive .news-score-reading > strong { color: #087A5A; }
+    .news-score-negative .news-score-reading > strong { color: #B84C4C; }
+    .news-score-reading h3 { margin: 0 0 3px; color: #17324B; font-size: 1.08rem; }
+    .news-score-reading p { margin: 0; color: #657586; font-size: .73rem; line-height: 1.48; }
+    .news-score-evidence { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+    .news-score-evidence > div { padding: 12px 13px; border-radius: 10px; background: #F5F8F7; }
+    .news-score-evidence small, .news-score-evidence strong, .news-score-evidence span { display: block; }
+    .news-score-evidence small { color: #87919C; font-size: .57rem; font-weight: 800; letter-spacing: .06em; }
+    .news-score-evidence strong { margin-top: 5px; color: #294256; font-size: .78rem; }
+    .news-score-evidence span { margin-top: 2px; color: #788794; font-size: .62rem; line-height: 1.35; }
+    .news-score-scale { grid-column: 1 / -1; }
+    .news-score-track { position: relative; height: 7px; border-radius: 999px; background: linear-gradient(90deg, #E8BABA 0%, #EEF1F1 48%, #EEF1F1 52%, #A8D9CA 100%); }
+    .news-score-track .news-score-center { position: absolute; top: -3px; bottom: -3px; left: 50%; width: 1px; background: rgba(23,50,75,.28); }
+    .news-score-track i { position: absolute; top: 50%; width: 15px; height: 15px; border: 3px solid #FFFFFF; border-radius: 50%; background: #17324B; box-shadow: 0 1px 5px rgba(16,42,67,.28); transform: translate(-50%,-50%); }
+    .news-score-positive .news-score-track i { background: #0A8F6A; }
+    .news-score-negative .news-score-track i { background: #B84C4C; }
+    .news-score-scale-labels { display: flex; justify-content: space-between; margin-top: 6px; color: #8B97A1; font-size: .58rem; }
+    .news-score-breakdown { grid-column: 1 / -1; display: flex; align-items: center; gap: 7px; padding-top: 2px; }
+    .news-score-breakdown > span { padding: 4px 8px; border-radius: 999px; font-size: .61rem; font-weight: 720; }
+    .news-score-breakdown .positive { color: #087A5A; background: #E8F5F0; }
+    .news-score-breakdown .neutral { color: #617180; background: #F0F3F4; }
+    .news-score-breakdown .negative { color: #A94747; background: #FCEEEE; }
+    .news-score-breakdown em { margin-left: auto; color: #7A8996; font-size: .63rem; font-style: normal; }
+    .news-overview-strip { display: grid; grid-template-columns: .7fr 2fr .8fr; margin-bottom: 18px; overflow: hidden; border: 1px solid rgba(16,42,67,.10); border-radius: 12px; background: #FFFFFF; }
+    .news-overview-strip > div { padding: 14px 17px; border-right: 1px solid rgba(16,42,67,.09); }
+    .news-overview-strip > div:last-child { border-right: 0; }
+    .news-overview-strip small { display: block; margin-bottom: 5px; color: #87919C; font-size: .61rem; font-weight: 780; letter-spacing: .06em; }
+    .news-overview-strip strong { color: #294256; font-size: .82rem; }
+    .news-topic-summary section { display: flex; flex-wrap: wrap; gap: 6px; }
+    .news-topic-summary section span { padding: 4px 8px; border-radius: 999px; color: #526473; background: #F2F6F5; font-size: .67rem; }
+    .news-feed-heading { position: relative; margin: 28px 2px 15px; padding: 2px 0 2px 18px; }
+    .news-feed-heading::before { content: ""; position: absolute; top: 2px; bottom: 2px; left: 0; width: 3px; border-radius: 999px; background: #0A8F6A; }
+    .news-feed-heading > div > span { color: #087A5A; font-size: .62rem; font-weight: 810; letter-spacing: .08em; }
+    .news-feed-heading h3 { margin: 5px 0 5px; color: #17324B; font-size: 1.38rem; font-weight: 760; letter-spacing: -.025em; line-height: 1.2; }
+    .news-feed-heading p { max-width: 690px; margin: 0; color: #657586; font-size: .78rem; line-height: 1.5; }
+    [role="radiogroup"][aria-label="Choose a news view"] { display: inline-flex; align-items: center; gap: 2px; width: auto; padding: 3px; border: 0; border-radius: 9px; background: #F0F3F2; }
+    [role="radiogroup"][aria-label="Choose a news view"] [role="radio"] { min-height: 30px; padding: 5px 13px; border: 0 !important; border-radius: 7px !important; color: #657586; background: transparent !important; box-shadow: none !important; font-size: .71rem; font-weight: 660; transition: color 160ms ease, background-color 160ms ease, box-shadow 180ms ease, transform 160ms ease; }
+    [role="radiogroup"][aria-label="Choose a news view"] [role="radio"]:hover { transform: translateY(-1px); color: #17324B; background: rgba(255,255,255,.58) !important; }
+    [role="radiogroup"][aria-label="Choose a news view"] [role="radio"][aria-checked="true"] { color: #087A5A; background: #FFFFFF !important; box-shadow: 0 1px 4px rgba(16,42,67,.10) !important; animation: news-view-settle 190ms cubic-bezier(.2,.75,.3,1); }
+    @keyframes news-view-settle { 0% { transform: scale(.97); opacity: .78; } 100% { transform: scale(1); opacity: 1; } }
+    .news-results-meta { display: flex; align-items: center; justify-content: flex-end; gap: 8px; min-height: 38px; margin: 0; color: #87919C; font-size: .66rem; white-space: nowrap; }
+    .news-results-meta span + span::before { content: "·"; margin-right: 8px; color: #B0B8BF; }
+    .stApp [data-testid="stHorizontalBlock"]:has([role="radiogroup"][aria-label="Choose a news view"]) { align-items: center; margin-bottom: 13px; }
+    .news-card { margin-bottom: 11px; padding: 14px 15px 14px 20px; border: 1px solid rgba(16,42,67,.11); border-radius: 13px; background: #FFFFFF; animation: news-card-arrive 230ms cubic-bezier(.2,.72,.3,1) both; transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+    .news-card:nth-of-type(2) { animation-delay: 25ms; }
+    .news-card:nth-of-type(3) { animation-delay: 45ms; }
+    @keyframes news-card-arrive { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .news-card:hover { transform: translateY(-1px); border-color: rgba(10,143,106,.25); box-shadow: 0 8px 22px rgba(16,42,67,.055); }
+    .news-pagination-summary { margin: 19px 0 9px; color: #7A8996; font-size: .68rem; text-align: center; }
+    [role="radiogroup"][aria-label="Article page"] { display: flex; justify-content: center; gap: 6px; width: fit-content; margin: 0 auto; padding: 0; border: 0; background: transparent; }
+    [role="radiogroup"][aria-label="Article page"] [role="radio"] { min-width: 31px; min-height: 31px; padding: 4px 8px; border: 1px solid rgba(16,42,67,.11) !important; border-radius: 7px !important; color: #657586; background: #FFFFFF !important; box-shadow: none !important; font-size: .7rem; font-weight: 700; transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease, transform 150ms ease; }
+    [role="radiogroup"][aria-label="Article page"] [role="radio"]:hover { transform: translateY(-1px); border-color: rgba(10,143,106,.28) !important; color: #087A5A; }
+    [role="radiogroup"][aria-label="Article page"] [role="radio"][aria-checked="true"] { border-color: #0A8F6A !important; color: #FFFFFF; background: #0A8F6A !important; }
+    [data-testid="stElementContainer"]:has([role="radiogroup"][aria-label="Article page"]) { margin-right: auto; margin-bottom: .45rem; margin-left: auto; }
+    .stTabs [data-testid="stTab"] { transition: color 160ms ease, background-color 160ms ease, transform 160ms ease; }
+    .stTabs [data-testid="stTab"]:hover { transform: translateY(-1px); }
+    .stTabs [role="tabpanel"] { animation: workspace-panel-arrive 220ms cubic-bezier(.2,.72,.3,1) both; }
+    [role="radiogroup"] [role="radio"] { transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 180ms ease, transform 160ms ease; }
+    @keyframes workspace-panel-arrive { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) {
+        .stTabs [data-testid="stTab"],
+        .stTabs [role="tabpanel"],
+        [role="radiogroup"] [role="radio"],
+        [role="radiogroup"][aria-label="Choose a news view"] [role="radio"],
+        [role="radiogroup"][aria-label="Article page"] [role="radio"],
+        .news-card, .news-score-card { animation: none; transition: none; }
+    }
+    .news-card-meta { display: flex; align-items: center; gap: 8px; color: #8A96A0; font-size: .68rem; }
+    .news-card-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; min-height: 126px; }
+    .news-card-layout.has-image { grid-template-columns: minmax(0, 1fr) 188px; }
+    .news-card-content { display: flex; min-width: 0; flex-direction: column; }
+    .news-card-image { position: relative; display: grid; place-items: center; min-height: 126px; overflow: hidden; border-radius: 10px; color: #087A5A; background: linear-gradient(135deg, #E8F5F1, #F4F7F6); font-size: 1.15rem; font-weight: 800; letter-spacing: .04em; }
+    .news-card-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 300ms ease; }
+    .news-card:hover .news-card-image img { transform: scale(1.025); }
+    .news-source { color: #087A5A; font-weight: 760; }
+    .news-source::after { content: "·"; margin-left: 8px; color: #B0B8BF; }
+    .news-card h3 { max-width: 900px; margin: 8px 0 6px; color: #17324B; font-size: 1.01rem; line-height: 1.4; }
+    .news-card-content > p { max-width: 850px; margin: 0; color: #617180; font-size: .77rem; line-height: 1.55; }
+    .news-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 14px; padding-top: 13px; border-top: 1px solid rgba(16,42,67,.075); }
+    .news-cues { display: flex; flex-wrap: wrap; gap: 7px; }
+    .news-cues > span { padding: 4px 8px; border-radius: 999px; font-size: .64rem; font-weight: 720; }
+    .news-topic { color: #4B5F70; background: #F1F4F6; }
+    .news-relevance-high { color: #A05A13; background: #FFF3E2; }
+    .news-relevance-medium { color: #486176; background: #EDF3F7; }
+    .news-read-link { color: #087A5A !important; font-size: .72rem; font-weight: 760; text-decoration: none !important; white-space: nowrap; }
+    .news-read-link:hover { color: #05664A !important; }
+    .event-filing-label { display: flex; align-items: center; gap: 13px; margin: 14px 0 8px; padding: 14px 16px; border: 1px solid rgba(16,42,67,.10); border-radius: 11px; background: #F8FAFA; }
+    .event-filing-label > span { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; color: #FFFFFF; background: #17324B; font-size: .68rem; font-weight: 800; }
+    .event-filing-label strong, .event-filing-label small { display: block; }
+    .event-filing-label strong { color: #294256; font-size: .8rem; }
+    .event-filing-label small { color: #87919C; font-size: .65rem; }
+    .event-filing-label a { margin-left: auto; color: #087A5A !important; font-size: .72rem; font-weight: 760; text-decoration: none !important; }
     @media (max-width: 640px) {
+        .news-score-card { grid-template-columns: 1fr; padding: 18px; }
+        .news-score-evidence { grid-template-columns: 1fr 1fr; }
+        .news-score-breakdown { flex-wrap: wrap; }
+        .news-score-breakdown em { width: 100%; margin: 4px 0 0; }
         .block-container { padding-top: 1.2rem; }
         .brand-lockup { margin-bottom: 2.6rem; }
         .hero-approved-logo { width: 250px; height: 238px; }
@@ -2870,6 +3197,19 @@ st.markdown(
         .factor-reading { padding: 3px 6px; }
         .score-summary { padding: 4px 2px 12px; }
         .financial-story-card { height: 186px; }
+        .news-hero { grid-template-columns: 1fr; padding: 21px 18px; }
+        .news-overview-strip { grid-template-columns: 1fr; }
+        .news-overview-strip > div { border-right: 0; border-bottom: 1px solid rgba(16,42,67,.09); }
+        .news-overview-strip > div:last-child { border-bottom: 0; }
+        .news-card-footer { align-items: flex-start; flex-direction: column; }
+        .news-card { padding: 14px; }
+        .news-card-layout { grid-template-columns: 1fr; }
+        .news-card-image { min-height: 145px; order: -1; }
+        .news-feed-heading { padding-left: 14px; }
+        .news-feed-heading h3 { font-size: 1.2rem; }
+        [role="radiogroup"][aria-label="Choose a news view"] { max-width: 100%; overflow-x: auto; }
+        [role="radiogroup"][aria-label="Choose a news view"] [role="radio"] { white-space: nowrap; }
+        .news-results-meta { justify-content: flex-start; min-height: 26px; }
     }
     </style>
     """,

@@ -23,6 +23,8 @@ ARTICLE = NewsArticle(
 
 class RunNewsPipelineTests(unittest.TestCase):
     @patch("finance_news.news_pipeline.save_news_results")
+    @patch("finance_news.news_pipeline.enrich_article_images")
+    @patch("finance_news.news_pipeline.fetch_rich_company_news")
     @patch("finance_news.news_pipeline.parse_news_feed")
     @patch("finance_news.news_pipeline.fetch_news_feed")
     @patch("finance_news.news_pipeline.resolve_ticker")
@@ -31,11 +33,15 @@ class RunNewsPipelineTests(unittest.TestCase):
         mock_resolve: Mock,
         mock_fetch: Mock,
         mock_parse: Mock,
+        mock_rich_news: Mock,
+        mock_enrich: Mock,
         mock_save: Mock,
     ) -> None:
         mock_resolve.return_value = COMPANY
         mock_fetch.return_value = ("https://feed", b"xml")
         mock_parse.return_value = [ARTICLE]
+        mock_rich_news.return_value = []
+        mock_enrich.return_value = [ARTICLE]
         mock_save.return_value = (Path("feed.xml"), Path("articles.json"))
         progress = Mock()
 

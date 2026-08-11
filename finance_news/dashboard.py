@@ -143,6 +143,7 @@ class RecentNewsArticle:
     publisher: str
     published_at: str
     url: str
+    image_url: str = ""
 
 
 @dataclass(frozen=True)
@@ -516,6 +517,7 @@ def _read_news_results(
                 publisher=str(article["publisher"]).strip(),
                 published_at=str(article["published_at"]).strip(),
                 url=str(article["url"]).strip(),
+                image_url=str(article.get("image_url", "")).strip(),
             )
             for article in payload["articles"]
         )

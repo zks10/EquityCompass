@@ -9,6 +9,8 @@ from typing import Callable
 from finance_news.news_collector import (
     NewsCollectionError,
     build_news_query,
+    enrich_article_images,
+    fetch_rich_company_news,
     fetch_news_feed,
     parse_news_feed,
     save_news_results,
@@ -50,9 +52,12 @@ def run_news_pipeline(
     except NewsCollectionError as exc:
         raise NewsPipelineError(f"Fetch company news failed: {exc}") from exc
 
-    notify("3/4 Parse and deduplicate articles")
+    notify("3/4 Parse articles and collect preview images")
     try:
-        articles = parse_news_feed(raw_xml, limit=limit)
+        articles = fetch_rich_company_news(company.ticker, limit=limit)
+        if not articles:
+            articles = parse_news_feed(raw_xml, limit=limit)
+            articles = enrich_article_images(articles)
     except NewsCollectionError as exc:
         raise NewsPipelineError(f"Parse company news failed: {exc}") from exc
 
