@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import pandas as pd
 import yfinance as yf
 
 
@@ -15,6 +16,7 @@ class MarketDataError(Exception):
 class PricePoint:
     date: str
     close: float
+    volume: float | None = None
 
 
 @dataclass(frozen=True)
@@ -30,6 +32,8 @@ class MarketOverview:
     headquarters: str | None = None
     employees: int | None = None
     website: str | None = None
+    benchmark_ticker: str = "SPY"
+    benchmark_points: tuple[PricePoint, ...] = ()
 
     @property
     def price_change(self) -> float:
@@ -60,8 +64,17 @@ def fetch_market_overview(ticker: str) -> MarketOverview:
         raise MarketDataError("Not enough recent market prices were returned.")
 
     closes = history["Close"].dropna()
+    volumes = history["Volume"] if "Volume" in history else None
     points = tuple(
-        PricePoint(date=index.strftime("%Y-%m-%d"), close=float(value))
+        PricePoint(
+            date=index.strftime("%Y-%m-%d"),
+            close=float(value),
+            volume=(
+                float(volumes.get(index))
+                if volumes is not None and pd.notna(volumes.get(index))
+                else None
+            ),
+        )
         for index, value in closes.items()
     )
     intraday_points: tuple[PricePoint, ...] = ()
@@ -77,6 +90,20 @@ def fetch_market_overview(ticker: str) -> MarketOverview:
             )
     except Exception:
         # Intraday data is an enhancement. Daily history should remain usable.
+        pass
+    benchmark_points: tuple[PricePoint, ...] = ()
+    try:
+        benchmark_history = yf.Ticker("SPY").history(
+            period="3mo", interval="1d", auto_adjust=False
+        )
+        if not benchmark_history.empty and "Close" in benchmark_history:
+            benchmark_closes = benchmark_history["Close"].dropna()
+            benchmark_points = tuple(
+                PricePoint(date=index.strftime("%Y-%m-%d"), close=float(value))
+                for index, value in benchmark_closes.items()
+            )
+    except Exception:
+        # The company chart remains useful when benchmark data is unavailable.
         pass
     profile: dict = {}
     try:
@@ -104,6 +131,7 @@ def fetch_market_overview(ticker: str) -> MarketOverview:
         headquarters=headquarters,
         employees=employees,
         website=str(profile.get("website", "")).strip() or None,
+        benchmark_points=benchmark_points,
     )
 
 

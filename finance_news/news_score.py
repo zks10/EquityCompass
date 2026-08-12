@@ -34,7 +34,8 @@ class ArticleSignal:
 
 @dataclass(frozen=True)
 class NewsScore:
-    value: int
+    value: float
+    available: bool
     label: str
     confidence: str
     confidence_value: int
@@ -59,6 +60,14 @@ POSITIVE_PHRASES = {
     "rating upgrade": 0.4, "upgraded": 0.35, "outperforms": 0.35,
     "strong demand": 0.6, "higher revenue": 0.55, "higher profit": 0.6,
     "settles claims": 0.1, "launches": 0.2, "partnership": 0.25,
+    "tops estimates": 0.85, "top estimates": 0.8, "above estimates": 0.7,
+    "accelerating growth": 0.65, "record growth": 0.75,
+    "strong fundamentals": 0.4, "revenue doubles": 0.8,
+    "cleared a big hurdle": 0.25, "expanding": 0.3, "expands": 0.3,
+    "boosts": 0.35, "boosted": 0.35, "surges": 0.35, "surged": 0.35,
+    "jumps": 0.35, "jumped": 0.35, "rallies": 0.3, "rally": 0.3,
+    "gains": 0.25, "climbs": 0.3, "pops": 0.3, "smashes": 0.55,
+    "upbeat view": 0.35, "favor": 0.2,
 }
 
 NEGATIVE_PHRASES = {
@@ -73,6 +82,9 @@ NEGATIVE_PHRASES = {
     "supply disruption": -0.65, "loses contract": -0.7, "lost contract": -0.7,
     "sell rating": -0.35, "lawsuit": -0.35, "fined": -0.45,
     "tumbled": -0.35, "plunged": -0.4, "slumped": -0.35,
+    "falls": -0.3, "fell": -0.3, "drops": -0.3, "dropped": -0.3,
+    "slides": -0.3, "sell-off": -0.3, "trails": -0.25,
+    "growth concerns": -0.45, "regulatory scrutiny": -0.35,
 }
 
 RELEVANCE_PHRASES = {
@@ -158,6 +170,22 @@ def _relevance_weight(title: str) -> float:
     return max(matched, default=0.45)
 
 
+def _entity_focus_weight(title: str, company_terms: tuple[str, ...]) -> float:
+    """Reduce the influence of passing mentions and comparison headlines."""
+    if not company_terms:
+        return 1.0
+    text = title.lower()
+    matches = [match for term in company_terms if (match := re.search(rf"\b{re.escape(term)}\b", text))]
+    if not matches:
+        return 0.0
+    first = min(match.start() for match in matches)
+    if first <= 12:
+        return 1.0
+    if re.search(r"\b(vs\.?|versus|compared with|compared to)\b", text):
+        return 0.45
+    return 0.7
+
+
 def _cluster_articles(articles: list[ArticleSignal]) -> list[list[ArticleSignal]]:
     clusters: list[list[ArticleSignal]] = []
     normalized: list[str] = []
@@ -178,9 +206,9 @@ def _cluster_articles(articles: list[ArticleSignal]) -> list[list[ArticleSignal]
 
 def calculate_news_score(
     articles: Iterable[ScorableArticle], *, as_of: datetime | None = None,
-    company_terms: Iterable[str] = (),
+    company_terms: Iterable[str] = (), window_hours: float = 36.0,
 ) -> NewsScore:
-    """Return a recency-weighted, duplicate-aware score on a -100..100 scale."""
+    """Return a rolling daily, duplicate-aware score on a -10..10 scale."""
     as_of = (as_of or datetime.now(timezone.utc)).astimezone(timezone.utc)
     normalized_company_terms = tuple(
         term.strip().lower() for term in company_terms if term and term.strip()
@@ -188,17 +216,20 @@ def calculate_news_score(
     signals: list[ArticleSignal] = []
     for article in articles:
         headline = article.title.lower()
-        if normalized_company_terms and not any(
-            re.search(rf"\b{re.escape(term)}\b", headline)
-            for term in normalized_company_terms
-        ):
+        focus_weight = _entity_focus_weight(article.title, normalized_company_terms)
+        if focus_weight == 0:
             continue
         published = _parse_time(article.published_at)
         age_hours = max(0.0, (as_of - published).total_seconds() / 3600) if published else 168.0
-        # 72-hour half-life; stories older than 14 days retain only a small audit weight.
-        recency = max(0.08, 2 ** (-age_hours / 72.0))
+        if age_hours > window_hours:
+            continue
+        # A rolling 36-hour window covers the current session and prior market close.
+        recency = 2 ** (-age_hours / 24.0)
         sentiment, reason = _headline_sentiment(article.title)
-        weight = recency * _relevance_weight(article.title) * _publisher_weight(article.publisher)
+        weight = (
+            recency * _relevance_weight(article.title)
+            * _publisher_weight(article.publisher) * focus_weight
+        )
         direction = "Positive" if sentiment > 0.12 else "Negative" if sentiment < -0.12 else "Neutral"
         signals.append(ArticleSignal(
             title=article.title, publisher=article.publisher, sentiment=sentiment,
@@ -206,8 +237,8 @@ def calculate_news_score(
         ))
 
     if not signals:
-        return NewsScore(0, "Neutral", "Low", 0, 0, 0, 0, 0, 0, 0,
-                         "No recent articles are available to establish a news direction.", ())
+        return NewsScore(0, False, "Not enough fresh news", "Limited", 0, 0, 0, 0, 0, 0, 0,
+                         "No fresh company-specific coverage is available for a daily signal.", ())
 
     clusters = _cluster_articles(signals)
     cluster_values: list[tuple[float, float]] = []
@@ -219,18 +250,39 @@ def calculate_news_score(
         cluster_sentiment = sum(a.sentiment * a.weight for a in cluster) / article_weight_total
         cluster_values.append((cluster_sentiment, cluster_weight))
 
-    total_weight = sum(weight for _, weight in cluster_values)
-    weighted_direction = (
-        sum(sentiment * weight for sentiment, weight in cluster_values) / total_weight
-        if total_weight else 0.0
+    directional_clusters = [
+        (sentiment, weight) for sentiment, weight in cluster_values
+        if abs(sentiment) > 0.12
+    ]
+    neutral_weight = sum(
+        weight for sentiment, weight in cluster_values if abs(sentiment) <= 0.12
     )
-    evidence_factor = min(1.0, math.sqrt(total_weight / 4.0))
-    value = round(max(-100.0, min(100.0, weighted_direction * evidence_factor * 100)))
-    label = (
-        "Strongly positive" if value >= 55 else "Moderately positive" if value >= 20
-        else "Neutral / mixed" if value > -20 else "Moderately negative" if value > -55
-        else "Strongly negative"
-    )
+    directional_weight = sum(weight for _, weight in directional_clusters)
+    available = bool(directional_clusters)
+    if available:
+        weighted_direction = (
+            sum(sentiment * weight for sentiment, weight in directional_clusters)
+            / directional_weight
+        )
+        directional_coverage = directional_weight / (directional_weight + 0.35 * neutral_weight)
+        evidence_factor = min(1.0, math.sqrt(directional_weight / 2.0))
+        raw_value = max(-100.0, min(
+            100.0,
+            weighted_direction * (0.7 + 0.3 * directional_coverage)
+            * evidence_factor * 100,
+        ))
+        value = round(raw_value / 10.0, 1)
+        label = (
+            "Strongly positive" if value >= 5.5 else "Positive" if value >= 2.0
+            else "Slightly positive" if value > 0
+            else "Mixed" if value == 0
+            else "Slightly negative" if value > -2.0
+            else "Negative" if value > -5.5
+            else "Strongly negative"
+        )
+    else:
+        value = 0
+        label = "No clear signal"
 
     scored = [signal for signal in signals if signal.direction != "Neutral"]
     positive = sum(signal.direction == "Positive" for signal in signals)
@@ -240,23 +292,29 @@ def calculate_news_score(
     agreement = (
         max(positive, negative) / directional_total if directional_total else 0.35
     )
-    evidence = min(1.0, total_weight / 5.0)
+    evidence = min(1.0, directional_weight / 3.0)
     diversity = min(1.0, len({s.publisher.lower() for s in signals}) / 4.0)
     scored_share = len(scored) / len(signals)
     confidence_value = round(100 * (
         0.55 * evidence + 0.20 * diversity + 0.15 * agreement + 0.10 * scored_share
     ))
-    confidence = "High" if confidence_value >= 72 else "Medium" if confidence_value >= 45 else "Low"
+    confidence = (
+        "Strong" if confidence_value >= 72
+        else "Moderate" if confidence_value >= 45
+        else "Limited"
+    )
 
-    if value >= 20:
-        summary = f"Recent directional coverage leans positive; {positive} positive and {negative} negative headline signals were detected."
-    elif value <= -20:
-        summary = f"Recent directional coverage leans negative; {negative} negative and {positive} positive headline signals were detected."
+    if not available:
+        summary = "Fresh headlines contain no clear positive or negative company signal."
+    elif value > 0:
+        summary = f"{label} coverage: {positive} positive, {neutral} neutral, and {negative} negative fresh headlines."
+    elif value < 0:
+        summary = f"{label} coverage: {negative} negative, {neutral} neutral, and {positive} positive fresh headlines."
     else:
         summary = "Recent coverage is balanced, mixed, or mostly non-directional."
 
     return NewsScore(
-        value=value, label=label, confidence=confidence,
+        value=value, available=available, label=label, confidence=confidence,
         confidence_value=confidence_value, article_count=len(signals),
         independent_story_count=len(clusters), scored_article_count=len(scored),
         positive_count=positive, negative_count=negative, neutral_count=neutral,

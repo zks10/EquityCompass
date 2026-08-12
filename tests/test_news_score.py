@@ -19,7 +19,7 @@ class NewsScoreTests(unittest.TestCase):
             article("AMD reports record revenue on strong demand", "Bloomberg"),
             article("AMD wins contract for new data center chips", "CNBC"),
         ], as_of=NOW)
-        self.assertGreaterEqual(result.value, 45)
+        self.assertGreaterEqual(result.value, 4.5)
         self.assertEqual(result.positive_count, 3)
         self.assertIn("positive", result.label.lower())
 
@@ -28,7 +28,7 @@ class NewsScoreTests(unittest.TestCase):
             article("Company cuts guidance after weak demand"),
             article("Company faces regulatory investigation and layoffs", "Bloomberg"),
         ], as_of=NOW)
-        self.assertLessEqual(result.value, -35)
+        self.assertLessEqual(result.value, -3.5)
         self.assertEqual(result.negative_count, 2)
 
     def test_negation_reverses_phrase_direction(self):
@@ -60,11 +60,14 @@ class NewsScoreTests(unittest.TestCase):
         ], as_of=NOW)
         self.assertEqual(result.value, 0)
         self.assertEqual(result.neutral_count, 2)
+        self.assertFalse(result.available)
+        self.assertEqual(result.label, "No clear signal")
 
     def test_empty_feed_is_low_confidence_neutral(self):
         result = calculate_news_score([], as_of=NOW)
         self.assertEqual(result.value, 0)
-        self.assertEqual(result.confidence, "Low")
+        self.assertEqual(result.confidence, "Limited")
+        self.assertFalse(result.available)
 
     def test_unrelated_market_articles_are_excluded(self):
         result = calculate_news_score([
@@ -73,6 +76,53 @@ class NewsScoreTests(unittest.TestCase):
         ], as_of=NOW, company_terms=("AMD", "Advanced Micro Devices"))
         self.assertEqual(result.article_count, 1)
         self.assertGreater(result.value, 0)
+
+    def test_common_positive_market_language_is_not_left_neutral(self):
+        result = calculate_news_score([
+            article("Microsoft revenue doubles and tops estimates"),
+            article("Microsoft shares surge on accelerating growth", "Bloomberg"),
+            article("Hedge funds favor Microsoft after strong fundamentals", "CNBC"),
+        ], as_of=NOW, company_terms=("MSFT", "Microsoft"))
+        self.assertEqual(result.positive_count, 3)
+        self.assertGreaterEqual(result.value, 3.5)
+
+    def test_balanced_price_action_language_has_similar_strength(self):
+        positive = calculate_news_score([
+            article("Microsoft shares surge after earnings")
+        ], as_of=NOW, company_terms=("Microsoft",))
+        negative = calculate_news_score([
+            article("Microsoft shares slump after earnings")
+        ], as_of=NOW, company_terms=("Microsoft",))
+        self.assertAlmostEqual(abs(positive.value), abs(negative.value), delta=0.5)
+
+    def test_old_articles_are_not_part_of_daily_score(self):
+        result = calculate_news_score([
+            article("Microsoft raises guidance", published="2026-08-08T12:00:00Z")
+        ], as_of=NOW, company_terms=("Microsoft",))
+        self.assertFalse(result.available)
+        self.assertEqual(result.article_count, 0)
+
+    def test_neutral_headlines_reduce_confidence_not_erase_direction(self):
+        headlines = [article("Microsoft tops estimates after strong demand")]
+        headlines.extend(
+            article(f"Microsoft presents technology update number {index}", f"Source {index}")
+            for index in range(5)
+        )
+        result = calculate_news_score(
+            headlines, as_of=NOW, company_terms=("Microsoft",)
+        )
+        self.assertTrue(result.available)
+        self.assertGreaterEqual(result.value, 1.5)
+        self.assertEqual(result.positive_count, 1)
+
+    def test_small_positive_score_has_plain_language_label(self):
+        result = calculate_news_score([
+            article("Microsoft stock gains after product update")
+        ], as_of=NOW, company_terms=("Microsoft",))
+        self.assertGreater(result.value, 0)
+        self.assertLess(result.value, 2)
+        self.assertEqual(result.label, "Slightly positive")
+        self.assertIn("1 positive", result.summary)
 
 
 if __name__ == "__main__":
