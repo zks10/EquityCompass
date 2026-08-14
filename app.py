@@ -1543,6 +1543,23 @@ def show_news_and_events(summary: DashboardSummary) -> None:
         else "negative" if short_term_score.value <= -2
         else "neutral"
     )
+    status_tone = "mixed" if short_term_score.conflicting else score_tone
+    status_icon = (
+        "?" if not short_term_score.available
+        else "↗" if short_term_score.value >= 2
+        else "↘" if short_term_score.value <= -2
+        else "↔" if short_term_score.conflicting
+        else "•"
+    )
+    status_note = {
+        "Strong tailwind": "Broad short-term support",
+        "Supportive": "Current signals lean positive",
+        "Strong pressure": "Broad short-term weakness",
+        "Under pressure": "Current signals lean negative",
+        "Mixed signals": "Positive and negative signals disagree",
+        "Quiet / balanced": "No clear short-term direction",
+        "Market data unavailable": "Not enough data for a reading",
+    }.get(short_term_score.label, "A snapshot of current conditions")
     component_by_key = {component.key: component for component in short_term_score.components}
 
     def factor_tone(value: float | None) -> str:
@@ -1583,9 +1600,9 @@ def show_news_and_events(summary: DashboardSummary) -> None:
           <div class="news-hero-intro">
             <div class="news-context-copy"><span class="news-eyebrow">SHORT-TERM CONTEXT</span><h2>Short-term outlook for {html.escape(summary.ticker)}</h2>
             <p>A quick reading of what is happening now. It stays separate from long-term business quality.</p></div>
-            <aside class="news-score-preview news-score-preview-{score_tone}">
+            <aside class="news-score-preview news-score-preview-{status_tone}">
               <div class="news-score-preview-top"><span>SHORT-TERM SCORE</span></div>
-              <div class="news-score-preview-reading"><strong>{score_text}</strong><div><b>{html.escape(short_term_score.label)}</b></div></div>
+              <div class="news-score-preview-reading"><strong>{score_text}</strong><div class="score-status-copy"><span class="score-status-badge"><i>{status_icon}</i><b>{html.escape(short_term_score.label)}</b></span><small>{html.escape(status_note)}</small></div></div>
             </aside>
           </div>
           <div class="news-score-integrated-detail">
@@ -1601,29 +1618,26 @@ def show_news_and_events(summary: DashboardSummary) -> None:
         unsafe_allow_html=True,
     )
     with st.expander("How the Short-Term Score works"):
-        component_rows = "\n".join(
-            f"| {component.label} | {component.weight:.0%} | "
-            f"{'Unavailable' if component.value is None else f'{component.value:+.1f}'} | {component.detail} |"
+        component_rows = "".join(
+            f'<div class="score-method-row"><div><small>{html.escape(component.label.upper())} · {component.weight:.0%}</small>'
+            f'<strong>{"Unavailable" if component.value is None else f"{component.value:+.1f}"}</strong></div>'
+            f'<p>{html.escape(component.detail)}</p></div>'
             for component in short_term_score.components
         )
         st.markdown(
-            f"""
-            The Short-Term Score summarizes the company's **current market setup** from −10 to +10. It is context—not a buy or sell recommendation.
-
-            - **Price trend (35%)** combines the latest 1-day and 5-day moves, adjusted for the stock's usual volatility.
-            - **Relative strength (25%)** asks whether the stock is outperforming or lagging the S&P 500 over those same periods.
-            - **Recent catalysts (25%)** evaluates fresh, company-specific news after relevance and duplicate controls.
-            - **Volume confirmation (15%)** strengthens an existing move only when trading activity is meaningfully above its recent average; volume never creates direction by itself.
-            - Missing inputs contribute zero rather than making the remaining inputs look more important. Evidence strength is shown separately from direction.
-
-            The score can change frequently and may be noisy. It never changes or enters the long-term Equity Score.
-
-            **Current inputs**
-
-            | Factor | Weight | Reading | Recent evidence |
-            |---|---:|---:|---|
-            {component_rows}
-            """
+            f'''<section class="score-methodology">
+              <p class="score-method-intro">The Short-Term Score summarizes the company's <strong>current market setup</strong> from −10 to +10. It provides context—not a buy or sell recommendation.</p>
+              <div class="score-method-principles">
+                <div><strong>Price trend · 35%</strong><span>Recent 1-day and 5-day movement, adjusted for normal volatility.</span></div>
+                <div><strong>Versus the market · 25%</strong><span>Whether the stock is leading or trailing the S&amp;P 500.</span></div>
+                <div><strong>Company news · 25%</strong><span>Fresh, company-specific headlines after relevance and duplicate checks.</span></div>
+                <div><strong>Trading activity · 15%</strong><span>Whether unusual volume confirms an existing move.</span></div>
+              </div>
+              <div class="score-method-note">Missing inputs add zero. The score may change frequently and never affects the Equity Score.</div>
+              <h4>Current inputs</h4>
+              <div class="score-method-readings">{component_rows}</div>
+            </section>''',
+            unsafe_allow_html=True,
         )
     news_topics = detect_news_topics(summary.recent_news)
     topic_summary = "".join(
@@ -3108,7 +3122,12 @@ st.markdown(
     .score-separation-note strong, .score-separation-note small { display: block; }
     .score-separation-note strong { color: #17324B; font-size: .8rem; }
     .score-separation-note small { margin-top: 4px; color: #657586; font-size: .69rem; line-height: 1.45; }
-    .news-score-preview { display: flex; min-height: 118px; padding: 15px 17px 15px 28px; border: 0; border-left: 1px solid rgba(16,42,67,.10); border-radius: 0; background: transparent; box-shadow: none; flex-direction: column; justify-content: center; }
+    .news-score-preview { position: relative; display: flex; min-height: 144px; padding: 20px 22px; overflow: hidden; border: 1px solid rgba(16,42,67,.09); border-radius: 14px; background: #F7F9FA; box-shadow: 0 8px 22px rgba(16,42,67,.035); flex-direction: column; justify-content: center; }
+    .news-score-preview::after { content: ""; position: absolute; top: -36px; right: -30px; width: 115px; height: 115px; border-radius: 50%; background: rgba(23,50,75,.025); pointer-events: none; }
+    .news-score-preview-positive { background: linear-gradient(135deg,#F4FBF8,#FFFFFF); }
+    .news-score-preview-negative { background: linear-gradient(135deg,#FFF6F6,#FFFFFF); }
+    .news-score-preview-mixed { background: linear-gradient(135deg,#FFF9ED,#FFFFFF); }
+    .news-score-preview-unavailable { background: #F7F9FA; }
     .news-score-preview-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .news-score-preview-top span { color: #087A5A; font-size: .59rem; font-weight: 820; letter-spacing: .075em; }
     .news-score-preview-top em { color: #8A96A0; font-size: .55rem; font-style: normal; font-weight: 750; letter-spacing: .055em; }
@@ -3119,9 +3138,41 @@ st.markdown(
     .news-score-preview-unavailable .news-score-preview-reading > strong { color: #87919C; }
     .news-score-preview-reading > div { min-width: 0; }
     .news-score-preview-reading b, .news-score-preview-reading small { display: block; }
-    .news-score-preview-reading b { color: #17324B; font-size: .96rem; }
-    .news-score-preview-reading small { max-width: 270px; margin-top: 5px; color: #748390; font-size: .61rem; line-height: 1.38; }
+    .score-status-badge { display: inline-flex; align-items: center; gap: 7px; width: fit-content; padding: 6px 10px; border-radius: 999px; color: #294256; background: #EAEFF1; }
+    .score-status-badge i { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; color: #FFFFFF; background: #748390; font-size: .7rem; font-style: normal; font-weight: 850; }
+    .news-score-preview-reading b { color: inherit; font-size: .82rem; white-space: nowrap; }
+    .news-score-preview-reading small { max-width: 270px; margin: 7px 0 0 2px; color: #748390; font-size: .61rem; line-height: 1.38; }
+    .news-score-preview-positive .score-status-badge { color: #087A5A; background: #E4F4EE; }
+    .news-score-preview-positive .score-status-badge i { background: #0A8F6A; }
+    .news-score-preview-negative .score-status-badge { color: #A94747; background: #FBE8E8; }
+    .news-score-preview-negative .score-status-badge i { background: #C45454; }
+    .news-score-preview-mixed .score-status-badge { color: #8A6118; background: #FAEDCE; }
+    .news-score-preview-mixed .score-status-badge i { background: #B7852B; }
     .news-score-integrated-detail { margin-top: 22px; padding-top: 17px; border-top: 1px solid rgba(16,42,67,.085); }
+    .score-methodology { padding: 3px 1px 5px; color: #526473; }
+    .score-method-intro { margin: 0 0 15px; color: #405668; font-size: .76rem; line-height: 1.55; }
+    .score-method-intro strong { color: #17324B; }
+    .score-method-principles { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+    .score-method-principles > div { padding: 11px 12px; border-radius: 9px; background: #F5F8F7; }
+    .score-method-principles strong, .score-method-principles span { display: block; }
+    .score-method-principles strong { color: #294256; font-size: .68rem; }
+    .score-method-principles span { margin-top: 4px; color: #6D7C88; font-size: .62rem; line-height: 1.4; }
+    .score-method-note { margin-top: 10px; padding: 9px 11px; border-left: 2px solid #86CBB5; color: #617180; background: #F7FBFA; font-size: .63rem; line-height: 1.45; }
+    .score-methodology h4 { margin: 17px 0 8px; color: #17324B; font-size: .76rem; }
+    .score-method-readings { overflow: hidden; border: 1px solid rgba(16,42,67,.09); border-radius: 9px; }
+    .score-method-row { display: grid; grid-template-columns: 180px minmax(0,1fr); gap: 14px; align-items: center; padding: 9px 12px; border-bottom: 1px solid rgba(16,42,67,.075); }
+    .score-method-row:last-child { border-bottom: 0; }
+    .score-method-row small, .score-method-row strong { display: block; }
+    .score-method-row small { color: #87919C; font-size: .51rem; font-weight: 800; letter-spacing: .055em; }
+    .score-method-row strong { margin-top: 3px; color: #294256; font-size: .72rem; }
+    .score-method-row p { margin: 0; color: #657586; font-size: .62rem; line-height: 1.4; }
+    /* Methodology disclosure: visually belongs to the score card, not a new panel. */
+    [data-testid="stExpander"]:has(.score-methodology) { margin: -11px 0 23px; border: 0 !important; background: transparent !important; box-shadow: none !important; }
+    [data-testid="stExpander"]:has(.score-methodology) details { border: 0 !important; background: transparent !important; }
+    [data-testid="stExpander"]:has(.score-methodology) summary { width: fit-content; min-height: auto; padding: 7px 11px !important; border: 0 !important; border-radius: 8px; color: #087A5A; background: #EDF7F3; font-size: .67rem; font-weight: 720; transition: color 160ms ease, background-color 160ms ease, transform 160ms ease; }
+    [data-testid="stExpander"]:has(.score-methodology) summary:hover { transform: translateY(-1px); color: #05664A; background: #E4F3ED; }
+    [data-testid="stExpander"]:has(.score-methodology) details[open] summary { color: #17324B; background: #F0F4F3; }
+    [data-testid="stExpander"]:has(.score-methodology) details > div { margin-top: 9px; padding: 17px 18px 29px; border: 1px solid rgba(16,42,67,.09); border-radius: 12px; background: #FFFFFF; box-shadow: 0 6px 18px rgba(16,42,67,.025); }
     .beginner-score-summary { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 10px; margin-top: 16px; }
     .beginner-score-summary > div { padding: 13px 14px; border-radius: 10px; background: rgba(245,248,247,.88); }
     .beginner-score-summary small, .beginner-score-summary strong, .beginner-score-summary span { display: block; }
@@ -3331,8 +3382,10 @@ st.markdown(
         .financial-story-card { height: 186px; }
         .news-hero { padding: 21px 18px; }
         .news-hero-intro { grid-template-columns: 1fr; gap: 17px; }
-        .news-score-preview { padding: 15px 0 0; border-top: 1px solid rgba(16,42,67,.085); border-left: 0; }
+        .news-score-preview { min-height: 126px; padding: 16px; border: 1px solid rgba(16,42,67,.09); }
         .beginner-score-summary { grid-template-columns: 1fr; }
+        .score-method-principles { grid-template-columns: 1fr; }
+        .score-method-row { grid-template-columns: 1fr; gap: 5px; }
         .simple-factor-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
         .short-term-components { grid-template-columns: repeat(2, minmax(0,1fr)); }
         .news-score-facts { align-items: flex-start; flex-direction: column; gap: 6px; }
