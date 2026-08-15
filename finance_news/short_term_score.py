@@ -185,6 +185,17 @@ def calculate_short_term_score(
         ),
     )
 
+    # Treat unusable prices as unavailable market data. This keeps a malformed
+    # upstream payload from reaching the strongest-component calculation below
+    # and, more importantly, prevents news alone from becoming a market score.
+    if price_value is None:
+        return ShortTermScore(
+            value=0.0, available=False, label="Market data unavailable",
+            evidence="Limited", evidence_value=0,
+            summary="A short-term setup needs valid recent market prices.",
+            as_of=market.as_of, components=components, conflicting=False,
+        )
+
     weighted_value = sum(
         component.weight * (component.value or 0.0)
         for component in components

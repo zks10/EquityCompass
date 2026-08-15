@@ -106,6 +106,23 @@ class ShortTermScoreTests(unittest.TestCase):
         self.assertFalse(result.available)
         self.assertEqual(result.value, 0)
 
+    def test_unusable_prices_return_unavailable_instead_of_crashing(self):
+        invalid_market = MarketOverview(
+            ticker="TEST", latest_price=0.0, previous_close=0.0,
+            as_of=date.today().isoformat(),
+            points=(
+                PricePoint((date.today() - timedelta(days=1)).isoformat(), 0.0),
+                PricePoint(date.today().isoformat(), 0.0),
+            ),
+            intraday_points=(), benchmark_points=(),
+        )
+
+        result = calculate_short_term_score(invalid_market, news_score(9.0))
+
+        self.assertFalse(result.available)
+        self.assertEqual(result.value, 0.0)
+        self.assertEqual(result.label, "Market data unavailable")
+
 
 if __name__ == "__main__":
     unittest.main()

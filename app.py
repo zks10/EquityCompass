@@ -653,7 +653,7 @@ def show_overview(summary: DashboardSummary) -> None:
     )
     website_link = (
         f'<a class="profile-website" href="{html.escape(market.website, quote=True)}" '
-        'target="_blank">Official website ↗</a>'
+        'target="_blank" rel="noopener noreferrer">Official website ↗</a>'
         if market and market.website
         else ""
     )
@@ -1380,18 +1380,18 @@ def show_filings(summary: DashboardSummary) -> None:
     annual_filing_url = getattr(summary, "latest_10k_url", "") or cached_filing_url("10-K")
     quarterly_filing_url = getattr(summary, "latest_10q_url", "") or cached_filing_url("10-Q")
     annual_badge = (
-        f'<a href="{html.escape(annual_filing_url, quote=True)}" target="_blank"><b>Open annual filing</b><small>10-K ↗</small></a>'
+        f'<a href="{html.escape(annual_filing_url, quote=True)}" target="_blank" rel="noopener noreferrer"><b>Open annual filing</b><small>10-K ↗</small></a>'
         if annual_filing_url
         else '<span><b>Annual report</b><small>10-K</small></span>'
     )
     quarterly_badge = (
-        f'<a href="{html.escape(quarterly_filing_url, quote=True)}" target="_blank"><b>Open quarterly filing</b><small>10-Q ↗</small></a>'
+        f'<a href="{html.escape(quarterly_filing_url, quote=True)}" target="_blank" rel="noopener noreferrer"><b>Open quarterly filing</b><small>10-Q ↗</small></a>'
         if quarterly_filing_url
         else '<span><b>Quarterly update</b><small>10-Q</small></span>'
     )
     current_filing_url = recent_events[0].document_url if recent_events else ""
     current_badge = (
-        f'<a href="{html.escape(current_filing_url, quote=True)}" target="_blank"><b>Open current report</b><small>8-K ↗</small></a>'
+        f'<a href="{html.escape(current_filing_url, quote=True)}" target="_blank" rel="noopener noreferrer"><b>Open current report</b><small>8-K ↗</small></a>'
         if current_filing_url
         else '<span><b>Current report</b><small>8-K</small></span>'
     )
@@ -1678,7 +1678,10 @@ def show_news_and_events(summary: DashboardSummary) -> None:
             unsafe_allow_html=True,
         )
     if not visible_articles:
-        st.info("No articles match this view. Try All coverage.")
+        if summary.recent_news:
+            st.info("No articles match this view. Try All coverage.")
+        else:
+            st.info("No recent company news is available right now.")
     articles_per_page = 5
     total_pages = max(1, (len(visible_articles) + articles_per_page - 1) // articles_per_page)
     page_key = f"news-page-{summary.ticker}-{(selected_view or 'all').lower().replace(' ', '-')}"
