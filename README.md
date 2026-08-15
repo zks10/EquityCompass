@@ -4,6 +4,17 @@ Equity Compass is a beginner-friendly stock research project that collects and
 displays SEC filings, financial history, deterministic metrics, and recent company
 news for supported U.S. public-company tickers.
 
+## Phase 1 MVP — Complete
+
+Enter a U.S. stock ticker to explore its company overview, financial trends,
+SEC filings, and recent news in one beginner-friendly dashboard. Phase 1 includes
+10-K, 10-Q, and 8-K data, five-year financial history, clear charts and explanations,
+and two separate signals: an **Equity Score** for long-term fundamentals and a
+**Short-Term Score** for current market and news conditions.
+
+Phase 1 has passed end-to-end validation across AAPL, JPM, XOM, TSLA, and NVDA,
+with all 138 automated tests passing.
+
 Repository: https://github.com/zks10/EquityCompass
 
 ## Set up
