@@ -18,7 +18,7 @@ from finance_news.financial_facts import (
     save_financial_history,
 )
 from finance_news.sec_companies import Company, CompanyLookupError, resolve_ticker
-from finance_news.sec_filings import Filing, FilingLookupError, fetch_recent_filings
+from finance_news.sec_filings import Filing, FilingLookupError, find_latest_annual_filing
 from finance_news.section_extractor import (
     SectionExtractionError,
     extract_sections_file,
@@ -76,11 +76,14 @@ def run_pipeline(
 
     notify("2/9 Find the latest 10-K")
 
+    annual_source_cik = company.cik
+
     def select_filing() -> Filing:
-        filings = fetch_recent_filings(company.cik, limit=100)
-        filing = next((item for item in filings if item.form == "10-K"), None)
+        nonlocal annual_source_cik
+        annual, annual_source_cik = find_latest_annual_filing(company.cik)
+        filing = annual if annual and annual.form == "10-K" else None
         if filing is None:
-            if any(item.form == "20-F" for item in filings):
+            if annual and annual.form == "20-F":
                 raise FilingLookupError(
                     f"{company.ticker} is a foreign private issuer that files Form "
                     "20-F instead of Form 10-K. Equity Compass currently supports "
@@ -98,7 +101,7 @@ def run_pipeline(
     raw_filing_path = run_stage(
         "Download filing",
         lambda: download_filing(
-            filing, company.cik, overwrite=force_download
+            filing, annual_source_cik, overwrite=force_download
         ),
     )
 
@@ -117,7 +120,7 @@ def run_pipeline(
 
     notify("6/9 Retrieve SEC Company Facts")
     company_facts = run_stage(
-        "Retrieve Company Facts", lambda: fetch_company_facts(company.cik)
+        "Retrieve Company Facts", lambda: fetch_company_facts(annual_source_cik)
     )
 
     notify("7/9 Save the latest annual financial facts")
@@ -125,7 +128,7 @@ def run_pipeline(
     def save_latest() -> tuple[Path, Path]:
         latest = extract_latest_annual_facts(company_facts)
         return save_financial_facts(
-            company_facts, latest, company.ticker, company.cik
+            company_facts, latest, company.ticker, annual_source_cik
         )
 
     raw_facts_path, latest_facts_path = run_stage(
@@ -140,7 +143,7 @@ def run_pipeline(
             company_facts,
             history,
             company.ticker,
-            company.cik,
+            annual_source_cik,
             requested_years=years,
         )
 

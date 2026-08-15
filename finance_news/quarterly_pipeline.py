@@ -37,7 +37,9 @@ def run_quarterly_pipeline(
     notify("2/5 Find the latest 10-Q")
 
     def select_filing() -> Filing:
-        filings = fetch_recent_filings(company.cik, limit=100)
+        filings = fetch_recent_filings(
+            company.cik, limit=1, forms=frozenset({"10-Q"})
+        )
         filing = next((item for item in filings if item.form == "10-Q"), None)
         if filing is None:
             raise FilingLookupError(

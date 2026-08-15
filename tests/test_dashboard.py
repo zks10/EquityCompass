@@ -35,26 +35,27 @@ TEN_Q = Filing("10-Q", "2026-08-01", "quarterly", "10q.htm", "https://example/10
 
 
 class TickerEligibilityTests(unittest.TestCase):
-    @patch("finance_news.dashboard.fetch_recent_filings")
+    @patch("finance_news.dashboard.find_latest_annual_filing")
     @patch("finance_news.dashboard.resolve_ticker", return_value=COMPANY)
     def test_accepts_domestic_10k_filer(
         self, _mock_resolve: Mock, mock_filings: Mock
     ) -> None:
-        mock_filings.return_value = [TEN_K]
+        mock_filings.return_value = (TEN_K, COMPANY.cik)
 
         result = check_ticker_eligibility("aapl")
 
         self.assertTrue(result.supported)
         self.assertIn("Apple", result.message)
 
-    @patch("finance_news.dashboard.fetch_recent_filings")
+    @patch("finance_news.dashboard.find_latest_annual_filing")
     @patch("finance_news.dashboard.resolve_ticker", return_value=COMPANY)
     def test_rejects_foreign_20f_filer(
         self, _mock_resolve: Mock, mock_filings: Mock
     ) -> None:
-        mock_filings.return_value = [
-            Filing("20-F", "2026-03-01", "foreign", "20f.htm", "https://example/20f")
-        ]
+        mock_filings.return_value = (
+            Filing("20-F", "2026-03-01", "foreign", "20f.htm", "https://example/20f"),
+            COMPANY.cik,
+        )
 
         result = check_ticker_eligibility("nok")
 

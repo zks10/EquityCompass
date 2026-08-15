@@ -31,7 +31,7 @@ class RunPipelineTests(unittest.TestCase):
     @patch("finance_news.pipeline.extract_sections_file")
     @patch("finance_news.pipeline.process_filing")
     @patch("finance_news.pipeline.download_filing")
-    @patch("finance_news.pipeline.fetch_recent_filings")
+    @patch("finance_news.pipeline.find_latest_annual_filing")
     @patch("finance_news.pipeline.resolve_ticker")
     def test_runs_every_stage_and_returns_paths(
         self,
@@ -48,7 +48,7 @@ class RunPipelineTests(unittest.TestCase):
         mock_calculate: Mock,
     ) -> None:
         mock_resolve.return_value = COMPANY
-        mock_filings.return_value = [FILING]
+        mock_filings.return_value = (FILING, COMPANY.cik)
         mock_download.return_value = Path("data/raw/filing.htm")
         mock_process.return_value = Path("data/processed/filing.txt")
         mock_sections.return_value = [Path("data/processed/sections/business.txt")]
@@ -86,7 +86,7 @@ class RunPipelineTests(unittest.TestCase):
         )
         self.assertEqual(progress.call_count, 9)
 
-    @patch("finance_news.pipeline.fetch_recent_filings", return_value=[])
+    @patch("finance_news.pipeline.find_latest_annual_filing", return_value=(None, COMPANY.cik))
     @patch("finance_news.pipeline.resolve_ticker", return_value=COMPANY)
     def test_reports_missing_10k_stage(
         self, _mock_resolve: Mock, _mock_filings: Mock
@@ -94,20 +94,21 @@ class RunPipelineTests(unittest.TestCase):
         with self.assertRaisesRegex(PipelineError, "Select latest 10-K failed"):
             run_pipeline("AAPL")
 
-    @patch("finance_news.pipeline.fetch_recent_filings")
+    @patch("finance_news.pipeline.find_latest_annual_filing")
     @patch("finance_news.pipeline.resolve_ticker", return_value=COMPANY)
     def test_explains_foreign_20f_issuer_scope(
         self, _mock_resolve: Mock, mock_filings: Mock
     ) -> None:
-        mock_filings.return_value = [
+        mock_filings.return_value = (
             Filing(
                 form="20-F",
                 filing_date="2026-03-01",
                 accession_number="0000000000-26-000001",
                 primary_document="foreign.htm",
                 document_url="https://www.sec.gov/foreign.htm",
-            )
-        ]
+            ),
+            COMPANY.cik,
+        )
 
         with self.assertRaisesRegex(PipelineError, "foreign private issuer"):
             run_pipeline("AAPL")

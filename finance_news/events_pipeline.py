@@ -45,7 +45,9 @@ def run_events_pipeline(
     notify(f"Find the {limit} most recent 8-K filing(s)")
 
     def select_filings() -> tuple[Filing, ...]:
-        filings = fetch_recent_filings(company.cik, limit=100)
+        filings = fetch_recent_filings(
+            company.cik, limit=limit, forms=frozenset({"8-K"})
+        )
         selected = tuple(filing for filing in filings if filing.form == "8-K")[:limit]
         if not selected:
             raise FilingLookupError(

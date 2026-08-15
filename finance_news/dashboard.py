@@ -13,7 +13,7 @@ from finance_news.news_pipeline import NewsPipelineError, run_news_pipeline
 from finance_news.pipeline import PipelineError, run_pipeline
 from finance_news.quarterly_pipeline import run_quarterly_pipeline
 from finance_news.sec_companies import CompanyLookupError, resolve_ticker
-from finance_news.sec_filings import FilingLookupError, fetch_recent_filings
+from finance_news.sec_filings import FilingLookupError, find_latest_annual_filing
 
 
 class DashboardError(Exception):
@@ -35,7 +35,7 @@ def check_ticker_eligibility(ticker: str) -> TickerEligibility:
     normalized_ticker = ticker.strip().upper()
     try:
         company = resolve_ticker(normalized_ticker)
-        filings = fetch_recent_filings(company.cik, limit=100)
+        filing, _source_cik = find_latest_annual_filing(company.cik)
     except (CompanyLookupError, FilingLookupError) as exc:
         return TickerEligibility(
             ticker=normalized_ticker,
@@ -44,7 +44,7 @@ def check_ticker_eligibility(ticker: str) -> TickerEligibility:
             message=f"This ticker could not be verified: {exc}",
         )
 
-    forms = {filing.form for filing in filings}
+    forms = {filing.form} if filing else set()
     if "10-K" in forms:
         return TickerEligibility(
             ticker=company.ticker,

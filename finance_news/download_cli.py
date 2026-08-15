@@ -45,7 +45,9 @@ def main() -> int:
 
     try:
         company = resolve_ticker(args.ticker)
-        filings = fetch_recent_filings(company.cik, limit=100)
+        filings = fetch_recent_filings(
+            company.cik, limit=1, forms=frozenset({args.form})
+        )
         filing = next((item for item in filings if item.form == args.form), None)
         if filing is None:
             raise FilingLookupError(

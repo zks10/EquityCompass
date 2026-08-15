@@ -72,6 +72,30 @@ Issuer purchase information follows.
 
 
 class Extract10KSectionsTests(unittest.TestCase):
+    def test_prefers_substantive_cross_referenced_financial_section_mda(self) -> None:
+        text = """ITEM 1. BUSINESS
+The company describes its operations, customers, products, competition, and business model in substantive detail here.
+ITEM 1A. RISK FACTORS
+The company faces market, operational, regulatory, financial, and competitive risks that could affect future results.
+ITEM 2. PROPERTIES
+Property information follows.
+ITEM 7. MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS
+Reference is made to Management's Discussion and Analysis in the Financial Section.
+ITEM 8. FINANCIAL STATEMENTS
+FINANCIAL SECTION
+MANAGEMENT'S DISCUSSION AND ANALYSIS OF FINANCIAL CONDITION AND RESULTS OF OPERATIONS
+OVERVIEW
+Management discusses operating results, liquidity, capital resources, and the business environment in substantive detail.
+This discussion contains enough additional financial context to be the useful body rather than the short cross-reference.
+MANAGEMENT'S REPORT ON INTERNAL CONTROL OVER FINANCIAL REPORTING
+The internal-control report begins here.
+"""
+
+        sections = extract_10k_sections(text)
+
+        self.assertIn("liquidity, capital resources", sections["mda.txt"])
+        self.assertNotIn("internal-control report begins", sections["mda.txt"])
+
     def test_extracts_three_required_sections(self) -> None:
         sections = extract_10k_sections(SAMPLE_10K)
 

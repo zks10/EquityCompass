@@ -7,7 +7,12 @@ from unittest.mock import Mock, patch
 
 import requests
 
-from finance_news.sec_filings import FilingLookupError, fetch_recent_filings
+from finance_news.sec_filings import (
+    Filing,
+    FilingLookupError,
+    fetch_recent_filings,
+    find_latest_annual_filing,
+)
 
 
 RECENT_FILINGS = {
@@ -64,6 +69,63 @@ class FetchRecentFilingsTests(unittest.TestCase):
         self.assertEqual([filing.form for filing in filings], ["8-K", "10-Q"])
 
     @patch("finance_news.sec_filings.requests.get")
+    def test_follows_older_submission_file_when_recent_has_too_few_supported_forms(
+        self, mock_get: Mock
+    ) -> None:
+        recent = {
+            "filings": {
+                "recent": {
+                    "form": ["8-K"],
+                    "filingDate": ["2026-08-01"],
+                    "accessionNumber": ["0000320193-26-000001"],
+                    "primaryDocument": ["aapl-8k.htm"],
+                },
+                "files": [{"name": "CIK0000320193-submissions-001.json"}],
+            }
+        }
+        older = {
+            "form": ["10-K"],
+            "filingDate": ["2025-10-31"],
+            "accessionNumber": ["0000320193-25-000004"],
+            "primaryDocument": ["aapl-10k.htm"],
+        }
+        mock_get.side_effect = [successful_response(recent), successful_response(older)]
+
+        filings = fetch_recent_filings("320193", limit=2)
+
+        self.assertEqual([filing.form for filing in filings], ["8-K", "10-K"])
+        self.assertIn("submissions-001.json", mock_get.call_args_list[1].args[0])
+
+    @patch("finance_news.sec_filings.requests.get")
+    def test_form_filter_can_reach_annual_filing_past_many_recent_8ks(
+        self, mock_get: Mock
+    ) -> None:
+        recent = {
+            "filings": {
+                "recent": {
+                    "form": ["8-K", "8-K"],
+                    "filingDate": ["2026-08-01", "2026-07-01"],
+                    "accessionNumber": ["1-26-1", "1-26-2"],
+                    "primaryDocument": ["one.htm", "two.htm"],
+                },
+                "files": [{"name": "CIK1-submissions-001.json"}],
+            }
+        }
+        older = {
+            "form": ["10-K"],
+            "filingDate": ["2026-02-01"],
+            "accessionNumber": ["0000000001-26-000003"],
+            "primaryDocument": ["annual.htm"],
+        }
+        mock_get.side_effect = [successful_response(recent), successful_response(older)]
+
+        filings = fetch_recent_filings(
+            "1", limit=1, forms=frozenset({"10-K"})
+        )
+
+        self.assertEqual([filing.form for filing in filings], ["10-K"])
+
+    @patch("finance_news.sec_filings.requests.get")
     def test_returns_empty_list_when_no_supported_forms(self, mock_get: Mock) -> None:
         payload = {
             "filings": {
@@ -106,6 +168,37 @@ class FetchRecentFilingsTests(unittest.TestCase):
 
         with self.assertRaisesRegex(FilingLookupError, "unexpected format"):
             fetch_recent_filings("320193")
+
+
+class FindLatestAnnualFilingTests(unittest.TestCase):
+    @patch("finance_news.sec_filings.fetch_recent_filings")
+    def test_uses_validated_predecessor_from_joint_quarterly_accession(
+        self, mock_fetch: Mock
+    ) -> None:
+        quarterly = Filing(
+            "10-Q", "2026-08-03", "0000034088-26-000093", "q.htm", "https://q"
+        )
+        annual = Filing(
+            "10-K", "2026-02-18", "0000034088-26-000010", "k.htm", "https://k"
+        )
+        mock_fetch.side_effect = [[], [quarterly], [annual]]
+
+        filing, source_cik = find_latest_annual_filing("0002115436")
+
+        self.assertEqual(filing, annual)
+        self.assertEqual(source_cik, "0000034088")
+
+    @patch("finance_news.sec_filings.fetch_recent_filings")
+    def test_ignores_unvalidated_accession_candidate(self, mock_fetch: Mock) -> None:
+        quarterly = Filing(
+            "10-Q", "2026-08-03", "0001193125-26-000093", "q.htm", "https://q"
+        )
+        mock_fetch.side_effect = [[], [quarterly], []]
+
+        filing, source_cik = find_latest_annual_filing("0002115436")
+
+        self.assertIsNone(filing)
+        self.assertEqual(source_cik, "0002115436")
 
 
 if __name__ == "__main__":

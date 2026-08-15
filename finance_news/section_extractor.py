@@ -13,7 +13,13 @@ ITEM_HEADING = re.compile(
 MIN_SECTION_CHARACTERS = 80
 FALLBACK_END_TITLES = {
     "business.txt": ("risk factors", "management", "discussion"),
-    "mda.txt": ("risk factors", "properties"),
+    "mda.txt": (
+        "management’s report on internal control",
+        "management's report on internal control",
+        "consolidated financial statements",
+        "risk factors",
+        "properties",
+    ),
     "risk_factors.txt": ("financial statements",),
 }
 
@@ -126,9 +132,16 @@ def _extract_section(lines: list[str], definition: SectionDefinition) -> str | N
                 not title
                 or title.startswith("item ")
                 or title.endswith((".", "?", "!", ";"))
-                or len(title.split()) > 8
+                or len(title.split()) > 12
                 or not _matches_title(title, definition.title_terms)
             ):
+                continue
+            nearby_lines = [
+                candidate.strip()
+                for candidate in lines[start_index + 1 : start_index + 8]
+                if candidate.strip()
+            ]
+            if any(candidate.isdigit() for candidate in nearby_lines):
                 continue
             end_index = None
             for candidate_index in range(start_index + 1, len(lines)):
@@ -137,7 +150,7 @@ def _extract_section(lines: list[str], definition: SectionDefinition) -> str | N
                     candidate
                     and len(candidate) <= 100
                     and not candidate.startswith("item ")
-                    and any(end_title in candidate for end_title in fallback_ends)
+                    and any(candidate.startswith(end_title) for end_title in fallback_ends)
                 ):
                     end_index = candidate_index
                     break
