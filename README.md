@@ -1,78 +1,70 @@
-# Equity Compass
+<div align="center">
+  <img src="assets/equity-compass-logo-cropped.png" alt="Equity Compass" width="150">
+  <h1>Equity Compass</h1>
+  <p><strong>Understand a public company before you invest.</strong></p>
+  <p>A beginner-friendly dashboard that turns SEC filings, financial history,<br>
+  market data, and company news into clear, explainable research.</p>
 
-Equity Compass is a beginner-friendly stock research project that collects and
-displays SEC filings, financial history, deterministic metrics, and recent company
-news for supported U.S. public-company tickers.
+  <p>
+    <img src="https://img.shields.io/badge/Phase_1-MVP_Complete-1f7a5c" alt="Phase 1 MVP complete">
+    <img src="https://img.shields.io/badge/tests-138_passing-2ea44f" alt="138 tests passing">
+    <img src="https://img.shields.io/badge/Python-3.10%2B-3776ab" alt="Python 3.10 or later">
+    <img src="https://img.shields.io/badge/built_with-Streamlit-ff4b4b" alt="Built with Streamlit">
+  </p>
+</div>
 
-## Phase 1 MVP — Complete
+---
 
-Enter a U.S. stock ticker to explore its company overview, financial trends,
-SEC filings, and recent news in one beginner-friendly dashboard. Phase 1 includes
-10-K, 10-Q, and 8-K data, five-year financial history, clear charts and explanations,
-and two separate signals: an **Equity Score** for long-term fundamentals and a
-**Short-Term Score** for current market and news conditions.
+## Phase 1 at a glance
 
-Phase 1 has passed end-to-end validation across AAPL, JPM, XOM, TSLA, and NVDA,
-with all 138 automated tests passing.
+Enter a supported U.S. stock ticker and Equity Compass builds a structured company
+workspace from primary filings, market data, and recent coverage.
 
-Repository: https://github.com/zks10/EquityCompass
+| Workspace | What it explains |
+| --- | --- |
+| **Overview** | Company profile, price movement, key financial signals, and long-term Equity Score |
+| **Financials** | Five-year revenue, net income, EPS, cash flow, and balance-sheet trends |
+| **Filings** | Latest 10-K, 10-Q, and 8-K reports with Business, Risk Factors, MD&A, and material events |
+| **News & Events** | Recent company coverage, source links, sentiment context, and short-term market conditions |
 
-## Set up
+### Two scores, two different questions
+
+| Equity Score | Short-Term Score |
+| --- | --- |
+| Long-term company fundamentals | Current news and market conditions |
+| Built from reported financial metrics | Built from recent price action and news signals |
+| Transparent component breakdown | Separate from—and never changes—the Equity Score |
+
+> Equity Compass is a research and education tool, not a valuation, forecast,
+> investment rating, or recommendation.
+
+### Phase 1 validation
+
+End-to-end validated with **AAPL, JPM, XOM, TSLA, and NVDA**. All **138 automated
+tests pass**, including missing-data, error-state, filing-extraction, scoring, and
+corporate-successor coverage.
+
+## Quick start
 
 ```bash
-cd /Users/kevinzhu/Desktop/EquityCompass
+git clone https://github.com/zks10/EquityCompass.git
+cd EquityCompass
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -e .
 ```
 
-## Launch the Streamlit app
-
-Set the SEC contact identity described below, then start the local dashboard:
+Identify your SEC client and launch the dashboard:
 
 ```bash
 export SEC_USER_AGENT="Equity Compass your-email@example.com"
 streamlit run app.py
 ```
 
-Enter a supported U.S. public-company ticker and select **Analyze**. The app runs
-the existing annual, quarterly, and news collectors (reusing downloaded SEC
-filings when available), then displays the latest closing price, an interactive
-five-year price chart, latest annual financial values, four
-deterministic financial ratios, and a five-year financial table with trend
-charts. A beginner summary translates the four ratios into cautious plain-English
-signals and includes expandable definitions for the underlying financial terms.
-It also lists recent headlines with their publisher, publication time,
-and source link. The first five headlines are shown initially, with the rest in
-an expandable list. Beginner guidance explains the purpose of 10-K, 10-Q, and
-8-K filings and the meaning of common 8-K item categories. The app also keeps
-mechanically detected headline topics and short extractive filing previews,
-clearly labeled as incomplete aids rather than analysis or AI summaries. A transparent Financial
-Snapshot Score averages four equally weighted annual metrics and displays every
-component, threshold, limitation, and missing input. It is explicitly not a
-valuation, forecast, company rating, or investment recommendation. The app keeps
-the extracted Business, Risk Factors, and MD&A sections
-from the latest 10-K and the MD&A and Risk Factors sections from the latest
-10-Q. Recent 8-K filings are also shown with their extracted event items and
-direct SEC document links. The first run can take a little while because it
-downloads and processes the source data.
+The first analysis may take a few minutes while source filings are downloaded and
+processed. Later runs reuse the local data when possible.
 
-The results are organized into four tabs so each area can be reviewed separately:
-**Overview**, **Financials**, **Filings**, and **News & Events**. The ticker search
-area remains intentionally simple and will be redesigned separately.
-The Overview leads with a compact **Company at a glance** profile explaining
-what the company does and listing its sector, industry, headquarters, employee
-count, and official website. Next, the latest daily price movement and chart
-offer 1D, 1M, 6M, YTD, 1Y, and 5Y shortcuts, with each selected range marking
-its high, low, and average. The **Financial Compass** pairs a five-year revenue,
-net-income, and operating-
-cash-flow chart with the overall score. Component scores are combined with their
-current results in one aligned factor table. SEC CIK and latest 10-K/10-Q dates
-live in the Filings tab, where that metadata has the right context.
-The **Financials** tab presents separate five-year trends for Revenue, Net Income,
-EPS, and Free Cash Flow, with a short beginner-friendly explanation below each
-chart. Free Cash Flow is calculated as operating cash flow minus capital
-expenditures; no new 0–100 score is added on this page.
+## Data pipeline
 
 ## Resolve a company ticker
 
