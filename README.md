@@ -109,3 +109,8 @@ contacting the SEC.
 
 External data can be delayed, incomplete, or temporarily unavailable. Equity Compass
 shows missing-data and error states rather than inventing values.
+
+## Next: Phase 2
+
+Phase 2 will test whether historical Equity Scores were connected with stronger
+later results. Read the plain-language [Phase 2 validation plan](docs/phase-2-validation-plan.md).

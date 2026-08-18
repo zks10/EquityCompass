@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "PFE",
+  "cik": "0000078003",
+  "entity_name": "PFIZER INC",
+  "fiscal_year": 2022,
+  "period_end": "2022-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2023-02-23",
+    "accession_number": "0000078003-23-000024"
+  },
+  "score": {
+    "value": 95,
+    "label": "Mostly favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 100,
+        "source_value": 23.425351835449266
+      },
+      {
+        "name": "Net profit margin",
+        "score": 100,
+        "source_value": 31.268812917372667
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 81,
+        "source_value": 51.36178088790852
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 100,
+        "source_value": 29.17073656932124
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "Revenues",
+      "value": 100330000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-23",
+      "accession_number": "0000078003-23-000024",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 31372000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-23",
+      "accession_number": "0000078003-23-000024",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 197205000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-23",
+      "accession_number": "0000078003-23-000024",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 101288000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-23",
+      "accession_number": "0000078003-23-000024",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 29267000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-23",
+      "accession_number": "0000078003-23-000024",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "Revenues",
+    "value": 81288000000,
+    "unit": "USD",
+    "fiscal_year": 2022,
+    "period_end": "2021-12-31",
+    "filed": "2023-02-23",
+    "accession_number": "0000078003-23-000024",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000078003/companyfacts.json"
+  }
+}

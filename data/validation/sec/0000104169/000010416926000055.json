@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "WMT",
+  "cik": "0000104169",
+  "entity_name": "WALMART INC.",
+  "fiscal_year": 2026,
+  "period_end": "2026-01-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2026-03-13",
+    "accession_number": "0000104169-26-000055"
+  },
+  "score": {
+    "value": 42,
+    "label": "Mixed-to-cautious current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 74,
+        "source_value": 4.725456534694858
+      },
+      {
+        "name": "Net profit margin",
+        "score": 12,
+        "source_value": 3.0991785258765057
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 58,
+        "source_value": 65.00590161170206
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 24,
+        "source_value": 5.883951739279996
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 706413000000,
+      "unit": "USD",
+      "fiscal_year": 2026,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-13",
+      "accession_number": "0000104169-26-000055",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 21893000000,
+      "unit": "USD",
+      "fiscal_year": 2026,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-13",
+      "accession_number": "0000104169-26-000055",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 284668000000,
+      "unit": "USD",
+      "fiscal_year": 2026,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-13",
+      "accession_number": "0000104169-26-000055",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 41565000000,
+      "unit": "USD",
+      "fiscal_year": 2026,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-13",
+      "accession_number": "0000104169-26-000055",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "derived:Assets-StockholdersEquity",
+      "value": 185051000000,
+      "unit": "USD",
+      "fiscal_year": 2026,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-13",
+      "accession_number": "0000104169-26-000055",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 674538000000,
+    "unit": "USD",
+    "fiscal_year": 2026,
+    "period_end": "2025-01-31",
+    "filed": "2026-03-13",
+    "accession_number": "0000104169-26-000055",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000104169/companyfacts.json"
+  }
+}

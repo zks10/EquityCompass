@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "TGT",
+  "cik": "0000027419",
+  "entity_name": "TARGET CORPORATION",
+  "fiscal_year": 2025,
+  "period_end": "2026-01-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2026-03-11",
+    "accession_number": "0000027419-26-000016"
+  },
+  "score": {
+    "value": 32,
+    "label": "Mixed-to-cautious current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 42,
+        "source_value": -1.675956684120639
+      },
+      {
+        "name": "Net profit margin",
+        "score": 14,
+        "source_value": 3.535980148883375
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 45,
+        "source_value": 72.82736594385611
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 25,
+        "source_value": 6.262645543042565
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 104780000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-11",
+      "accession_number": "0000027419-26-000016",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 3705000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-11",
+      "accession_number": "0000027419-26-000016",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 59490000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-11",
+      "accession_number": "0000027419-26-000016",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 6562000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-11",
+      "accession_number": "0000027419-26-000016",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "derived:Assets-StockholdersEquity",
+      "value": 43325000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2026-01-31",
+      "filed": "2026-03-11",
+      "accession_number": "0000027419-26-000016",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 106566000000,
+    "unit": "USD",
+    "fiscal_year": 2025,
+    "period_end": "2025-02-01",
+    "filed": "2026-03-11",
+    "accession_number": "0000027419-26-000016",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000027419/companyfacts.json"
+  }
+}

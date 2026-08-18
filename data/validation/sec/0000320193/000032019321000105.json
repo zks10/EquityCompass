@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "AAPL",
+  "cik": "0000320193",
+  "entity_name": "Apple Inc.",
+  "fiscal_year": 2021,
+  "period_end": "2021-09-25",
+  "filing": {
+    "form": "10-K",
+    "filed": "2021-10-29",
+    "accession_number": "0000320193-21-000105"
+  },
+  "score": {
+    "value": 82,
+    "label": "Mostly favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 100,
+        "source_value": 33.25938473307469
+      },
+      {
+        "name": "Net profit margin",
+        "score": 100,
+        "source_value": 25.88179335569424
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 30,
+        "source_value": 82.02574344305731
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 100,
+        "source_value": 28.439903011615097
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 365817000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-09-25",
+      "filed": "2021-10-29",
+      "accession_number": "0000320193-21-000105",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 94680000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-09-25",
+      "filed": "2021-10-29",
+      "accession_number": "0000320193-21-000105",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 351002000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-09-25",
+      "filed": "2021-10-29",
+      "accession_number": "0000320193-21-000105",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 287912000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-09-25",
+      "filed": "2021-10-29",
+      "accession_number": "0000320193-21-000105",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 104038000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-09-25",
+      "filed": "2021-10-29",
+      "accession_number": "0000320193-21-000105",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 274515000000,
+    "unit": "USD",
+    "fiscal_year": 2021,
+    "period_end": "2020-09-26",
+    "filed": "2021-10-29",
+    "accession_number": "0000320193-21-000105",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000320193/companyfacts.json"
+  }
+}

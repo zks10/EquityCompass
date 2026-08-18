@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "TGT",
+  "cik": "0000027419",
+  "entity_name": "TARGET CORPORATION",
+  "fiscal_year": 2023,
+  "period_end": "2024-02-03",
+  "filing": {
+    "form": "10-K",
+    "filed": "2024-03-13",
+    "accession_number": "0000027419-24-000032"
+  },
+  "score": {
+    "value": 32,
+    "label": "Mixed-to-cautious current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 42,
+        "source_value": -1.56524926686217
+      },
+      {
+        "name": "Net profit margin",
+        "score": 15,
+        "source_value": 3.8524559639518863
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 40,
+        "source_value": 75.73524098562035
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 32,
+        "source_value": 8.02610509067888
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 107412000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2024-02-03",
+      "filed": "2024-03-13",
+      "accession_number": "0000027419-24-000032",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 4138000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2024-02-03",
+      "filed": "2024-03-13",
+      "accession_number": "0000027419-24-000032",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 55356000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2024-02-03",
+      "filed": "2024-03-13",
+      "accession_number": "0000027419-24-000032",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 8621000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2024-02-03",
+      "filed": "2024-03-13",
+      "accession_number": "0000027419-24-000032",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "derived:Assets-StockholdersEquity",
+      "value": 41924000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2024-02-03",
+      "filed": "2024-03-13",
+      "accession_number": "0000027419-24-000032",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 109120000000,
+    "unit": "USD",
+    "fiscal_year": 2023,
+    "period_end": "2023-01-28",
+    "filed": "2024-03-13",
+    "accession_number": "0000027419-24-000032",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000027419/companyfacts.json"
+  }
+}

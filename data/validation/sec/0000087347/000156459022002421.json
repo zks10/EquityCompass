@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "SLB",
+  "cik": "0000087347",
+  "entity_name": "SLB LIMITED/NV",
+  "fiscal_year": 2021,
+  "period_end": "2021-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2022-01-26",
+    "accession_number": "0001564590-22-002421"
+  },
+  "score": {
+    "value": 53,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 36,
+        "source_value": -2.847336977246727
+      },
+      {
+        "name": "Net profit margin",
+        "score": 33,
+        "source_value": 8.203584979720006
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 61,
+        "source_value": 63.176025631760254
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 81,
+        "source_value": 20.28435605565005
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 22929000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-01-26",
+      "accession_number": "0001564590-22-002421",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 1881000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-01-26",
+      "accession_number": "0001564590-22-002421",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 41511000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-01-26",
+      "accession_number": "0001564590-22-002421",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 26225000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-01-26",
+      "accession_number": "0001564590-22-002421",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 4651000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-01-26",
+      "accession_number": "0001564590-22-002421",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 23601000000,
+    "unit": "USD",
+    "fiscal_year": 2021,
+    "period_end": "2020-12-31",
+    "filed": "2022-01-26",
+    "accession_number": "0001564590-22-002421",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000087347/companyfacts.json"
+  }
+}

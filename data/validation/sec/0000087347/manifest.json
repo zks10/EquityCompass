@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "SLB",
+  "cik": "0000087347",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0001193125-26-021017",
+      "filing_date": "2026-01-23",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000087347/000119312526021017.json"
+    },
+    {
+      "accession_number": "0000950170-25-007638",
+      "filing_date": "2025-01-22",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000087347/000095017025007638.json"
+    },
+    {
+      "accession_number": "0000950170-24-006884",
+      "filing_date": "2024-01-24",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000087347/000095017024006884.json"
+    },
+    {
+      "accession_number": "0001564590-23-000762",
+      "filing_date": "2023-01-25",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000087347/000156459023000762.json"
+    },
+    {
+      "accession_number": "0001564590-22-002421",
+      "filing_date": "2022-01-26",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000087347/000156459022002421.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000087347/companyfacts.json"
+  }
+}

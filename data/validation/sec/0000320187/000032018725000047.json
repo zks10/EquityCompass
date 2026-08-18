@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "NKE",
+  "cik": "0000320187",
+  "entity_name": "NIKE, Inc.",
+  "fiscal_year": 2025,
+  "period_end": "2025-05-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2025-07-17",
+    "accession_number": "0000320187-25-000047"
+  },
+  "score": {
+    "value": 30,
+    "label": "Mixed-to-cautious current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 1,
+        "source_value": -9.838012538452553
+      },
+      {
+        "name": "Net profit margin",
+        "score": 28,
+        "source_value": 6.951132609212032
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 60,
+        "source_value": 63.87818147024249
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 32,
+        "source_value": 7.985488781878253
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 46309000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-05-31",
+      "filed": "2025-07-17",
+      "accession_number": "0000320187-25-000047",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 3219000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-05-31",
+      "filed": "2025-07-17",
+      "accession_number": "0000320187-25-000047",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 36579000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-05-31",
+      "filed": "2025-07-17",
+      "accession_number": "0000320187-25-000047",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 3698000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-05-31",
+      "filed": "2025-07-17",
+      "accession_number": "0000320187-25-000047",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "derived:Assets-StockholdersEquity",
+      "value": 23366000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-05-31",
+      "filed": "2025-07-17",
+      "accession_number": "0000320187-25-000047",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 51362000000,
+    "unit": "USD",
+    "fiscal_year": 2025,
+    "period_end": "2024-05-31",
+    "filed": "2025-07-17",
+    "accession_number": "0000320187-25-000047",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000320187/companyfacts.json"
+  }
+}

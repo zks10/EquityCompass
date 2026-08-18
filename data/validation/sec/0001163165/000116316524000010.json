@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "COP",
+  "cik": "0001163165",
+  "entity_name": "ConocoPhillips",
+  "fiscal_year": 2023,
+  "period_end": "2023-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2024-02-15",
+    "accession_number": "0001163165-24-000010"
+  },
+  "score": {
+    "value": 69,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 0,
+        "source_value": -20.519582630346115
+      },
+      {
+        "name": "Net profit margin",
+        "score": 90,
+        "source_value": 22.581509418408142
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 86,
+        "source_value": 48.62703807180685
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 100,
+        "source_value": 41.14628415976258
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 48522000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-15",
+      "accession_number": "0001163165-24-000010",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 10957000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-15",
+      "accession_number": "0001163165-24-000010",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 95924000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-15",
+      "accession_number": "0001163165-24-000010",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 46645000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-15",
+      "accession_number": "0001163165-24-000010",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 19965000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-15",
+      "accession_number": "0001163165-24-000010",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 61049000000,
+    "unit": "USD",
+    "fiscal_year": 2023,
+    "period_end": "2022-12-31",
+    "filed": "2024-02-15",
+    "accession_number": "0001163165-24-000010",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0001163165/companyfacts.json"
+  }
+}

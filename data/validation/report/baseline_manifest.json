@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "frozen_on": "2026-08-15",
+  "status": "frozen_baseline",
+  "score_formula_changed": false,
+  "snapshot_count": 100,
+  "snapshot_set_sha256": "12df3a4c31db3d06750a82f38c5cfbe99af038a8156d216a02680b816399dc41",
+  "files": {
+    "data/validation/sec/pilot_manifest.json": "f7808cf0db123aceb92c7bca83973e9a560a0c1fc570d0011cf10b5f27644d25",
+    "data/validation/market/pilot_outcomes.json": "577b6ceedbbcbc08f2899fa6b5e74a643e07eed0d19ac5053dbc6bab496247e0",
+    "data/validation/report/pilot_report.json": "34859d3e1cea19331f70951adf4473b0ec19359621839320da6ae0fb86d595ca",
+    "data/validation/report/pilot_diagnostics.json": "9ebe64a6c52f27b7bc1eba06d82df50eeb3a45b4b646b183c0c44d55c4c087a6",
+    "data/validation/report/pilot_industry_adjusted.json": "b83fa091ad0e6d1d72b32182d2d9d1a8263dc1475e1eb5d6e1839dd47d8f4982",
+    "docs/phase-2-baseline-conclusion.md": "c1451db6ee164676f45590efd182d9f464c0ca6104e00d4981f09d18e5c4359d"
+  }
+}

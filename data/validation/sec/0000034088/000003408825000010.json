@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "XOM",
+  "cik": "0000034088",
+  "entity_name": "Exxon Mobil Corporation",
+  "fiscal_year": 2024,
+  "period_end": "2024-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2025-02-19",
+    "accession_number": "0000034088-25-000010"
+  },
+  "score": {
+    "value": 64,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 57,
+        "source_value": 1.451904046061605
+      },
+      {
+        "name": "Net profit margin",
+        "score": 39,
+        "source_value": 9.634280647052934
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 99,
+        "source_value": 40.326148078725396
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 63,
+        "source_value": 15.739233662771571
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "Revenues",
+      "value": 349585000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-19",
+      "accession_number": "0000034088-25-000010",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 33680000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-19",
+      "accession_number": "0000034088-25-000010",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 453475000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-19",
+      "accession_number": "0000034088-25-000010",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 182869000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-19",
+      "accession_number": "0000034088-25-000010",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 55022000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-19",
+      "accession_number": "0000034088-25-000010",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "Revenues",
+    "value": 344582000000,
+    "unit": "USD",
+    "fiscal_year": 2024,
+    "period_end": "2023-12-31",
+    "filed": "2025-02-19",
+    "accession_number": "0000034088-25-000010",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000034088/companyfacts.json"
+  }
+}

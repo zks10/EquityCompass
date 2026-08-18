@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "PFE",
+  "cik": "0000078003",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0000078003-26-000026",
+      "filing_date": "2026-02-26",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000078003/000007800326000026.json"
+    },
+    {
+      "accession_number": "0000078003-25-000054",
+      "filing_date": "2025-02-27",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000078003/000007800325000054.json"
+    },
+    {
+      "accession_number": "0000078003-24-000039",
+      "filing_date": "2024-02-22",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000078003/000007800324000039.json"
+    },
+    {
+      "accession_number": "0000078003-23-000024",
+      "filing_date": "2023-02-23",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000078003/000007800323000024.json"
+    },
+    {
+      "accession_number": "0000078003-22-000027",
+      "filing_date": "2022-02-24",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000078003/000007800322000027.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000078003/companyfacts.json"
+  }
+}

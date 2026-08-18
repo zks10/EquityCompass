@@ -1,0 +1,1753 @@
+{
+  "schema_version": 1,
+  "status": "holdout_scores_complete",
+  "holdout_opened": true,
+  "partitions": [
+    "holdout"
+  ],
+  "attempted": 174,
+  "completed": 130,
+  "incomplete": 44,
+  "attempts": [
+    {
+      "cik": "0001961847",
+      "accession_number": "0001493152-24-002509",
+      "filing_date": "2024-01-16",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "INHD",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001961847/000149315224002509.json"
+    },
+    {
+      "cik": "0001125376",
+      "accession_number": "0001125376-24-000018",
+      "filing_date": "2024-02-01",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ENSG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001125376/000112537624000018.json"
+    },
+    {
+      "cik": "0001433195",
+      "accession_number": "0001433195-24-000023",
+      "filing_date": "2024-02-01",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "APPF",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001433195/000143319524000023.json"
+    },
+    {
+      "cik": "0001058090",
+      "accession_number": "0001562762-24-000023",
+      "filing_date": "2024-02-08",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "CMG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001058090/000156276224000023.json"
+    },
+    {
+      "cik": "0001347178",
+      "accession_number": "0001628280-24-003785",
+      "filing_date": "2024-02-08",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "VNDA",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001347178/000162828024003785.json"
+    },
+    {
+      "cik": "0000833640",
+      "accession_number": "0000833640-24-000030",
+      "filing_date": "2024-02-12",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "POWI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000833640/000083364024000030.json"
+    },
+    {
+      "cik": "0001762239",
+      "accession_number": "0001731122-24-000237",
+      "filing_date": "2024-02-14",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "KAVL",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001762239/000173112224000237.json"
+    },
+    {
+      "cik": "0000023632",
+      "accession_number": "0001047862-24-000012",
+      "filing_date": "2024-02-15",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "ED",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000084839",
+      "accession_number": "0000084839-24-000025",
+      "filing_date": "2024-02-15",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ROL",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000084839/000008483924000025.json"
+    },
+    {
+      "cik": "0001334036",
+      "accession_number": "0001334036-24-000025",
+      "filing_date": "2024-02-15",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "CROX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001334036/000133403624000025.json"
+    },
+    {
+      "cik": "0001478242",
+      "accession_number": "0001478242-24-000038",
+      "filing_date": "2024-02-15",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "IQV",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001478242/000147824224000038.json"
+    },
+    {
+      "cik": "0001617640",
+      "accession_number": "0001617640-24-000022",
+      "filing_date": "2024-02-15",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ZG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001617640/000161764024000022.json"
+    },
+    {
+      "cik": "0001637459",
+      "accession_number": "0001637459-24-000018",
+      "filing_date": "2024-02-15",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "KHC",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000009092",
+      "accession_number": "0000950170-24-016245",
+      "filing_date": "2024-02-16",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "BMI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000009092/000095017024016245.json"
+    },
+    {
+      "cik": "0001625278",
+      "accession_number": "0001625278-24-000030",
+      "filing_date": "2024-02-20",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "NRDS",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001625278/000162527824000030.json"
+    },
+    {
+      "cik": "0000027879",
+      "accession_number": "0001109357-24-000053",
+      "filing_date": "2024-02-21",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "EXC",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000313616",
+      "accession_number": "0000313616-24-000052",
+      "filing_date": "2024-02-21",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "DHR",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000313616/000031361624000052.json"
+    },
+    {
+      "cik": "0000701347",
+      "accession_number": "0000701347-24-000006",
+      "filing_date": "2024-02-21",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "CPF",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000701347/000070134724000006.json"
+    },
+    {
+      "cik": "0001046257",
+      "accession_number": "0001046257-24-000005",
+      "filing_date": "2024-02-21",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "INGR",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001046257/000104625724000005.json"
+    },
+    {
+      "cik": "0000027996",
+      "accession_number": "0000027996-24-000065",
+      "filing_date": "2024-02-22",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "DLX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000027996/000002799624000065.json"
+    },
+    {
+      "cik": "0001104506",
+      "accession_number": "0001104506-24-000008",
+      "filing_date": "2024-02-22",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "INSM",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001104506/000110450624000008.json"
+    },
+    {
+      "cik": "0001384905",
+      "accession_number": "0001384905-24-000013",
+      "filing_date": "2024-02-22",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "RNG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001384905/000138490524000013.json"
+    },
+    {
+      "cik": "0001492691",
+      "accession_number": "0001492691-24-000015",
+      "filing_date": "2024-02-22",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "KNX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001492691/000149269124000015.json"
+    },
+    {
+      "cik": "0001515816",
+      "accession_number": "0001171520-24-000136",
+      "filing_date": "2024-02-22",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "PLYM",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001515816/000117152024000136.json"
+    },
+    {
+      "cik": "0001579684",
+      "accession_number": "0001579684-24-000008",
+      "filing_date": "2024-02-22",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "GCI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001579684/000157968424000008.json"
+    },
+    {
+      "cik": "0000109380",
+      "accession_number": "0000109380-24-000061",
+      "filing_date": "2024-02-23",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "ZION",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000109380/000010938024000061.json"
+    },
+    {
+      "cik": "0000004904",
+      "accession_number": "0000004904-24-000020",
+      "filing_date": "2024-02-26",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "AEP",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000004904/000000490424000020.json"
+    },
+    {
+      "cik": "0000036029",
+      "accession_number": "0000950170-24-019528",
+      "filing_date": "2024-02-26",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "FFIN",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000050172",
+      "accession_number": "0000004904-24-000020",
+      "filing_date": "2024-02-26",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "AEP",
+      "status": "incomplete",
+      "reason": "SEC Company Facts is missing US-GAAP facts."
+    },
+    {
+      "cik": "0001622229",
+      "accession_number": "0000950170-24-019770",
+      "filing_date": "2024-02-26",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "COGT",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001168165",
+      "accession_number": "0001868275-24-000014",
+      "filing_date": "2024-02-27",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "CEG",
+      "status": "incomplete",
+      "reason": "SEC Company Facts is missing US-GAAP facts."
+    },
+    {
+      "cik": "0001822479",
+      "accession_number": "0001822479-24-000011",
+      "filing_date": "2024-02-27",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "SHC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001822479/000182247924000011.json"
+    },
+    {
+      "cik": "0001955520",
+      "accession_number": "0001955520-24-000007",
+      "filing_date": "2024-02-27",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "ticker": "KNF",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001955520/000195552024000007.json"
+    },
+    {
+      "cik": "0001171759",
+      "accession_number": "0001171759-24-000011",
+      "filing_date": "2024-02-28",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "RRGB",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001171759/000117175924000011.json"
+    },
+    {
+      "cik": "0001537028",
+      "accession_number": "0001537028-24-000006",
+      "filing_date": "2024-02-28",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "ticker": "ICD",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001537028/000153702824000006.json"
+    },
+    {
+      "cik": "0001766363",
+      "accession_number": "0000950170-24-021653",
+      "filing_date": "2024-02-28",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "EDR",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001766363/000095017024021653.json"
+    },
+    {
+      "cik": "0001781755",
+      "accession_number": "0001781755-24-000016",
+      "filing_date": "2024-02-28",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "BRP",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001781755/000178175524000016.json"
+    },
+    {
+      "cik": "0001849253",
+      "accession_number": "0000950170-24-021657",
+      "filing_date": "2024-02-28",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "RYAN",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001849253/000095017024021657.json"
+    },
+    {
+      "cik": "0001869198",
+      "accession_number": "0001869198-24-000008",
+      "filing_date": "2024-02-28",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "LTH",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001869198/000186919824000008.json"
+    },
+    {
+      "cik": "0001724965",
+      "accession_number": "0000950170-24-022540",
+      "filing_date": "2024-02-29",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "ticker": "TALO",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001724965/000095017024022540.json"
+    },
+    {
+      "cik": "0001042729",
+      "accession_number": "0001437749-24-006268",
+      "filing_date": "2024-03-01",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "MBWM",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001785173",
+      "accession_number": "0000950170-24-024008",
+      "filing_date": "2024-03-01",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "ETNB",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001464343",
+      "accession_number": "0001437749-24-006440",
+      "filing_date": "2024-03-04",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "ATLC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001464343/000143774924006440.json"
+    },
+    {
+      "cik": "0001593548",
+      "accession_number": "0001437749-24-006735",
+      "filing_date": "2024-03-06",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "AGS",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001593548/000143774924006735.json"
+    },
+    {
+      "cik": "0001835597",
+      "accession_number": "0000950170-24-027178",
+      "filing_date": "2024-03-06",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "PEPG",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000216085",
+      "accession_number": "0001628280-24-009586",
+      "filing_date": "2024-03-07",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "HVT",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000216085/000162828024009586.json"
+    },
+    {
+      "cik": "0001014763",
+      "accession_number": "0001654954-24-002897",
+      "filing_date": "2024-03-08",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "AIMD",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001014763/000165495424002897.json"
+    },
+    {
+      "cik": "0001065078",
+      "accession_number": "0001072613-24-000334",
+      "filing_date": "2024-03-08",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "NTIP",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001883313",
+      "accession_number": "0001883313-24-000013",
+      "filing_date": "2024-03-08",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "SVV",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001883313/000188331324000013.json"
+    },
+    {
+      "cik": "0001959348",
+      "accession_number": "0001628280-24-009949",
+      "filing_date": "2024-03-08",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "KLG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001959348/000162828024009949.json"
+    },
+    {
+      "cik": "0001558569",
+      "accession_number": "0001558370-24-003129",
+      "filing_date": "2024-03-13",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ISPC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001558569/000155837024003129.json"
+    },
+    {
+      "cik": "0001604868",
+      "accession_number": "0001628280-24-010996",
+      "filing_date": "2024-03-13",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "GRWG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001604868/000162828024010996.json"
+    },
+    {
+      "cik": "0001689375",
+      "accession_number": "0001689375-24-000016",
+      "filing_date": "2024-03-13",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "TRDA",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001813914",
+      "accession_number": "0000950170-24-032506",
+      "filing_date": "2024-03-18",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "CMAX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001813914/000095017024032506.json"
+    },
+    {
+      "cik": "0001941536",
+      "accession_number": "0001628280-24-012213",
+      "filing_date": "2024-03-20",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "BAER",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001941536/000162828024012213.json"
+    },
+    {
+      "cik": "0000932781",
+      "accession_number": "0001552781-24-000169",
+      "filing_date": "2024-03-21",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "FCCO",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001372514",
+      "accession_number": "0001372514-24-000026",
+      "filing_date": "2024-03-25",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "KPRX",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001623526",
+      "accession_number": "0000950170-24-035912",
+      "filing_date": "2024-03-25",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "STOK",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001623526/000095017024035912.json"
+    },
+    {
+      "cik": "0000928340",
+      "accession_number": "0001558370-24-004095",
+      "filing_date": "2024-03-27",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "CWCO",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000928340/000155837024004095.json"
+    },
+    {
+      "cik": "0000885508",
+      "accession_number": "0000885508-24-000029",
+      "filing_date": "2024-03-28",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "STRS",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000885508/000088550824000029.json"
+    },
+    {
+      "cik": "0001051514",
+      "accession_number": "0001140361-24-015754",
+      "filing_date": "2024-03-28",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "SSKN",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001051514/000114036124015754.json"
+    },
+    {
+      "cik": "0001597846",
+      "accession_number": "0001493152-24-011639",
+      "filing_date": "2024-03-28",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "GRNQ",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001597846/000149315224011639.json"
+    },
+    {
+      "cik": "0001899287",
+      "accession_number": "0001899287-24-000016",
+      "filing_date": "2024-03-28",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "AMPX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001899287/000189928724000016.json"
+    },
+    {
+      "cik": "0001889983",
+      "accession_number": "0001213900-24-027973",
+      "filing_date": "2024-03-29",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "KVAC",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001434524",
+      "accession_number": "0001558370-24-004441",
+      "filing_date": "2024-04-01",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "CLIR",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001571934",
+      "accession_number": "0001410578-24-000410",
+      "filing_date": "2024-04-01",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "SNPX",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001812727",
+      "accession_number": "0001493152-24-013118",
+      "filing_date": "2024-04-04",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "RELI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001812727/000149315224013118.json"
+    },
+    {
+      "cik": "0001326706",
+      "accession_number": "0001493152-24-013966",
+      "filing_date": "2024-04-08",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "NAOV",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001326706/000149315224013966.json"
+    },
+    {
+      "cik": "0001460702",
+      "accession_number": "0001493152-24-013400",
+      "filing_date": "2024-04-08",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "QLGN",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001849380",
+      "accession_number": "0001493152-24-014092",
+      "filing_date": "2024-04-09",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ONMD",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001849380/000149315224014092.json"
+    },
+    {
+      "cik": "0001460602",
+      "accession_number": "0001493152-24-014652",
+      "filing_date": "2024-04-15",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "ORGS",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001460602/000149315224014652.json"
+    },
+    {
+      "cik": "0001463972",
+      "accession_number": "0001558370-24-005117",
+      "filing_date": "2024-04-15",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "VUZI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001463972/000155837024005117.json"
+    },
+    {
+      "cik": "0001688568",
+      "accession_number": "0001688568-24-000032",
+      "filing_date": "2024-05-17",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "DXC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001688568/000168856824000032.json"
+    },
+    {
+      "cik": "0001596993",
+      "accession_number": "0001596993-24-000030",
+      "filing_date": "2024-05-29",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "LPG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001596993/000159699324000030.json"
+    },
+    {
+      "cik": "0001698530",
+      "accession_number": "0001698530-24-000051",
+      "filing_date": "2024-06-06",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "XCUR",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001698530/000169853024000051.json"
+    },
+    {
+      "cik": "0001040130",
+      "accession_number": "0001040130-24-000046",
+      "filing_date": "2024-06-14",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "PETS",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001468492",
+      "accession_number": "0000950170-24-087271",
+      "filing_date": "2024-07-29",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "HSCS",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001468492/000095017024087271.json"
+    },
+    {
+      "cik": "0000057515",
+      "accession_number": "0000057515-24-000020",
+      "filing_date": "2024-08-22",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "LANC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000057515/000005751524000020.json"
+    },
+    {
+      "cik": "0001606757",
+      "accession_number": "0001606757-24-000024",
+      "filing_date": "2024-08-23",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "KE",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001606757/000160675724000024.json"
+    },
+    {
+      "cik": "0001617242",
+      "accession_number": "0001617242-24-000072",
+      "filing_date": "2024-08-23",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "KRNY",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001069899",
+      "accession_number": "0001558370-24-012517",
+      "filing_date": "2024-08-28",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "PAHC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001069899/000155837024012517.json"
+    },
+    {
+      "cik": "0000722572",
+      "accession_number": "0001683168-24-006754",
+      "filing_date": "2024-09-30",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "FKWL",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000722572/000168316824006754.json"
+    },
+    {
+      "cik": "0001297341",
+      "accession_number": "0001213900-24-085121",
+      "filing_date": "2024-10-03",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "KFFB",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001880613",
+      "accession_number": "0001558370-24-013317",
+      "filing_date": "2024-10-15",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "DRCT",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001880613/000155837024013317.json"
+    },
+    {
+      "cik": "0000316253",
+      "accession_number": "0001213900-24-091798",
+      "filing_date": "2024-10-29",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "ENZ",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000316253/000121390024091798.json"
+    },
+    {
+      "cik": "0001417398",
+      "accession_number": "0001417398-24-000256",
+      "filing_date": "2024-11-19",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "HI",
+      "status": "incomplete",
+      "reason": "The selected 10-K is missing required metric(s): operating_cash_flow."
+    },
+    {
+      "cik": "0000884614",
+      "accession_number": "0000884614-24-000086",
+      "filing_date": "2024-11-26",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "UGI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000884614/000088461424000086.json"
+    },
+    {
+      "cik": "0001961847",
+      "accession_number": "0001493152-24-049268",
+      "filing_date": "2024-12-09",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "INHD",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001961847/000149315224049268.json"
+    },
+    {
+      "cik": "0000737758",
+      "accession_number": "0000737758-24-000087",
+      "filing_date": "2024-12-18",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "TTC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000737758/000073775824000087.json"
+    },
+    {
+      "cik": "0000936395",
+      "accession_number": "0000936395-24-000044",
+      "filing_date": "2024-12-20",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "CIEN",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000936395/000093639524000044.json"
+    },
+    {
+      "cik": "0001314052",
+      "accession_number": "0001731122-24-002041",
+      "filing_date": "2024-12-23",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "AVXL",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001058090",
+      "accession_number": "0001058090-25-000014",
+      "filing_date": "2025-02-05",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "CMG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001058090/000105809025000014.json"
+    },
+    {
+      "cik": "0001125376",
+      "accession_number": "0001125376-25-000021",
+      "filing_date": "2025-02-05",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ENSG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001125376/000112537625000021.json"
+    },
+    {
+      "cik": "0001433195",
+      "accession_number": "0001433195-25-000013",
+      "filing_date": "2025-02-06",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "APPF",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001433195/000143319525000013.json"
+    },
+    {
+      "cik": "0000833640",
+      "accession_number": "0000833640-25-000043",
+      "filing_date": "2025-02-07",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "POWI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000833640/000083364025000043.json"
+    },
+    {
+      "cik": "0001762239",
+      "accession_number": "0001731122-25-000185",
+      "filing_date": "2025-02-10",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "KAVL",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001762239/000173112225000185.json"
+    },
+    {
+      "cik": "0001617640",
+      "accession_number": "0001617640-25-000016",
+      "filing_date": "2025-02-11",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ZG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001617640/000161764025000016.json"
+    },
+    {
+      "cik": "0000027879",
+      "accession_number": "0001109357-25-000043",
+      "filing_date": "2025-02-12",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "EXC",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000004904",
+      "accession_number": "0000004904-25-000027",
+      "filing_date": "2025-02-13",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "AEP",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000004904/000000490425000027.json"
+    },
+    {
+      "cik": "0000050172",
+      "accession_number": "0000004904-25-000027",
+      "filing_date": "2025-02-13",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "AEP",
+      "status": "incomplete",
+      "reason": "SEC Company Facts is missing US-GAAP facts."
+    },
+    {
+      "cik": "0000084839",
+      "accession_number": "0000084839-25-000024",
+      "filing_date": "2025-02-13",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ROL",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000084839/000008483925000024.json"
+    },
+    {
+      "cik": "0001334036",
+      "accession_number": "0001334036-25-000009",
+      "filing_date": "2025-02-13",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "CROX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001334036/000133403625000009.json"
+    },
+    {
+      "cik": "0001478242",
+      "accession_number": "0001478242-25-000045",
+      "filing_date": "2025-02-13",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "IQV",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001478242/000147824225000045.json"
+    },
+    {
+      "cik": "0001637459",
+      "accession_number": "0001637459-25-000011",
+      "filing_date": "2025-02-13",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "KHC",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000009092",
+      "accession_number": "0000950170-25-020889",
+      "filing_date": "2025-02-14",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "BMI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000009092/000095017025020889.json"
+    },
+    {
+      "cik": "0001347178",
+      "accession_number": "0001628280-25-005761",
+      "filing_date": "2025-02-14",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "VNDA",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001347178/000162828025005761.json"
+    },
+    {
+      "cik": "0001168165",
+      "accession_number": "0001868275-25-000023",
+      "filing_date": "2025-02-18",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "CEG",
+      "status": "incomplete",
+      "reason": "SEC Company Facts is missing US-GAAP facts."
+    },
+    {
+      "cik": "0001625278",
+      "accession_number": "0001625278-25-000019",
+      "filing_date": "2025-02-19",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "NRDS",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001625278/000162527825000019.json"
+    },
+    {
+      "cik": "0000023632",
+      "accession_number": "0001047862-25-000011",
+      "filing_date": "2025-02-20",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "ED",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000313616",
+      "accession_number": "0000313616-25-000043",
+      "filing_date": "2025-02-20",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "DHR",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000313616/000031361625000043.json"
+    },
+    {
+      "cik": "0001046257",
+      "accession_number": "0001046257-25-000018",
+      "filing_date": "2025-02-20",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "INGR",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001046257/000104625725000018.json"
+    },
+    {
+      "cik": "0001104506",
+      "accession_number": "0001104506-25-000009",
+      "filing_date": "2025-02-20",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "INSM",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001104506/000110450625000009.json"
+    },
+    {
+      "cik": "0001492691",
+      "accession_number": "0001492691-25-000013",
+      "filing_date": "2025-02-20",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "KNX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001492691/000149269125000013.json"
+    },
+    {
+      "cik": "0001579684",
+      "accession_number": "0001579684-25-000007",
+      "filing_date": "2025-02-20",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "GCI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001579684/000157968425000007.json"
+    },
+    {
+      "cik": "0000027996",
+      "accession_number": "0000027996-25-000051",
+      "filing_date": "2025-02-21",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "DLX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000027996/000002799625000051.json"
+    },
+    {
+      "cik": "0000036029",
+      "accession_number": "0000950170-25-024666",
+      "filing_date": "2025-02-21",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "FFIN",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001849253",
+      "accession_number": "0001628280-25-006973",
+      "filing_date": "2025-02-21",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "RYAN",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001849253/000162828025006973.json"
+    },
+    {
+      "cik": "0001883313",
+      "accession_number": "0001883313-25-000013",
+      "filing_date": "2025-02-21",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "SVV",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001883313/000188331325000013.json"
+    },
+    {
+      "cik": "0001955520",
+      "accession_number": "0001955520-25-000010",
+      "filing_date": "2025-02-21",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "ticker": "KNF",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001955520/000195552025000010.json"
+    },
+    {
+      "cik": "0001835597",
+      "accession_number": "0000950170-25-025226",
+      "filing_date": "2025-02-24",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "PEPG",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000109380",
+      "accession_number": "0000109380-25-000040",
+      "filing_date": "2025-02-25",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "ZION",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000109380/000010938025000040.json"
+    },
+    {
+      "cik": "0001375365",
+      "accession_number": "0001375365-25-000004",
+      "filing_date": "2025-02-25",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "SMCI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001375365/000137536525000004.json"
+    },
+    {
+      "cik": "0001622229",
+      "accession_number": "0000950170-25-026115",
+      "filing_date": "2025-02-25",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "COGT",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001781755",
+      "accession_number": "0001781755-25-000017",
+      "filing_date": "2025-02-25",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "BWIN",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001781755/000178175525000017.json"
+    },
+    {
+      "cik": "0001959348",
+      "accession_number": "0001628280-25-007817",
+      "filing_date": "2025-02-25",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "KLG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001959348/000162828025007817.json"
+    },
+    {
+      "cik": "0000701347",
+      "accession_number": "0000701347-25-000007",
+      "filing_date": "2025-02-26",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "CPF",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000701347/000070134725000007.json"
+    },
+    {
+      "cik": "0001171759",
+      "accession_number": "0001171759-25-000012",
+      "filing_date": "2025-02-26",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "RRGB",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001171759/000117175925000012.json"
+    },
+    {
+      "cik": "0001384905",
+      "accession_number": "0001384905-25-000014",
+      "filing_date": "2025-02-26",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "RNG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001384905/000138490525000014.json"
+    },
+    {
+      "cik": "0001689375",
+      "accession_number": "0001689375-25-000011",
+      "filing_date": "2025-02-27",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "TRDA",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001689375/000168937525000011.json"
+    },
+    {
+      "cik": "0001724965",
+      "accession_number": "0000950170-25-028223",
+      "filing_date": "2025-02-27",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "ticker": "TALO",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001724965/000095017025028223.json"
+    },
+    {
+      "cik": "0001766363",
+      "accession_number": "0000950170-25-028394",
+      "filing_date": "2025-02-27",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "EDR",
+      "status": "incomplete",
+      "reason": "The selected 10-K is missing required metric(s): operating_cash_flow."
+    },
+    {
+      "cik": "0001785173",
+      "accession_number": "0000950170-25-029243",
+      "filing_date": "2025-02-27",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "ETNB",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001822479",
+      "accession_number": "0001822479-25-000015",
+      "filing_date": "2025-02-27",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "SHC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001822479/000182247925000015.json"
+    },
+    {
+      "cik": "0001065078",
+      "accession_number": "0001072613-25-000187",
+      "filing_date": "2025-02-28",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "NTIP",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001065078/000107261325000187.json"
+    },
+    {
+      "cik": "0001823529",
+      "accession_number": "0001823529-25-000070",
+      "filing_date": "2025-02-28",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "ACT",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001823529/000182352925000070.json"
+    },
+    {
+      "cik": "0001934850",
+      "accession_number": "0001934850-25-000015",
+      "filing_date": "2025-02-28",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "FG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001934850/000193485025000015.json"
+    },
+    {
+      "cik": "0001042729",
+      "accession_number": "0001437749-25-005844",
+      "filing_date": "2025-03-03",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "MBWM",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001515816",
+      "accession_number": "0001171520-25-000056",
+      "filing_date": "2025-03-03",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "PLYM",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001515816/000117152025000056.json"
+    },
+    {
+      "cik": "0000216085",
+      "accession_number": "0001628280-25-010869",
+      "filing_date": "2025-03-06",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "ticker": "HVT",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000216085/000162828025010869.json"
+    },
+    {
+      "cik": "0001593548",
+      "accession_number": "0001437749-25-006461",
+      "filing_date": "2025-03-06",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "AGS",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001593548/000143774925006461.json"
+    },
+    {
+      "cik": "0001014763",
+      "accession_number": "0001493152-25-009568",
+      "filing_date": "2025-03-07",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "AIMD",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001014763/000149315225009568.json"
+    },
+    {
+      "cik": "0001812727",
+      "accession_number": "0001493152-25-009445",
+      "filing_date": "2025-03-07",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "RELI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001812727/000149315225009445.json"
+    },
+    {
+      "cik": "0001889983",
+      "accession_number": "0001213900-25-021314",
+      "filing_date": "2025-03-07",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "KVAC",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001819516",
+      "accession_number": "0001819516-25-000012",
+      "filing_date": "2025-03-11",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "UP",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001819516/000181951625000012.json"
+    },
+    {
+      "cik": "0001463972",
+      "accession_number": "0001558370-25-002903",
+      "filing_date": "2025-03-13",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "VUZI",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001463972/000155837025002903.json"
+    },
+    {
+      "cik": "0001464343",
+      "accession_number": "0001437749-25-007559",
+      "filing_date": "2025-03-13",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "ATLC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001464343/000143774925007559.json"
+    },
+    {
+      "cik": "0001517022",
+      "accession_number": "0001628280-25-012470",
+      "filing_date": "2025-03-13",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "AKBA",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001517022/000162828025012470.json"
+    },
+    {
+      "cik": "0000932781",
+      "accession_number": "0001552781-25-000082",
+      "filing_date": "2025-03-14",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "FCCO",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001941536",
+      "accession_number": "0001628280-25-012821",
+      "filing_date": "2025-03-14",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "BAER",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001941536/000162828025012821.json"
+    },
+    {
+      "cik": "0000928340",
+      "accession_number": "0001558370-25-003137",
+      "filing_date": "2025-03-17",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "CWCO",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000928340/000155837025003137.json"
+    },
+    {
+      "cik": "0001623526",
+      "accession_number": "0000950170-25-041170",
+      "filing_date": "2025-03-18",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "STOK",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001623526/000095017025041170.json"
+    },
+    {
+      "cik": "0001698530",
+      "accession_number": "0001698530-25-000019",
+      "filing_date": "2025-03-18",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "XCUR",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001698530/000169853025000019.json"
+    },
+    {
+      "cik": "0001899287",
+      "accession_number": "0001899287-25-000012",
+      "filing_date": "2025-03-20",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "AMPX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001899287/000189928725000012.json"
+    },
+    {
+      "cik": "0002016221",
+      "accession_number": "0001410578-25-000412",
+      "filing_date": "2025-03-21",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "MACI",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001372514",
+      "accession_number": "0001372514-25-000012",
+      "filing_date": "2025-03-25",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "KPRX",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001372514/000137251425000012.json"
+    },
+    {
+      "cik": "0001571934",
+      "accession_number": "0001410578-25-000518",
+      "filing_date": "2025-03-27",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "SNPX",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0000885508",
+      "accession_number": "0000885508-25-000022",
+      "filing_date": "2025-03-28",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "STRS",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000885508/000088550825000022.json"
+    },
+    {
+      "cik": "0001051514",
+      "accession_number": "0001140361-25-010772",
+      "filing_date": "2025-03-28",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "SSKN",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001051514/000114036125010772.json"
+    },
+    {
+      "cik": "0001880613",
+      "accession_number": "0001628280-25-015290",
+      "filing_date": "2025-03-28",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "DRCT",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001880613/000162828025015290.json"
+    },
+    {
+      "cik": "0001966983",
+      "accession_number": "0000950170-25-046424",
+      "filing_date": "2025-03-28",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "ticker": "LAC",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001326706",
+      "accession_number": "0001641172-25-001613",
+      "filing_date": "2025-03-31",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "NAOV",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001326706/000164117225001613.json"
+    },
+    {
+      "cik": "0001434524",
+      "accession_number": "0001558370-25-004155",
+      "filing_date": "2025-03-31",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "CLIR",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001795091",
+      "accession_number": "0001213900-25-026238",
+      "filing_date": "2025-03-31",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "OSTX",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0002033593",
+      "accession_number": "0001213900-25-025761",
+      "filing_date": "2025-03-31",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "SVCC",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001597846",
+      "accession_number": "0001641172-25-003336",
+      "filing_date": "2025-04-09",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "GRNQ",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001597846/000164117225003336.json"
+    },
+    {
+      "cik": "0000885462",
+      "accession_number": "0001193805-25-000461",
+      "filing_date": "2025-04-11",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "GURE",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0000885462/000119380525000461.json"
+    },
+    {
+      "cik": "0001558569",
+      "accession_number": "0001213900-25-031639",
+      "filing_date": "2025-04-14",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ISPC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001558569/000121390025031639.json"
+    },
+    {
+      "cik": "0001849380",
+      "accession_number": "0001641172-25-004815",
+      "filing_date": "2025-04-15",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "ONMD",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001849380/000164117225004815.json"
+    },
+    {
+      "cik": "0001688568",
+      "accession_number": "0001688568-25-000029",
+      "filing_date": "2025-05-15",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "DXC",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001688568/000168856825000029.json"
+    },
+    {
+      "cik": "0001596993",
+      "accession_number": "0001596993-25-000034",
+      "filing_date": "2025-05-29",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "ticker": "LPG",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001596993/000159699325000034.json"
+    },
+    {
+      "cik": "0002052959",
+      "accession_number": "0002052959-25-000010",
+      "filing_date": "2025-05-30",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "ticker": "LION",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0002052959/000205295925000010.json"
+    },
+    {
+      "cik": "0000064472",
+      "accession_number": "0001193125-25-150836",
+      "filing_date": "2025-06-27",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "ticker": "GENC",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001460702",
+      "accession_number": "0001641172-25-017212",
+      "filing_date": "2025-06-30",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "QLGN",
+      "status": "incomplete",
+      "reason": "The selected 10-K does not contain current and prior-year revenue."
+    },
+    {
+      "cik": "0001468492",
+      "accession_number": "0000950170-25-098326",
+      "filing_date": "2025-07-24",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "ticker": "HSCS",
+      "status": "completed",
+      "snapshot_path": "data/validation/expanded/holdout_scores/snapshots/0001468492/000095017025098326.json"
+    }
+  ]
+}

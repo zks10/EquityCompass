@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "MSFT",
+  "cik": "0000789019",
+  "entity_name": "MICROSOFT CORPORATION",
+  "fiscal_year": 2023,
+  "period_end": "2023-06-30",
+  "filing": {
+    "form": "10-K",
+    "filed": "2023-07-27",
+    "accession_number": "0000950170-23-035122"
+  },
+  "score": {
+    "value": 92,
+    "label": "Mostly favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 84,
+        "source_value": 6.882029555656429
+      },
+      {
+        "name": "Net profit margin",
+        "score": 100,
+        "source_value": 34.14623787839464
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 83,
+        "source_value": 49.9429578422044
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 100,
+        "source_value": 41.32883467427978
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 211915000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-06-30",
+      "filed": "2023-07-27",
+      "accession_number": "0000950170-23-035122",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 72361000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-06-30",
+      "filed": "2023-07-27",
+      "accession_number": "0000950170-23-035122",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 411976000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-06-30",
+      "filed": "2023-07-27",
+      "accession_number": "0000950170-23-035122",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 205753000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-06-30",
+      "filed": "2023-07-27",
+      "accession_number": "0000950170-23-035122",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 87582000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-06-30",
+      "filed": "2023-07-27",
+      "accession_number": "0000950170-23-035122",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 198270000000,
+    "unit": "USD",
+    "fiscal_year": 2023,
+    "period_end": "2022-06-30",
+    "filed": "2023-07-27",
+    "accession_number": "0000950170-23-035122",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000789019/companyfacts.json"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "NVDA",
+  "cik": "0001045810",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0001045810-26-000021",
+      "filing_date": "2026-02-25",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001045810/000104581026000021.json"
+    },
+    {
+      "accession_number": "0001045810-25-000023",
+      "filing_date": "2025-02-26",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001045810/000104581025000023.json"
+    },
+    {
+      "accession_number": "0001045810-24-000029",
+      "filing_date": "2024-02-21",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001045810/000104581024000029.json"
+    },
+    {
+      "accession_number": "0001045810-23-000017",
+      "filing_date": "2023-02-24",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001045810/000104581023000017.json"
+    },
+    {
+      "accession_number": "0001045810-22-000036",
+      "filing_date": "2022-03-18",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001045810/000104581022000036.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0001045810/companyfacts.json"
+  }
+}

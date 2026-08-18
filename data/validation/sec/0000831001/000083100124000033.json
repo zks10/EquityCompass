@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "C",
+  "cik": "0000831001",
+  "entity_name": "Citigroup Inc",
+  "fiscal_year": 2023,
+  "period_end": "2023-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2024-02-23",
+    "accession_number": "0000831001-24-000033"
+  },
+  "score": {
+    "value": 33,
+    "label": "Mixed-to-cautious current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 71,
+        "source_value": 4.146645783004592
+      },
+      {
+        "name": "Net profit margin",
+        "score": 47,
+        "source_value": 11.76110728760419
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 14,
+        "source_value": 91.4483749710801
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 0,
+        "source_value": -93.56886135963907
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "Revenues",
+      "value": 78462000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-23",
+      "accession_number": "0000831001-24-000033",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 9228000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-23",
+      "accession_number": "0000831001-24-000033",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 2411834000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-23",
+      "accession_number": "0000831001-24-000033",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 2205583000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-23",
+      "accession_number": "0000831001-24-000033",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": -73416000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-12-31",
+      "filed": "2024-02-23",
+      "accession_number": "0000831001-24-000033",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "Revenues",
+    "value": 75338000000,
+    "unit": "USD",
+    "fiscal_year": 2023,
+    "period_end": "2022-12-31",
+    "filed": "2024-02-23",
+    "accession_number": "0000831001-24-000033",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000831001/companyfacts.json"
+  }
+}

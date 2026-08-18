@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "MDT",
+  "cik": "0001613103",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0001628280-26-044354",
+      "filing_date": "2026-06-18",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001613103/000162828026044354.json"
+    },
+    {
+      "accession_number": "0001613103-25-000091",
+      "filing_date": "2025-06-20",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001613103/000161310325000091.json"
+    },
+    {
+      "accession_number": "0001613103-24-000072",
+      "filing_date": "2024-06-20",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001613103/000161310324000072.json"
+    },
+    {
+      "accession_number": "0001613103-23-000040",
+      "filing_date": "2023-06-22",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001613103/000161310323000040.json"
+    },
+    {
+      "accession_number": "0001613103-22-000023",
+      "filing_date": "2022-06-23",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001613103/000161310322000023.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0001613103/companyfacts.json"
+  }
+}

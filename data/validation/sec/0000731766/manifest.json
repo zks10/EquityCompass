@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "UNH",
+  "cik": "0000731766",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0000731766-26-000062",
+      "filing_date": "2026-03-02",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000731766/000073176626000062.json"
+    },
+    {
+      "accession_number": "0000731766-25-000063",
+      "filing_date": "2025-02-27",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000731766/000073176625000063.json"
+    },
+    {
+      "accession_number": "0000731766-24-000081",
+      "filing_date": "2024-02-28",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000731766/000073176624000081.json"
+    },
+    {
+      "accession_number": "0000731766-23-000008",
+      "filing_date": "2023-02-24",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000731766/000073176623000008.json"
+    },
+    {
+      "accession_number": "0000731766-22-000008",
+      "filing_date": "2022-02-15",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000731766/000073176622000008.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000731766/companyfacts.json"
+  }
+}

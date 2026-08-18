@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "status": "pre_holdout_coverage_review_complete",
+  "holdout_opened": false,
+  "missing_price_reason": "missing_initial_price_from_registered_source",
+  "overall_coverage": {
+    "attempted": 235,
+    "completed": 167,
+    "missing_initial_price": 68,
+    "coverage_percent": 71.06
+  },
+  "coverage_by_partition": {
+    "development": {
+      "attempted": 97,
+      "completed": 65,
+      "missing_initial_price": 32,
+      "coverage_percent": 67.01
+    },
+    "validation": {
+      "attempted": 138,
+      "completed": 102,
+      "missing_initial_price": 36,
+      "coverage_percent": 73.91
+    }
+  },
+  "coverage_by_score_group": {
+    "Higher": {
+      "attempted": 54,
+      "completed": 44,
+      "missing_initial_price": 10,
+      "coverage_percent": 81.48
+    },
+    "Middle": {
+      "attempted": 101,
+      "completed": 78,
+      "missing_initial_price": 23,
+      "coverage_percent": 77.23
+    },
+    "Lower": {
+      "attempted": 80,
+      "completed": 45,
+      "missing_initial_price": 35,
+      "coverage_percent": 56.25
+    }
+  },
+  "coverage_by_industry": {
+    "Finance": {
+      "attempted": 26,
+      "completed": 18,
+      "missing_initial_price": 8,
+      "coverage_percent": 69.23
+    },
+    "Manufacturing": {
+      "attempted": 105,
+      "completed": 72,
+      "missing_initial_price": 33,
+      "coverage_percent": 68.57
+    },
+    "Mining": {
+      "attempted": 14,
+      "completed": 7,
+      "missing_initial_price": 7,
+      "coverage_percent": 50.0
+    },
+    "Retail trade": {
+      "attempted": 21,
+      "completed": 13,
+      "missing_initial_price": 8,
+      "coverage_percent": 61.9
+    },
+    "Services": {
+      "attempted": 47,
+      "completed": 37,
+      "missing_initial_price": 10,
+      "coverage_percent": 78.72
+    },
+    "Transportation and utilities": {
+      "attempted": 22,
+      "completed": 20,
+      "missing_initial_price": 2,
+      "coverage_percent": 90.91
+    }
+  },
+  "sensitivity_by_partition": {
+    "development": {
+      "observations": 65,
+      "leave_one_company_out": {
+        "iterations": 39,
+        "positive_iterations": 39,
+        "positive_rate_percent": 100.0,
+        "minimum_spearman": 0.1,
+        "maximum_spearman": 0.205
+      },
+      "leave_one_industry_out": {
+        "iterations": 6,
+        "positive_iterations": 5,
+        "positive_rate_percent": 83.33,
+        "minimum_spearman": -0.064,
+        "maximum_spearman": 0.246
+      }
+    },
+    "validation": {
+      "observations": 102,
+      "leave_one_company_out": {
+        "iterations": 56,
+        "positive_iterations": 56,
+        "positive_rate_percent": 100.0,
+        "minimum_spearman": 0.221,
+        "maximum_spearman": 0.292
+      },
+      "leave_one_industry_out": {
+        "iterations": 6,
+        "positive_iterations": 6,
+        "positive_rate_percent": 100.0,
+        "minimum_spearman": 0.174,
+        "maximum_spearman": 0.398
+      }
+    }
+  },
+  "holdout_ready": false,
+  "decision": "Do not open holdout yet. Recover or formally accept the registered-source price exclusions and freeze that decision first.",
+  "validation_direction_robust": true
+}

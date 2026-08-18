@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "INTC",
+  "cik": "0000050863",
+  "entity_name": "INTEL CORP",
+  "fiscal_year": 2021,
+  "period_end": "2021-12-25",
+  "filing": {
+    "form": "10-K",
+    "filed": "2022-01-27",
+    "accession_number": "0000050863-22-000007"
+  },
+  "score": {
+    "value": 88,
+    "label": "Mostly favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 57,
+        "source_value": 1.485866926939525
+      },
+      {
+        "name": "Net profit margin",
+        "score": 100,
+        "source_value": 25.141729094958492
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 94,
+        "source_value": 43.356531239979574
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 100,
+        "source_value": 37.951761490180196
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 79024000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-25",
+      "filed": "2022-01-27",
+      "accession_number": "0000050863-22-000007",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 19868000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-25",
+      "filed": "2022-01-27",
+      "accession_number": "0000050863-22-000007",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 168406000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-25",
+      "filed": "2022-01-27",
+      "accession_number": "0000050863-22-000007",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 29991000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-25",
+      "filed": "2022-01-27",
+      "accession_number": "0000050863-22-000007",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "derived:Assets-StockholdersEquity",
+      "value": 73015000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-25",
+      "filed": "2022-01-27",
+      "accession_number": "0000050863-22-000007",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 77867000000,
+    "unit": "USD",
+    "fiscal_year": 2021,
+    "period_end": "2020-12-26",
+    "filed": "2022-01-27",
+    "accession_number": "0000050863-22-000007",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000050863/companyfacts.json"
+  }
+}

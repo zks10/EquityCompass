@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "status": "final_holdout_report_complete",
+  "holdout_opened": true,
+  "holdout_score_attempts": 174,
+  "holdout_scores_completed": 130,
+  "qualified_score_attempts": 129,
+  "completed_12_month_outcomes": 111,
+  "score_coverage_percent": 74.71,
+  "price_coverage_percent": 86.05,
+  "spearman_score_vs_excess_return": 0.249,
+  "score_groups": {
+    "Higher": {
+      "observations": 15,
+      "average_company_return_percent": 2.93,
+      "median_company_return_percent": -6.99,
+      "average_excess_return_percent": -15.25,
+      "median_excess_return_percent": -21.16,
+      "spy_beating_rate_percent": 26.67,
+      "average_max_drawdown_percent": -32.57,
+      "median_max_drawdown_percent": -28.03
+    },
+    "Middle": {
+      "observations": 42,
+      "average_company_return_percent": 11.08,
+      "median_company_return_percent": 2.65,
+      "average_excess_return_percent": -6.35,
+      "median_excess_return_percent": -18.72,
+      "spy_beating_rate_percent": 35.71,
+      "average_max_drawdown_percent": -33.35,
+      "median_max_drawdown_percent": -28.09
+    },
+    "Lower": {
+      "observations": 54,
+      "average_company_return_percent": 6.43,
+      "median_company_return_percent": -17.29,
+      "average_excess_return_percent": -11.11,
+      "median_excess_return_percent": -33.22,
+      "spy_beating_rate_percent": 31.48,
+      "average_max_drawdown_percent": -55.02,
+      "median_max_drawdown_percent": -52.01
+    }
+  },
+  "industry_adjusted_top_quintile_median_percent": -7.58,
+  "industry_adjusted_bottom_quintile_median_percent": -42.27,
+  "within_industry_year": {
+    "average_excess_return_difference_percent": 32.88,
+    "median_excess_return_difference_percent": 33.55,
+    "higher_score_win_rate_percent": 75.0
+  },
+  "leave_one_company_out": {
+    "iterations": 66,
+    "positive_iterations": 66,
+    "positive_rate_percent": 100.0,
+    "minimum_spearman": 0.216,
+    "maximum_spearman": 0.282
+  },
+  "leave_one_industry_out": {
+    "iterations": 6,
+    "positive_iterations": 6,
+    "positive_rate_percent": 100.0,
+    "minimum_spearman": 0.185,
+    "maximum_spearman": 0.343
+  },
+  "success_checks": {
+    "positive_primary_rank_correlation": true,
+    "top_quintile_exceeds_bottom_quintile": true,
+    "within_cohort_win_rate_above_50_percent": true,
+    "positive_when_each_company_removed": true,
+    "positive_when_each_industry_removed": true,
+    "price_coverage_not_worse_than_pre_holdout": true
+  },
+  "all_registered_checks_passed": true,
+  "decision": "The frozen baseline merits further research, but this study does not authorize a production score change or establish investability."
+}

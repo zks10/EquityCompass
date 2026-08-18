@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "status": "sealed_final_holdout_result",
+  "specification_sha256": "c08833d67b5e48dfa3062aa906b49f426f58d691750442bad15a33e64bbc8ce6",
+  "score_manifest_sha256": "ab223eb38d4849e522a1aa7838b7e061e9cfed8e48d5d300464a4af357452a98",
+  "market_outcomes_sha256": "10e73c3a29773e7a3a89d6a5c9abc46dc4765bed76195e3425cf8a2ce4c545df",
+  "report_sha256": "b5a956cedd32e62f9107936402ce64bfaacebc1023ffe590a71fc13939c90577",
+  "completed_12_month_outcomes": 111,
+  "all_registered_checks_passed": true
+}

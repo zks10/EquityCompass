@@ -24,6 +24,14 @@ venv/
 data/raw/
 data/processed/
 
+# Reproducible Phase 2 download and snapshot caches
+data/validation/expanded/cache/
+data/validation/expanded/companyfacts/
+data/validation/expanded/identity_cache/
+data/validation/expanded/prices/
+data/validation/expanded/scores/snapshots/
+data/validation/expanded/holdout_scores/snapshots/
+
 # Editor and operating-system files
 .vscode/
 .idea/

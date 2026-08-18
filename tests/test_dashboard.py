@@ -20,9 +20,11 @@ from finance_news.dashboard import (
     build_filing_preview,
     build_financial_insights,
     build_financial_snapshot_score,
+    describe_score_confidence,
     check_ticker_eligibility,
     detect_news_topics,
     explain_8k_item,
+    load_processed_financial_data,
 )
 from finance_news.pipeline import PipelineError
 from finance_news.sec_companies import Company
@@ -112,6 +114,19 @@ class FinancialInsightTests(unittest.TestCase):
 
 
 class FinancialSnapshotScoreTests(unittest.TestCase):
+    def test_describes_full_and_limited_score_coverage(self) -> None:
+        complete = build_financial_snapshot_score(
+            self.make_financials(10.0, 25.0, 40.0, 25.0)
+        )
+        self.assertEqual(
+            describe_score_confidence(complete),
+            ("High data coverage", "All four financial components are available."),
+        )
+        limited = build_financial_snapshot_score(
+            self.make_financials(10.0, None, None, 0.0)
+        )
+        self.assertEqual(describe_score_confidence(limited)[0], "Limited data coverage")
+
     def make_financials(
         self,
         growth: float | None,
@@ -231,6 +246,81 @@ class BeginnerPreviewTests(unittest.TestCase):
                 "Legal and regulation": 1,
             },
         )
+
+
+class ProcessedFinancialDataTests(unittest.TestCase):
+    def test_loads_phase_one_outputs_for_the_application(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            facts_path = root / "financial_facts.json"
+            facts_path.write_text(
+                json.dumps(
+                    {
+                        "facts": [
+                            {"metric": metric, "value": value}
+                            for metric, value in (
+                                ("revenue", 120),
+                                ("net_income", 24),
+                                ("assets", 300),
+                                ("liabilities", 150),
+                                ("operating_cash_flow", 30),
+                            )
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            metrics_path = root / "derived_metrics.json"
+            metrics_path.write_text(
+                json.dumps(
+                    {
+                        "periods": [
+                            {
+                                "fiscal_year": 2025,
+                                "period_end": "2025-09-27",
+                                "revenue_growth_percent": 20.0,
+                                "net_profit_margin_percent": 20.0,
+                                "liabilities_to_assets_percent": 50.0,
+                                "operating_cash_flow_margin_percent": 25.0,
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            history_path = root / "financial_history.json"
+            history_path.write_text(
+                json.dumps(
+                    {
+                        "metrics": {
+                            metric: [
+                                {
+                                    "fiscal_year": 2025,
+                                    "period_end": "2025-09-27",
+                                    "value": value,
+                                }
+                            ]
+                            for metric, value in (
+                                ("revenue", 120),
+                                ("net_income", 24),
+                                ("assets", 300),
+                                ("liabilities", 150),
+                                ("operating_cash_flow", 30),
+                            )
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = load_processed_financial_data(
+                facts_path, metrics_path, history_path
+            )
+
+        self.assertEqual(result.overview.fiscal_year, 2025)
+        self.assertEqual(result.overview.revenue_growth_percent, 20.0)
+        self.assertEqual(len(result.history), 1)
+        self.assertEqual(result.history[0].revenue, 120)
 
 
 class AnalyzeTickerTests(unittest.TestCase):

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "JPM",
+  "cik": "0000019617",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0001628280-26-008131",
+      "filing_date": "2026-02-13",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000019617/000162828026008131.json"
+    },
+    {
+      "accession_number": "0000019617-25-000270",
+      "filing_date": "2025-02-14",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000019617/000001961725000270.json"
+    },
+    {
+      "accession_number": "0000019617-24-000225",
+      "filing_date": "2024-02-16",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000019617/000001961724000225.json"
+    },
+    {
+      "accession_number": "0000019617-23-000231",
+      "filing_date": "2023-02-21",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000019617/000001961723000231.json"
+    },
+    {
+      "accession_number": "0000019617-22-000272",
+      "filing_date": "2022-02-22",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000019617/000001961722000272.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000019617/companyfacts.json"
+  }
+}

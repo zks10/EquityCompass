@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "completed_12_month_observations": 80,
+  "industry_results": {
+    "Technology": {
+      "observations": 16,
+      "average_company_return_percent": 36.84,
+      "median_company_return_percent": 23.55,
+      "average_excess_return_percent": 21.99,
+      "median_excess_return_percent": 7.34,
+      "spy_beating_rate_percent": 75.0,
+      "average_max_drawdown_percent": -30.09,
+      "median_max_drawdown_percent": -26.94
+    },
+    "Banking": {
+      "observations": 16,
+      "average_company_return_percent": 21.97,
+      "median_company_return_percent": 17.68,
+      "average_excess_return_percent": 6.69,
+      "median_excess_return_percent": 5.55,
+      "spy_beating_rate_percent": 62.5,
+      "average_max_drawdown_percent": -21.86,
+      "median_max_drawdown_percent": -24.68
+    },
+    "Energy": {
+      "observations": 16,
+      "average_company_return_percent": 14.34,
+      "median_company_return_percent": 13.01,
+      "average_excess_return_percent": 0.49,
+      "median_excess_return_percent": -2.7,
+      "spy_beating_rate_percent": 50.0,
+      "average_max_drawdown_percent": -22.81,
+      "median_max_drawdown_percent": -21.37
+    },
+    "Healthcare": {
+      "observations": 16,
+      "average_company_return_percent": 0.47,
+      "median_company_return_percent": 0.57,
+      "average_excess_return_percent": -14.85,
+      "median_excess_return_percent": -18.57,
+      "spy_beating_rate_percent": 18.75,
+      "average_max_drawdown_percent": -22.25,
+      "median_max_drawdown_percent": -19.36
+    },
+    "Consumer": {
+      "observations": 16,
+      "average_company_return_percent": 4.35,
+      "median_company_return_percent": 6.65,
+      "average_excess_return_percent": -11.57,
+      "median_excess_return_percent": -5.49,
+      "spy_beating_rate_percent": 31.25,
+      "average_max_drawdown_percent": -26.42,
+      "median_max_drawdown_percent": -23.0
+    }
+  },
+  "component_results": {
+    "Liabilities / assets": {
+      "observations": 80,
+      "spearman_with_company_return": -0.088,
+      "spearman_with_excess_return": -0.067,
+      "score_groups": {
+        "Higher": {
+          "observations": 30,
+          "average_company_return_percent": 23.37,
+          "median_company_return_percent": 13.01,
+          "average_excess_return_percent": 7.74,
+          "median_excess_return_percent": 4.57,
+          "spy_beating_rate_percent": 53.33,
+          "average_max_drawdown_percent": -25.86,
+          "median_max_drawdown_percent": -22.32
+        },
+        "Middle": {
+          "observations": 22,
+          "average_company_return_percent": 5.71,
+          "median_company_return_percent": 1.73,
+          "average_excess_return_percent": -8.74,
+          "median_excess_return_percent": -11.42,
+          "spy_beating_rate_percent": 31.82,
+          "average_max_drawdown_percent": -25.13,
+          "median_max_drawdown_percent": -21.44
+        },
+        "Lower": {
+          "observations": 28,
+          "average_company_return_percent": 15.03,
+          "median_company_return_percent": 13.07,
+          "average_excess_return_percent": 0.15,
+          "median_excess_return_percent": 0.85,
+          "spy_beating_rate_percent": 53.57,
+          "average_max_drawdown_percent": -23.09,
+          "median_max_drawdown_percent": -22.35
+        }
+      }
+    },
+    "Net profit margin": {
+      "observations": 80,
+      "spearman_with_company_return": 0.025,
+      "spearman_with_excess_return": 0.085,
+      "score_groups": {
+        "Higher": {
+          "observations": 37,
+          "average_company_return_percent": 11.24,
+          "median_company_return_percent": 10.3,
+          "average_excess_return_percent": -2.83,
+          "median_excess_return_percent": 1.16,
+          "spy_beating_rate_percent": 54.05,
+          "average_max_drawdown_percent": -23.68,
+          "median_max_drawdown_percent": -23.12
+        },
+        "Middle": {
+          "observations": 13,
+          "average_company_return_percent": 36.05,
+          "median_company_return_percent": 10.63,
+          "average_excess_return_percent": 16.95,
+          "median_excess_return_percent": -6.25,
+          "spy_beating_rate_percent": 46.15,
+          "average_max_drawdown_percent": -21.75,
+          "median_max_drawdown_percent": -19.23
+        },
+        "Lower": {
+          "observations": 30,
+          "average_company_return_percent": 12.1,
+          "median_company_return_percent": 8.49,
+          "average_excess_return_percent": -2.38,
+          "median_excess_return_percent": -5.49,
+          "spy_beating_rate_percent": 40.0,
+          "average_max_drawdown_percent": -27.21,
+          "median_max_drawdown_percent": -23.74
+        }
+      }
+    },
+    "Operating cash flow margin": {
+      "observations": 80,
+      "spearman_with_company_return": -0.05,
+      "spearman_with_excess_return": 0.001,
+      "score_groups": {
+        "Higher": {
+          "observations": 42,
+          "average_company_return_percent": 15.7,
+          "median_company_return_percent": 9.11,
+          "average_excess_return_percent": 1.31,
+          "median_excess_return_percent": -0.57,
+          "spy_beating_rate_percent": 50.0,
+          "average_max_drawdown_percent": -24.77,
+          "median_max_drawdown_percent": -22.32
+        },
+        "Middle": {
+          "observations": 13,
+          "average_company_return_percent": 25.65,
+          "median_company_return_percent": 11.55,
+          "average_excess_return_percent": 8.41,
+          "median_excess_return_percent": -6.9,
+          "spy_beating_rate_percent": 46.15,
+          "average_max_drawdown_percent": -21.45,
+          "median_max_drawdown_percent": -19.77
+        },
+        "Lower": {
+          "observations": 25,
+          "average_company_return_percent": 10.19,
+          "median_company_return_percent": 7.83,
+          "average_excess_return_percent": -4.8,
+          "median_excess_return_percent": -1.79,
+          "spy_beating_rate_percent": 44.0,
+          "average_max_drawdown_percent": -26.24,
+          "median_max_drawdown_percent": -25.11
+        }
+      }
+    },
+    "Revenue growth": {
+      "observations": 80,
+      "spearman_with_company_return": -0.106,
+      "spearman_with_excess_return": 0.064,
+      "score_groups": {
+        "Higher": {
+          "observations": 43,
+          "average_company_return_percent": 10.71,
+          "median_company_return_percent": 5.75,
+          "average_excess_return_percent": -2.55,
+          "median_excess_return_percent": -0.99,
+          "spy_beating_rate_percent": 48.84,
+          "average_max_drawdown_percent": -23.92,
+          "median_max_drawdown_percent": -21.83
+        },
+        "Middle": {
+          "observations": 21,
+          "average_company_return_percent": 24.35,
+          "median_company_return_percent": 13.58,
+          "average_excess_return_percent": 9.45,
+          "median_excess_return_percent": 1.16,
+          "spy_beating_rate_percent": 57.14,
+          "average_max_drawdown_percent": -25.12,
+          "median_max_drawdown_percent": -25.3
+        },
+        "Lower": {
+          "observations": 16,
+          "average_company_return_percent": 17.23,
+          "median_company_return_percent": 10.21,
+          "average_excess_return_percent": -2.79,
+          "median_excess_return_percent": -11.03,
+          "spy_beating_rate_percent": 31.25,
+          "average_max_drawdown_percent": -26.19,
+          "median_max_drawdown_percent": -20.45
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Industry groups contain only four companies each.",
+    "Component correlations are descriptive and do not establish causation.",
+    "Repeated years from the same company are not independent observations.",
+    "No score rules were changed after viewing these results."
+  ]
+}

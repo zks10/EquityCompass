@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "XOM",
+  "cik": "0000034088",
+  "entity_name": "Exxon Mobil Corporation",
+  "fiscal_year": 2021,
+  "period_end": "2021-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2022-02-23",
+    "accession_number": "0000034088-22-000011"
+  },
+  "score": {
+    "value": 72,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 100,
+        "source_value": 54.94528878784145
+      },
+      {
+        "name": "Net profit margin",
+        "score": 33,
+        "source_value": 8.326948375811371
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 86,
+        "source_value": 48.164332311468975
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 70,
+        "source_value": 17.394431353273674
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 276692000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-23",
+      "accession_number": "0000034088-22-000011",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 23040000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-23",
+      "accession_number": "0000034088-22-000011",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 338923000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-23",
+      "accession_number": "0000034088-22-000011",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 163240000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-23",
+      "accession_number": "0000034088-22-000011",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 48129000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-23",
+      "accession_number": "0000034088-22-000011",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 178574000000,
+    "unit": "USD",
+    "fiscal_year": 2021,
+    "period_end": "2020-12-31",
+    "filed": "2022-02-23",
+    "accession_number": "0000034088-22-000011",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000034088/companyfacts.json"
+  }
+}

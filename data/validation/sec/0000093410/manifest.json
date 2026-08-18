@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "CVX",
+  "cik": "0000093410",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0000093410-26-000078",
+      "filing_date": "2026-02-24",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000093410/000009341026000078.json"
+    },
+    {
+      "accession_number": "0000093410-25-000009",
+      "filing_date": "2025-02-21",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000093410/000009341025000009.json"
+    },
+    {
+      "accession_number": "0000093410-24-000013",
+      "filing_date": "2024-02-26",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000093410/000009341024000013.json"
+    },
+    {
+      "accession_number": "0000093410-23-000009",
+      "filing_date": "2023-02-23",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000093410/000009341023000009.json"
+    },
+    {
+      "accession_number": "0000093410-22-000019",
+      "filing_date": "2022-02-24",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000093410/000009341022000019.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000093410/companyfacts.json"
+  }
+}

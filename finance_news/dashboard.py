@@ -117,6 +117,18 @@ class FinancialSnapshotScore:
     components: tuple[ScoreComponent, ...]
 
 
+def describe_score_confidence(score: FinancialSnapshotScore) -> tuple[str, str]:
+    """Describe score completeness without implying forecast certainty."""
+    count = score.available_components
+    if count == 4:
+        return "High data coverage", "All four financial components are available."
+    if count == 3:
+        return "Moderate data coverage", "Three of four financial components are available."
+    if count > 0:
+        return "Limited data coverage", f"Only {count} of four financial components are available."
+    return "Unavailable", "No financial components are available for this score."
+
+
 @dataclass(frozen=True)
 class FinancialHistoryRow:
     fiscal_year: int
@@ -135,6 +147,14 @@ class FinancialHistoryRow:
         if self.capital_expenditures is None:
             return None
         return self.operating_cash_flow - abs(self.capital_expenditures)
+
+
+@dataclass(frozen=True)
+class ProcessedFinancialData:
+    """Application-ready financial data loaded from Phase 1 outputs."""
+
+    overview: FinancialOverview
+    history: tuple[FinancialHistoryRow, ...]
 
 
 @dataclass(frozen=True)
@@ -652,6 +672,18 @@ def _read_financial_history(path: Path) -> tuple[FinancialHistoryRow, ...]:
     return rows
 
 
+def load_processed_financial_data(
+    facts_path: Path,
+    metrics_path: Path,
+    history_path: Path,
+) -> ProcessedFinancialData:
+    """Load Phase 1 financial files without rerunning the collection pipeline."""
+    return ProcessedFinancialData(
+        overview=_read_financial_overview(facts_path, metrics_path),
+        history=_read_financial_history(history_path),
+    )
+
+
 def _read_annual_sections(paths: tuple[Path, ...]) -> AnnualFilingSections:
     """Read the three saved sections extracted from the latest 10-K."""
     required_files = {
@@ -813,6 +845,11 @@ def analyze_ticker(
             + ", ".join(missing_annual)
             + "."
         )
+    financial_data = load_processed_financial_data(
+        annual.latest_facts_path,
+        annual.derived_metrics_path,
+        getattr(annual, "history_path", Path()),
+    )
     return DashboardSummary(
         ticker=annual.company.ticker,
         company_name=annual.company.name,
@@ -822,10 +859,8 @@ def analyze_ticker(
             quarterly.filing.filing_date if quarterly is not None else "Not available"
         ),
         news_article_count=article_count,
-        financials=_read_financial_overview(
-            annual.latest_facts_path, annual.derived_metrics_path
-        ),
-        financial_history=_read_financial_history(annual.history_path),
+        financials=financial_data.overview,
+        financial_history=financial_data.history,
         recent_news=recent_news,
         annual_sections=annual_sections,
         quarterly_sections=quarterly_sections,
@@ -851,13 +886,16 @@ __all__ = [
     "ScoreComponent",
     "FinancialSnapshotScore",
     "FinancialHistoryRow",
+    "ProcessedFinancialData",
     "RecentNewsArticle",
     "NewsTopic",
     "build_financial_insights",
     "build_financial_snapshot_score",
+    "describe_score_confidence",
     "check_ticker_eligibility",
     "build_filing_preview",
     "detect_news_topics",
     "explain_8k_item",
+    "load_processed_financial_data",
     "analyze_ticker",
 ]

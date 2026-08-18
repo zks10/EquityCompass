@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "requested_companies": 20,
+  "requested_years_per_company": 5,
+  "completed_companies": 20,
+  "incomplete_companies": 0,
+  "companies": [
+    {
+      "ticker": "AAPL",
+      "cik": "0000320193",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000320193/manifest.json"
+    },
+    {
+      "ticker": "MSFT",
+      "cik": "0000789019",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000789019/manifest.json"
+    },
+    {
+      "ticker": "NVDA",
+      "cik": "0001045810",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0001045810/manifest.json"
+    },
+    {
+      "ticker": "INTC",
+      "cik": "0000050863",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000050863/manifest.json"
+    },
+    {
+      "ticker": "JPM",
+      "cik": "0000019617",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000019617/manifest.json"
+    },
+    {
+      "ticker": "BAC",
+      "cik": "0000070858",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000070858/manifest.json"
+    },
+    {
+      "ticker": "GS",
+      "cik": "0000886982",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000886982/manifest.json"
+    },
+    {
+      "ticker": "C",
+      "cik": "0000831001",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000831001/manifest.json"
+    },
+    {
+      "ticker": "XOM",
+      "cik": "0000034088",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000034088/manifest.json"
+    },
+    {
+      "ticker": "CVX",
+      "cik": "0000093410",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000093410/manifest.json"
+    },
+    {
+      "ticker": "COP",
+      "cik": "0001163165",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0001163165/manifest.json"
+    },
+    {
+      "ticker": "SLB",
+      "cik": "0000087347",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000087347/manifest.json"
+    },
+    {
+      "ticker": "JNJ",
+      "cik": "0000200406",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000200406/manifest.json"
+    },
+    {
+      "ticker": "PFE",
+      "cik": "0000078003",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000078003/manifest.json"
+    },
+    {
+      "ticker": "UNH",
+      "cik": "0000731766",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000731766/manifest.json"
+    },
+    {
+      "ticker": "MDT",
+      "cik": "0001613103",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0001613103/manifest.json"
+    },
+    {
+      "ticker": "WMT",
+      "cik": "0000104169",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000104169/manifest.json"
+    },
+    {
+      "ticker": "TGT",
+      "cik": "0000027419",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000027419/manifest.json"
+    },
+    {
+      "ticker": "KO",
+      "cik": "0000021344",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000021344/manifest.json"
+    },
+    {
+      "ticker": "NKE",
+      "cik": "0000320187",
+      "status": "completed",
+      "completed_years": 5,
+      "incomplete_years": 0,
+      "manifest_path": "data/validation/sec/0000320187/manifest.json"
+    }
+  ]
+}

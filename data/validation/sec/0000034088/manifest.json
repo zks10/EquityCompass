@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "XOM",
+  "cik": "0000034088",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0000034088-26-000045",
+      "filing_date": "2026-02-18",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000034088/000003408826000045.json"
+    },
+    {
+      "accession_number": "0000034088-25-000010",
+      "filing_date": "2025-02-19",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000034088/000003408825000010.json"
+    },
+    {
+      "accession_number": "0000034088-24-000018",
+      "filing_date": "2024-02-28",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000034088/000003408824000018.json"
+    },
+    {
+      "accession_number": "0000034088-23-000020",
+      "filing_date": "2023-02-22",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000034088/000003408823000020.json"
+    },
+    {
+      "accession_number": "0000034088-22-000011",
+      "filing_date": "2022-02-23",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000034088/000003408822000011.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000034088/companyfacts.json"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "NVDA",
+  "cik": "0001045810",
+  "entity_name": "NVIDIA CORP",
+  "fiscal_year": 2025,
+  "period_end": "2025-01-26",
+  "filing": {
+    "form": "10-K",
+    "filed": "2025-02-26",
+    "accession_number": "0001045810-25-000023"
+  },
+  "score": {
+    "value": 100,
+    "label": "Mostly favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 100,
+        "source_value": 114.20340763599357
+      },
+      {
+        "name": "Net profit margin",
+        "score": 100,
+        "source_value": 55.848027157712444
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 100,
+        "source_value": 28.919095707027715
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 100,
+        "source_value": 49.11147382698453
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "Revenues",
+      "value": 130497000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-01-26",
+      "filed": "2025-02-26",
+      "accession_number": "0001045810-25-000023",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 72880000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-01-26",
+      "filed": "2025-02-26",
+      "accession_number": "0001045810-25-000023",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 111601000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-01-26",
+      "filed": "2025-02-26",
+      "accession_number": "0001045810-25-000023",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 32274000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-01-26",
+      "filed": "2025-02-26",
+      "accession_number": "0001045810-25-000023",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 64089000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-01-26",
+      "filed": "2025-02-26",
+      "accession_number": "0001045810-25-000023",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "Revenues",
+    "value": 60922000000,
+    "unit": "USD",
+    "fiscal_year": 2025,
+    "period_end": "2024-01-28",
+    "filed": "2025-02-26",
+    "accession_number": "0001045810-25-000023",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0001045810/companyfacts.json"
+  }
+}

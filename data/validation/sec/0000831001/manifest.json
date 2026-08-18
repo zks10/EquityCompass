@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "C",
+  "cik": "0000831001",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0000831001-26-000011",
+      "filing_date": "2026-02-20",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000831001/000083100126000011.json"
+    },
+    {
+      "accession_number": "0000831001-25-000067",
+      "filing_date": "2025-02-21",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000831001/000083100125000067.json"
+    },
+    {
+      "accession_number": "0000831001-24-000033",
+      "filing_date": "2024-02-23",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000831001/000083100124000033.json"
+    },
+    {
+      "accession_number": "0000831001-23-000037",
+      "filing_date": "2023-02-27",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000831001/000083100123000037.json"
+    },
+    {
+      "accession_number": "0000831001-22-000036",
+      "filing_date": "2022-02-28",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000831001/000083100122000036.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000831001/companyfacts.json"
+  }
+}

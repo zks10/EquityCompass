@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "INTC",
+  "cik": "0000050863",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0000050863-26-000011",
+      "filing_date": "2026-01-23",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000050863/000005086326000011.json"
+    },
+    {
+      "accession_number": "0000050863-25-000009",
+      "filing_date": "2025-01-31",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000050863/000005086325000009.json"
+    },
+    {
+      "accession_number": "0000050863-24-000010",
+      "filing_date": "2024-01-26",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000050863/000005086324000010.json"
+    },
+    {
+      "accession_number": "0000050863-23-000006",
+      "filing_date": "2023-01-27",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000050863/000005086323000006.json"
+    },
+    {
+      "accession_number": "0000050863-22-000007",
+      "filing_date": "2022-01-27",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000050863/000005086322000007.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000050863/companyfacts.json"
+  }
+}

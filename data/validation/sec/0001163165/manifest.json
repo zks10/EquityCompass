@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "COP",
+  "cik": "0001163165",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0001163165-26-000009",
+      "filing_date": "2026-02-17",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001163165/000116316526000009.json"
+    },
+    {
+      "accession_number": "0001163165-25-000012",
+      "filing_date": "2025-02-18",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001163165/000116316525000012.json"
+    },
+    {
+      "accession_number": "0001163165-24-000010",
+      "filing_date": "2024-02-15",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001163165/000116316524000010.json"
+    },
+    {
+      "accession_number": "0001163165-23-000006",
+      "filing_date": "2023-02-16",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001163165/000116316523000006.json"
+    },
+    {
+      "accession_number": "0001562762-22-000031",
+      "filing_date": "2022-02-17",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0001163165/000156276222000031.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0001163165/companyfacts.json"
+  }
+}

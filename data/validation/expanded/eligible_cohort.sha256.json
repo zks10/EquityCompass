@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "status": "sealed_eligible_cohort",
+  "cohort_sha256": "30284799855e6f2cd8d4471ba13f0f62e2a8b4627f70f662e8606e43a87a1c3b",
+  "eligible_filings": 523,
+  "eligible_companies": 138,
+  "development": 144,
+  "validation": 205,
+  "holdout": 174,
+  "returns_joined": false
+}

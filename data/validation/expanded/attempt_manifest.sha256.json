@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "frozen_on": "2026-08-15",
+  "status": "sealed_attempt_universe",
+  "returns_joined": false,
+  "selected_companies": 300,
+  "filing_attempts": 1593,
+  "files": {
+    "data/validation/expanded/attempt_manifest.json": "05ac3f9bf1ab9c189b97e6909af44e35ccbe1e0aa9f2f66721af09d344dbaca2",
+    "data/validation/preregistration/expanded-study-v1.sha256.json": "898b80cb88202e9a461bf7bc40bd005108cc257587bd813a28ad39b000a4dedb"
+  }
+}

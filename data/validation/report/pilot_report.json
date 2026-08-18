@@ -1,0 +1,851 @@
+{
+  "schema_version": 1,
+  "primary_horizon": "12 months",
+  "score_groups": {
+    "Higher": "75-100",
+    "Middle": "50-74",
+    "Lower": "0-49"
+  },
+  "completed_observations": 80,
+  "pending_observations": 20,
+  "groups": {
+    "Higher": {
+      "observations": 27,
+      "average_company_return_percent": 8.75,
+      "median_company_return_percent": 4.4,
+      "average_excess_return_percent": -2.27,
+      "median_excess_return_percent": 2.04,
+      "spy_beating_rate_percent": 51.85,
+      "average_max_drawdown_percent": -24.64,
+      "median_max_drawdown_percent": -22.09
+    },
+    "Middle": {
+      "observations": 35,
+      "average_company_return_percent": 20.34,
+      "median_company_return_percent": 10.63,
+      "average_excess_return_percent": 3.44,
+      "median_excess_return_percent": -2.74,
+      "spy_beating_rate_percent": 45.71,
+      "average_max_drawdown_percent": -22.82,
+      "median_max_drawdown_percent": -20.64
+    },
+    "Lower": {
+      "observations": 18,
+      "average_company_return_percent": 16.62,
+      "median_company_return_percent": 13.87,
+      "average_excess_return_percent": -0.84,
+      "median_excess_return_percent": -2.94,
+      "spy_beating_rate_percent": 44.44,
+      "average_max_drawdown_percent": -28.39,
+      "median_max_drawdown_percent": -25.34
+    }
+  },
+  "records": [
+    {
+      "ticker": "AAPL",
+      "fiscal_year": 2024,
+      "score": 70,
+      "group": "Middle",
+      "company_return_percent": 22.2003,
+      "spy_return_percent": 19.9434,
+      "excess_return_percent": 2.2569,
+      "max_drawdown_12_months_percent": -33.3605
+    },
+    {
+      "ticker": "AAPL",
+      "fiscal_year": 2023,
+      "score": 66,
+      "group": "Middle",
+      "company_return_percent": 24.9008,
+      "spy_return_percent": 37.4905,
+      "excess_return_percent": -12.5897,
+      "max_drawdown_12_months_percent": -16.6066
+    },
+    {
+      "ticker": "AAPL",
+      "fiscal_year": 2022,
+      "score": 78,
+      "group": "Higher",
+      "company_return_percent": 12.0276,
+      "spy_return_percent": 9.9877,
+      "excess_return_percent": 2.0399,
+      "max_drawdown_12_months_percent": -18.3335
+    },
+    {
+      "ticker": "AAPL",
+      "fiscal_year": 2021,
+      "score": 82,
+      "group": "Higher",
+      "company_return_percent": 1.7012,
+      "spy_return_percent": -15.1512,
+      "excess_return_percent": 16.8524,
+      "max_drawdown_12_months_percent": -28.3462
+    },
+    {
+      "ticker": "BAC",
+      "fiscal_year": 2024,
+      "score": 46,
+      "group": "Lower",
+      "company_return_percent": 21.7827,
+      "spy_return_percent": 17.2999,
+      "excess_return_percent": 4.4828,
+      "max_drawdown_12_months_percent": -24.9305
+    },
+    {
+      "ticker": "BAC",
+      "fiscal_year": 2023,
+      "score": 71,
+      "group": "Middle",
+      "company_return_percent": 36.351,
+      "spy_return_percent": 22.209,
+      "excess_return_percent": 14.142,
+      "max_drawdown_12_months_percent": -16.9499
+    },
+    {
+      "ticker": "BAC",
+      "fiscal_year": 2022,
+      "score": 50,
+      "group": "Middle",
+      "company_return_percent": 2.0903,
+      "spy_return_percent": 28.6798,
+      "excess_return_percent": -26.5895,
+      "max_drawdown_12_months_percent": -25.1104
+    },
+    {
+      "ticker": "BAC",
+      "fiscal_year": 2021,
+      "score": 46,
+      "group": "Lower",
+      "company_return_percent": -21.7112,
+      "spy_return_percent": -3.5051,
+      "excess_return_percent": -18.2061,
+      "max_drawdown_12_months_percent": -32.7274
+    },
+    {
+      "ticker": "C",
+      "fiscal_year": 2024,
+      "score": 36,
+      "group": "Lower",
+      "company_return_percent": 43.1221,
+      "spy_return_percent": 16.4451,
+      "excess_return_percent": 26.677,
+      "max_drawdown_12_months_percent": -27.292
+    },
+    {
+      "ticker": "C",
+      "fiscal_year": 2023,
+      "score": 33,
+      "group": "Lower",
+      "company_return_percent": 47.7618,
+      "spy_return_percent": 19.0075,
+      "excess_return_percent": 28.7542,
+      "max_drawdown_12_months_percent": -16.2108
+    },
+    {
+      "ticker": "C",
+      "fiscal_year": 2022,
+      "score": 67,
+      "group": "Middle",
+      "company_return_percent": 13.5816,
+      "spy_return_percent": 29.7013,
+      "excess_return_percent": -16.1197,
+      "max_drawdown_12_months_percent": -25.2956
+    },
+    {
+      "ticker": "C",
+      "fiscal_year": 2021,
+      "score": 79,
+      "group": "Higher",
+      "company_return_percent": -8.3874,
+      "spy_return_percent": -6.7064,
+      "excess_return_percent": -1.681,
+      "max_drawdown_12_months_percent": -30.7091
+    },
+    {
+      "ticker": "COP",
+      "fiscal_year": 2024,
+      "score": 80,
+      "group": "Higher",
+      "company_return_percent": 15.9106,
+      "spy_return_percent": 12.9848,
+      "excess_return_percent": 2.9258,
+      "max_drawdown_12_months_percent": -22.0924
+    },
+    {
+      "ticker": "COP",
+      "fiscal_year": 2023,
+      "score": 69,
+      "group": "Middle",
+      "company_return_percent": -9.3092,
+      "spy_return_percent": 23.9883,
+      "excess_return_percent": -33.2975,
+      "max_drawdown_12_months_percent": -27.2833
+    },
+    {
+      "ticker": "COP",
+      "fiscal_year": 2022,
+      "score": 96,
+      "group": "Higher",
+      "company_return_percent": 9.3671,
+      "spy_return_percent": 23.83,
+      "excess_return_percent": -14.4629,
+      "max_drawdown_12_months_percent": -15.1045
+    },
+    {
+      "ticker": "COP",
+      "fiscal_year": 2021,
+      "score": 88,
+      "group": "Higher",
+      "company_return_percent": 23.3249,
+      "spy_return_percent": -6.6015,
+      "excess_return_percent": 29.9264,
+      "max_drawdown_12_months_percent": -32.9775
+    },
+    {
+      "ticker": "CVX",
+      "fiscal_year": 2024,
+      "score": 60,
+      "group": "Middle",
+      "company_return_percent": 22.6681,
+      "spy_return_percent": 16.4451,
+      "excess_return_percent": 6.223,
+      "max_drawdown_12_months_percent": -20.6397
+    },
+    {
+      "ticker": "CVX",
+      "fiscal_year": 2023,
+      "score": 54,
+      "group": "Middle",
+      "company_return_percent": 7.4189,
+      "spy_return_percent": 16.8908,
+      "excess_return_percent": -9.4719,
+      "max_drawdown_12_months_percent": -15.3303
+    },
+    {
+      "ticker": "CVX",
+      "fiscal_year": 2022,
+      "score": 86,
+      "group": "Higher",
+      "company_return_percent": -0.9617,
+      "spy_return_percent": 29.5929,
+      "excess_return_percent": -30.5546,
+      "max_drawdown_12_months_percent": -17.0136
+    },
+    {
+      "ticker": "CVX",
+      "fiscal_year": 2021,
+      "score": 78,
+      "group": "Higher",
+      "company_return_percent": 19.9659,
+      "spy_return_percent": -7.6682,
+      "excess_return_percent": 27.6341,
+      "max_drawdown_12_months_percent": -24.9489
+    },
+    {
+      "ticker": "GS",
+      "fiscal_year": 2024,
+      "score": 53,
+      "group": "Middle",
+      "company_return_percent": 41.3411,
+      "spy_return_percent": 16.8737,
+      "excess_return_percent": 24.4674,
+      "max_drawdown_12_months_percent": -25.7227
+    },
+    {
+      "ticker": "GS",
+      "fiscal_year": 2023,
+      "score": 31,
+      "group": "Lower",
+      "company_return_percent": 62.1482,
+      "spy_return_percent": 19.0075,
+      "excess_return_percent": 43.1407,
+      "max_drawdown_12_months_percent": -9.8246
+    },
+    {
+      "ticker": "GS",
+      "fiscal_year": 2022,
+      "score": 46,
+      "group": "Lower",
+      "company_return_percent": 10.3046,
+      "spy_return_percent": 29.393,
+      "excess_return_percent": -19.0884,
+      "max_drawdown_12_months_percent": -18.8405
+    },
+    {
+      "ticker": "GS",
+      "fiscal_year": 2021,
+      "score": 55,
+      "group": "Middle",
+      "company_return_percent": 5.7539,
+      "spy_return_percent": -7.7735,
+      "excess_return_percent": 13.5274,
+      "max_drawdown_12_months_percent": -18.4946
+    },
+    {
+      "ticker": "INTC",
+      "fiscal_year": 2024,
+      "score": 46,
+      "group": "Lower",
+      "company_return_percent": 154.128,
+      "spy_return_percent": 16.705,
+      "excess_return_percent": 137.423,
+      "max_drawdown_12_months_percent": -33.808
+    },
+    {
+      "ticker": "INTC",
+      "fiscal_year": 2023,
+      "score": 47,
+      "group": "Lower",
+      "company_return_percent": -54.3465,
+      "spy_return_percent": 24.0722,
+      "excess_return_percent": -78.4187,
+      "max_drawdown_12_months_percent": -58.6413
+    },
+    {
+      "ticker": "INTC",
+      "fiscal_year": 2022,
+      "score": 60,
+      "group": "Middle",
+      "company_return_percent": 57.144,
+      "spy_return_percent": 24.4042,
+      "excess_return_percent": 32.7398,
+      "max_drawdown_12_months_percent": -16.8816
+    },
+    {
+      "ticker": "INTC",
+      "fiscal_year": 2021,
+      "score": 88,
+      "group": "Higher",
+      "company_return_percent": -39.1172,
+      "spy_return_percent": -7.888,
+      "excess_return_percent": -31.2292,
+      "max_drawdown_12_months_percent": -51.2101
+    },
+    {
+      "ticker": "JNJ",
+      "fiscal_year": 2024,
+      "score": 75,
+      "group": "Higher",
+      "company_return_percent": 60.601,
+      "spy_return_percent": 13.3129,
+      "excess_return_percent": 47.2881,
+      "max_drawdown_12_months_percent": -12.7251
+    },
+    {
+      "ticker": "JNJ",
+      "fiscal_year": 2023,
+      "score": 92,
+      "group": "Higher",
+      "company_return_percent": 4.398,
+      "spy_return_percent": 24.4483,
+      "excess_return_percent": -20.0504,
+      "max_drawdown_12_months_percent": -14.4463
+    },
+    {
+      "ticker": "JNJ",
+      "fiscal_year": 2022,
+      "score": 72,
+      "group": "Middle",
+      "company_return_percent": 1.4495,
+      "spy_return_percent": 23.83,
+      "excess_return_percent": -22.3805,
+      "max_drawdown_12_months_percent": -15.9462
+    },
+    {
+      "ticker": "JNJ",
+      "fiscal_year": 2021,
+      "score": 89,
+      "group": "Higher",
+      "company_return_percent": -0.6637,
+      "spy_return_percent": -6.6015,
+      "excess_return_percent": 5.9378,
+      "max_drawdown_12_months_percent": -13.2511
+    },
+    {
+      "ticker": "JPM",
+      "fiscal_year": 2024,
+      "score": 54,
+      "group": "Middle",
+      "company_return_percent": 12.5599,
+      "spy_return_percent": 13.5504,
+      "excess_return_percent": -0.9905,
+      "max_drawdown_12_months_percent": -24.4239
+    },
+    {
+      "ticker": "JPM",
+      "fiscal_year": 2023,
+      "score": 62,
+      "group": "Middle",
+      "company_return_percent": 51.8383,
+      "spy_return_percent": 24.4483,
+      "excess_return_percent": 27.39,
+      "max_drawdown_12_months_percent": -10.1305
+    },
+    {
+      "ticker": "JPM",
+      "fiscal_year": 2022,
+      "score": 73,
+      "group": "Middle",
+      "company_return_percent": 35.8968,
+      "spy_return_percent": 29.2752,
+      "excess_return_percent": 6.6217,
+      "max_drawdown_12_months_percent": -13.4866
+    },
+    {
+      "ticker": "JPM",
+      "fiscal_year": 2021,
+      "score": 68,
+      "group": "Middle",
+      "company_return_percent": -2.9674,
+      "spy_return_percent": -3.5051,
+      "excess_return_percent": 0.5378,
+      "max_drawdown_12_months_percent": -29.6849
+    },
+    {
+      "ticker": "KO",
+      "fiscal_year": 2024,
+      "score": 63,
+      "group": "Middle",
+      "company_return_percent": 16.2394,
+      "spy_return_percent": 15.0787,
+      "excess_return_percent": 1.1606,
+      "max_drawdown_12_months_percent": -9.8185
+    },
+    {
+      "ticker": "KO",
+      "fiscal_year": 2023,
+      "score": 80,
+      "group": "Higher",
+      "company_return_percent": 20.0672,
+      "spy_return_percent": 22.209,
+      "excess_return_percent": -2.1419,
+      "max_drawdown_12_months_percent": -15.503
+    },
+    {
+      "ticker": "KO",
+      "fiscal_year": 2022,
+      "score": 83,
+      "group": "Higher",
+      "company_return_percent": 5.1671,
+      "spy_return_percent": 29.2752,
+      "excess_return_percent": -24.1081,
+      "max_drawdown_12_months_percent": -17.2665
+    },
+    {
+      "ticker": "KO",
+      "fiscal_year": 2021,
+      "score": 85,
+      "group": "Higher",
+      "company_return_percent": 0.451,
+      "spy_return_percent": -3.5051,
+      "excess_return_percent": 3.9562,
+      "max_drawdown_12_months_percent": -16.6555
+    },
+    {
+      "ticker": "MDT",
+      "fiscal_year": 2025,
+      "score": 74,
+      "group": "Middle",
+      "company_return_percent": -3.2194,
+      "spy_return_percent": 23.5871,
+      "excess_return_percent": -26.8065,
+      "max_drawdown_12_months_percent": -28.9047
+    },
+    {
+      "ticker": "MDT",
+      "fiscal_year": 2024,
+      "score": 72,
+      "group": "Middle",
+      "company_return_percent": 8.8495,
+      "spy_return_percent": 11.5911,
+      "excess_return_percent": -2.7417,
+      "max_drawdown_12_months_percent": -13.9474
+    },
+    {
+      "ticker": "MDT",
+      "fiscal_year": 2023,
+      "score": 66,
+      "group": "Middle",
+      "company_return_percent": -5.008,
+      "spy_return_percent": 27.0357,
+      "excess_return_percent": -32.0437,
+      "max_drawdown_12_months_percent": -22.5409
+    },
+    {
+      "ticker": "MDT",
+      "fiscal_year": 2022,
+      "score": 82,
+      "group": "Higher",
+      "company_return_percent": -0.3132,
+      "spy_return_percent": 12.4091,
+      "excess_return_percent": -12.7223,
+      "max_drawdown_12_months_percent": -19.4852
+    },
+    {
+      "ticker": "MSFT",
+      "fiscal_year": 2025,
+      "score": 98,
+      "group": "Higher",
+      "company_return_percent": -12.1964,
+      "spy_return_percent": 19.4955,
+      "excess_return_percent": -31.692,
+      "max_drawdown_12_months_percent": -34.4984
+    },
+    {
+      "ticker": "MSFT",
+      "fiscal_year": 2024,
+      "score": 97,
+      "group": "Higher",
+      "company_return_percent": 28.5025,
+      "spy_return_percent": 16.1839,
+      "excess_return_percent": 12.3186,
+      "max_drawdown_12_months_percent": -21.8257
+    },
+    {
+      "ticker": "MSFT",
+      "fiscal_year": 2023,
+      "score": 92,
+      "group": "Higher",
+      "company_return_percent": 27.0999,
+      "spy_return_percent": 20.892,
+      "excess_return_percent": 6.2079,
+      "max_drawdown_12_months_percent": -10.5142
+    },
+    {
+      "ticker": "MSFT",
+      "fiscal_year": 2022,
+      "score": 94,
+      "group": "Higher",
+      "company_return_percent": 20.8118,
+      "spy_return_percent": 12.9313,
+      "excess_return_percent": 7.8806,
+      "max_drawdown_12_months_percent": -26.8393
+    },
+    {
+      "ticker": "NKE",
+      "fiscal_year": 2025,
+      "score": 30,
+      "group": "Lower",
+      "company_return_percent": -38.3706,
+      "spy_return_percent": 19.5565,
+      "excess_return_percent": -57.927,
+      "max_drawdown_12_months_percent": -47.1628
+    },
+    {
+      "ticker": "NKE",
+      "fiscal_year": 2024,
+      "score": 54,
+      "group": "Middle",
+      "company_return_percent": 11.5476,
+      "spy_return_percent": 18.4471,
+      "excess_return_percent": -6.8995,
+      "max_drawdown_12_months_percent": -39.8335
+    },
+    {
+      "ticker": "NKE",
+      "fiscal_year": 2023,
+      "score": 62,
+      "group": "Middle",
+      "company_return_percent": -30.3789,
+      "spy_return_percent": 24.3771,
+      "excess_return_percent": -54.756,
+      "max_drawdown_12_months_percent": -41.4184
+    },
+    {
+      "ticker": "NKE",
+      "fiscal_year": 2022,
+      "score": 58,
+      "group": "Middle",
+      "company_return_percent": 0.8893,
+      "spy_return_percent": 16.8384,
+      "excess_return_percent": -15.9491,
+      "max_drawdown_12_months_percent": -29.3929
+    },
+    {
+      "ticker": "NVDA",
+      "fiscal_year": 2025,
+      "score": 100,
+      "group": "Higher",
+      "company_return_percent": 47.5143,
+      "spy_return_percent": 18.6301,
+      "excess_return_percent": 28.8842,
+      "max_drawdown_12_months_percent": -24.4967
+    },
+    {
+      "ticker": "NVDA",
+      "fiscal_year": 2024,
+      "score": 100,
+      "group": "Higher",
+      "company_return_percent": 65.9285,
+      "spy_return_percent": 19.1863,
+      "excess_return_percent": 46.7422,
+      "max_drawdown_12_months_percent": -27.0468
+    },
+    {
+      "ticker": "NVDA",
+      "fiscal_year": 2023,
+      "score": 72,
+      "group": "Middle",
+      "company_return_percent": 235.0322,
+      "spy_return_percent": 29.393,
+      "excess_return_percent": 205.6393,
+      "max_drawdown_12_months_percent": -18.2873
+    },
+    {
+      "ticker": "NVDA",
+      "fiscal_year": 2022,
+      "score": 100,
+      "group": "Higher",
+      "company_return_percent": -1.9096,
+      "spy_return_percent": -8.7134,
+      "excess_return_percent": 6.8038,
+      "max_drawdown_12_months_percent": -60.8015
+    },
+    {
+      "ticker": "PFE",
+      "fiscal_year": 2024,
+      "score": 71,
+      "group": "Middle",
+      "company_return_percent": 10.627,
+      "spy_return_percent": 16.8737,
+      "excess_return_percent": -6.2468,
+      "max_drawdown_12_months_percent": -19.2293
+    },
+    {
+      "ticker": "PFE",
+      "fiscal_year": 2023,
+      "score": 38,
+      "group": "Lower",
+      "company_return_percent": 2.0187,
+      "spy_return_percent": 19.1042,
+      "excess_return_percent": -17.0855,
+      "max_drawdown_12_months_percent": -19.7668
+    },
+    {
+      "ticker": "PFE",
+      "fiscal_year": 2022,
+      "score": 95,
+      "group": "Higher",
+      "company_return_percent": -31.5487,
+      "spy_return_percent": 29.5929,
+      "excess_return_percent": -61.1416,
+      "max_drawdown_12_months_percent": -35.2307
+    },
+    {
+      "ticker": "PFE",
+      "fiscal_year": 2021,
+      "score": 93,
+      "group": "Higher",
+      "company_return_percent": -11.6297,
+      "spy_return_percent": -7.6682,
+      "excess_return_percent": -3.9615,
+      "max_drawdown_12_months_percent": -23.1157
+    },
+    {
+      "ticker": "SLB",
+      "fiscal_year": 2024,
+      "score": 74,
+      "group": "Middle",
+      "company_return_percent": 20.6425,
+      "spy_return_percent": 14.3622,
+      "excess_return_percent": 6.2803,
+      "max_drawdown_12_months_percent": -25.0879
+    },
+    {
+      "ticker": "SLB",
+      "fiscal_year": 2023,
+      "score": 76,
+      "group": "Higher",
+      "company_return_percent": -16.8827,
+      "spy_return_percent": 24.3895,
+      "excess_return_percent": -41.2722,
+      "max_drawdown_12_months_percent": -32.0103
+    },
+    {
+      "ticker": "SLB",
+      "fiscal_year": 2022,
+      "score": 68,
+      "group": "Middle",
+      "company_return_percent": -6.1389,
+      "spy_return_percent": 22.2527,
+      "excess_return_percent": -28.3917,
+      "max_drawdown_12_months_percent": -25.2661
+    },
+    {
+      "ticker": "SLB",
+      "fiscal_year": 2021,
+      "score": 53,
+      "group": "Middle",
+      "company_return_percent": 48.7838,
+      "spy_return_percent": -4.4009,
+      "excess_return_percent": 53.1847,
+      "max_drawdown_12_months_percent": -36.7965
+    },
+    {
+      "ticker": "TGT",
+      "fiscal_year": 2024,
+      "score": 33,
+      "group": "Lower",
+      "company_return_percent": 17.4318,
+      "spy_return_percent": 21.5167,
+      "excess_return_percent": -4.0849,
+      "max_drawdown_12_months_percent": -20.2702
+    },
+    {
+      "ticker": "TGT",
+      "fiscal_year": 2023,
+      "score": 32,
+      "group": "Lower",
+      "company_return_percent": -34.3156,
+      "spy_return_percent": 10.696,
+      "excess_return_percent": -45.0116,
+      "max_drawdown_12_months_percent": -39.4219
+    },
+    {
+      "ticker": "TGT",
+      "fiscal_year": 2022,
+      "score": 31,
+      "group": "Lower",
+      "company_return_percent": 8.1321,
+      "spy_return_percent": 32.5597,
+      "excess_return_percent": -24.4276,
+      "max_drawdown_12_months_percent": -37.1227
+    },
+    {
+      "ticker": "TGT",
+      "fiscal_year": 2021,
+      "score": 50,
+      "group": "Middle",
+      "company_return_percent": -24.6492,
+      "spy_return_percent": -7.8286,
+      "excess_return_percent": -16.8206,
+      "max_drawdown_12_months_percent": -43.8977
+    },
+    {
+      "ticker": "UNH",
+      "fiscal_year": 2024,
+      "score": 46,
+      "group": "Lower",
+      "company_return_percent": -36.375,
+      "spy_return_percent": 16.8737,
+      "excess_return_percent": -53.2488,
+      "max_drawdown_12_months_percent": -60.0551
+    },
+    {
+      "ticker": "UNH",
+      "fiscal_year": 2023,
+      "score": 54,
+      "group": "Middle",
+      "company_return_percent": -2.2698,
+      "spy_return_percent": 18.4462,
+      "excess_return_percent": -20.716,
+      "max_drawdown_12_months_percent": -25.9032
+    },
+    {
+      "ticker": "UNH",
+      "fiscal_year": 2022,
+      "score": 54,
+      "group": "Middle",
+      "company_return_percent": 7.827,
+      "spy_return_percent": 29.393,
+      "excess_return_percent": -21.5659,
+      "max_drawdown_12_months_percent": -14.5643
+    },
+    {
+      "ticker": "UNH",
+      "fiscal_year": 2021,
+      "score": 54,
+      "group": "Middle",
+      "company_return_percent": 2.8208,
+      "spy_return_percent": -7.0973,
+      "excess_return_percent": 9.9181,
+      "max_drawdown_12_months_percent": -16.9114
+    },
+    {
+      "ticker": "WMT",
+      "fiscal_year": 2025,
+      "score": 42,
+      "group": "Lower",
+      "company_return_percent": 44.3829,
+      "spy_return_percent": 19.6627,
+      "excess_return_percent": 24.7202,
+      "max_drawdown_12_months_percent": -8.8792
+    },
+    {
+      "ticker": "WMT",
+      "fiscal_year": 2024,
+      "score": 42,
+      "group": "Lower",
+      "company_return_percent": 41.8368,
+      "spy_return_percent": 10.4505,
+      "excess_return_percent": 31.3863,
+      "max_drawdown_12_months_percent": -19.5621
+    },
+    {
+      "ticker": "WMT",
+      "fiscal_year": 2023,
+      "score": 41,
+      "group": "Lower",
+      "company_return_percent": 32.3094,
+      "spy_return_percent": 34.103,
+      "excess_return_percent": -1.7936,
+      "max_drawdown_12_months_percent": -10.8138
+    },
+    {
+      "ticker": "WMT",
+      "fiscal_year": 2022,
+      "score": 36,
+      "group": "Lower",
+      "company_return_percent": -1.0885,
+      "spy_return_percent": -8.7134,
+      "excess_return_percent": 7.6249,
+      "max_drawdown_12_months_percent": -25.7397
+    },
+    {
+      "ticker": "XOM",
+      "fiscal_year": 2024,
+      "score": 64,
+      "group": "Middle",
+      "company_return_percent": 36.0182,
+      "spy_return_percent": 14.2773,
+      "excess_return_percent": 21.7409,
+      "max_drawdown_12_months_percent": -16.0534
+    },
+    {
+      "ticker": "XOM",
+      "fiscal_year": 2023,
+      "score": 50,
+      "group": "Middle",
+      "company_return_percent": 10.1108,
+      "spy_return_percent": 18.4462,
+      "excess_return_percent": -8.3354,
+      "max_drawdown_12_months_percent": -15.1496
+    },
+    {
+      "ticker": "XOM",
+      "fiscal_year": 2022,
+      "score": 80,
+      "group": "Higher",
+      "company_return_percent": -2.8755,
+      "spy_return_percent": 28.6798,
+      "excess_return_percent": -31.5553,
+      "max_drawdown_12_months_percent": -18.7311
+    },
+    {
+      "ticker": "XOM",
+      "fiscal_year": 2021,
+      "score": 72,
+      "group": "Middle",
+      "company_return_percent": 51.3948,
+      "spy_return_percent": -5.9513,
+      "excess_return_percent": 57.3461,
+      "max_drawdown_12_months_percent": -20.5087
+    }
+  ],
+  "limitations": [
+    "This is a small 20-company pilot, not proof of predictive ability.",
+    "Repeated years from the same company are not independent observations.",
+    "Newer filings remain pending until the full 12-month horizon elapses.",
+    "The baseline score formula was not changed for this comparison."
+  ]
+}

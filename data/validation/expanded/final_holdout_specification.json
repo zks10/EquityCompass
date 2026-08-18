@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status": "sealed_before_holdout",
+  "holdout_opened": false,
+  "frozen_model": "production_equal_weight_financial_snapshot_score",
+  "minimum_available_components": 3,
+  "primary_horizon_months": 12,
+  "benchmark": "SPY",
+  "price_basis": "adjusted_daily_close",
+  "outcome_data_cutoff": "2026-08-15",
+  "missing_price_classification": "missing_initial_price_from_registered_source",
+  "alternative_model": null,
+  "checksums": {
+    "dashboard": "d5cde0e25683b9210b5c6295615e89b709050d34446a917d74d9008a37f773d7",
+    "score_snapshots": "86b3a7b3088b9b468b61a35013fc51ad0b23ef4f06c3da8d3788c87558e326bc",
+    "expanded_scores": "55a433528572e3f76e61a7ef8d3b80bd9305902f25550ad8afe2898cfb635d5b",
+    "expanded_outcomes": "231ec72d625c0ed254f2f5f0ff2b3a1a59aef11bc0155ed861b8ebcb12a8fcc8",
+    "eligible_cohort": "30284799855e6f2cd8d4471ba13f0f62e2a8b4627f70f662e8606e43a87a1c3b",
+    "coverage_review": "b201b23c05eb77cd884c33e73f08e78dee240077fc7c69f1cb50e21ccb2079b7"
+  }
+}

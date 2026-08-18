@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "protocol_version": "1.0",
+  "registered_on": "2026-08-15",
+  "status": "preregistered_design",
+  "production_score_changed": false,
+  "random_seed": 20260815,
+  "minimum_distinct_companies": 300,
+  "minimum_completed_12_month_observations": 1500,
+  "minimum_companies_per_industry_division": 20,
+  "partitions": {
+    "development": {
+      "filing_date_start": "2017-01-01",
+      "filing_date_end": "2021-12-31"
+    },
+    "validation": {
+      "filing_date_start": "2022-01-01",
+      "filing_date_end": "2023-12-31"
+    },
+    "holdout": {
+      "filing_date_start": "2024-01-01",
+      "filing_date_end": "2025-08-15",
+      "sealed_until_model_freeze": true,
+      "maximum_final_evaluations": 1
+    }
+  },
+  "outcome_cutoff": "2026-08-15",
+  "primary_outcome": "12_month_company_return_minus_spy_return",
+  "primary_estimand": "spearman_score_vs_industry_year_adjusted_excess_return",
+  "secondary_horizons_months": [6, 24],
+  "secondary_risk_outcome": "maximum_drawdown_12_months",
+  "industry_classification": {
+    "source": "SEC_SIC_at_filing",
+    "preferred_peer_group": "two_digit_major_group",
+    "fallback_peer_group": "sic_division",
+    "minimum_observations_per_peer_group": 20
+  },
+  "candidate_models": [
+    "frozen_production_baseline",
+    "industry_relative_equal_weight",
+    "one_development_only_candidate"
+  ],
+  "minimum_available_components": 3,
+  "missing_components_imputed": false,
+  "holdout_rules": {
+    "returns_hidden_during_development": true,
+    "model_frozen_before_open": true,
+    "publish_regardless_of_direction": true,
+    "post_open_changes_are_exploratory": true
+  },
+  "success_criteria": {
+    "positive_rank_correlation_in_validation_and_holdout": true,
+    "holdout_top_quintile_median_exceeds_bottom_quintile": true,
+    "holdout_highest_vs_lowest_win_rate_above_percent": 50,
+    "leave_one_company_out_directionally_consistent": true,
+    "leave_one_industry_out_directionally_consistent": true,
+    "coverage_not_materially_worse_than_baseline": true
+  },
+  "runtime_boundary": "offline_only"
+}

@@ -1,0 +1,4506 @@
+{
+  "schema_version": 1,
+  "status": "holdout_outcomes_complete",
+  "holdout_opened": true,
+  "outcome_data_cutoff": "2026-08-15",
+  "price_basis": "Adjusted daily close",
+  "benchmark": "SPY",
+  "attempted": 129,
+  "completed": 111,
+  "incomplete": 18,
+  "outcomes": [
+    {
+      "cik": "0001961847",
+      "ticker": "INHD",
+      "accession_number": "0001493152-24-002509",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 0,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-01-16",
+      "measurement_start_date": "2024-01-17",
+      "measurement_start_company_price": 5184.0,
+      "measurement_start_spy_price": 458.45977783203125,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-07-17",
+          "end_date": "2024-07-17",
+          "company_return_percent": -34.2593,
+          "spy_return_percent": 18.6713,
+          "excess_return_percent": -52.9306
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-01-17",
+          "end_date": "2025-01-17",
+          "company_return_percent": -52.4074,
+          "spy_return_percent": 28.1512,
+          "excess_return_percent": -80.5586
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-01-17",
+          "end_date": "2026-01-20",
+          "company_return_percent": -99.4329,
+          "spy_return_percent": 47.0136,
+          "excess_return_percent": -146.4465
+        }
+      },
+      "max_drawdown_12_months_percent": -70.8
+    },
+    {
+      "cik": "0001125376",
+      "ticker": "ENSG",
+      "accession_number": "0001125376-24-000018",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 56,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-01",
+      "measurement_start_date": "2024-02-02",
+      "measurement_start_company_price": 120.26834869384766,
+      "measurement_start_spy_price": 479.8737487792969,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-02",
+          "end_date": "2024-08-02",
+          "company_return_percent": 15.6958,
+          "spy_return_percent": 8.4819,
+          "excess_return_percent": 7.2138
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-02",
+          "end_date": "2025-02-03",
+          "company_return_percent": 18.1381,
+          "spy_return_percent": 22.4715,
+          "excess_return_percent": -4.3334
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-02",
+          "end_date": "2026-02-02",
+          "company_return_percent": 43.3737,
+          "spy_return_percent": 44.1491,
+          "excess_return_percent": -0.7755
+        }
+      },
+      "max_drawdown_12_months_percent": -17.0724
+    },
+    {
+      "cik": "0001433195",
+      "ticker": "APPF",
+      "accession_number": "0001433195-24-000023",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 60,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-01",
+      "measurement_start_date": "2024-02-02",
+      "measurement_start_company_price": 227.77000427246094,
+      "measurement_start_spy_price": 479.8737487792969,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-02",
+          "end_date": "2024-08-02",
+          "company_return_percent": -7.5427,
+          "spy_return_percent": 8.4819,
+          "excess_return_percent": -16.0246
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-02",
+          "end_date": "2025-02-03",
+          "company_return_percent": 4.7109,
+          "spy_return_percent": 22.4715,
+          "excess_return_percent": -17.7606
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-02",
+          "end_date": "2026-02-02",
+          "company_return_percent": -14.361,
+          "spy_return_percent": 44.1491,
+          "excess_return_percent": -58.5101
+        }
+      },
+      "max_drawdown_12_months_percent": -28.8682
+    },
+    {
+      "cik": "0001058090",
+      "ticker": "CMG",
+      "accession_number": "0001562762-24-000023",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 71,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-08",
+      "measurement_start_date": "2024-02-09",
+      "measurement_start_company_price": 52.766998291015625,
+      "measurement_start_spy_price": 486.523193359375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-09",
+          "end_date": "2024-08-09",
+          "company_return_percent": 5.2741,
+          "spy_return_percent": 7.0173,
+          "excess_return_percent": -1.7432
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-09",
+          "end_date": "2025-02-10",
+          "company_return_percent": 9.5382,
+          "spy_return_percent": 22.2284,
+          "excess_return_percent": -12.6902
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-09",
+          "end_date": "2026-02-09",
+          "company_return_percent": -24.972,
+          "spy_return_percent": 41.8805,
+          "excess_return_percent": -66.8526
+        }
+      },
+      "max_drawdown_12_months_percent": -27.3109
+    },
+    {
+      "cik": "0001347178",
+      "ticker": "VNDA",
+      "accession_number": "0001628280-24-003785",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 33,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-08",
+      "measurement_start_date": "2024-02-09",
+      "measurement_start_company_price": 4.159999847412109,
+      "measurement_start_spy_price": 486.523193359375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-09",
+          "end_date": "2024-08-09",
+          "company_return_percent": 24.7596,
+          "spy_return_percent": 7.0173,
+          "excess_return_percent": 17.7423
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-09",
+          "end_date": "2025-02-10",
+          "company_return_percent": 11.0577,
+          "spy_return_percent": 22.2284,
+          "excess_return_percent": -11.1707
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-09",
+          "end_date": "2026-02-09",
+          "company_return_percent": 80.5289,
+          "spy_return_percent": 41.8805,
+          "excess_return_percent": 38.6483
+        }
+      },
+      "max_drawdown_12_months_percent": -33.6923
+    },
+    {
+      "cik": "0000833640",
+      "ticker": "POWI",
+      "accession_number": "0000833640-24-000030",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 52,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-12",
+      "measurement_start_date": "2024-02-13",
+      "measurement_start_company_price": 69.54232025146484,
+      "measurement_start_spy_price": 479.6116638183594,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-13",
+          "end_date": "2024-08-13",
+          "company_return_percent": -14.7611,
+          "spy_return_percent": 10.4028,
+          "excess_return_percent": -25.1639
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-13",
+          "end_date": "2025-02-13",
+          "company_return_percent": -16.2023,
+          "spy_return_percent": 24.9901,
+          "excess_return_percent": -41.1925
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-13",
+          "end_date": "2026-02-13",
+          "company_return_percent": -32.5814,
+          "spy_return_percent": 41.3948,
+          "excess_return_percent": -73.9762
+        }
+      },
+      "max_drawdown_12_months_percent": -26.0327
+    },
+    {
+      "cik": "0001762239",
+      "ticker": "KAVL",
+      "accession_number": "0001731122-24-000237",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 41,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-14",
+      "measurement_start_date": "2024-02-15",
+      "measurement_start_company_price": 2.609999895095825,
+      "measurement_start_spy_price": 487.3094787597656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-15",
+          "end_date": "2024-08-15",
+          "company_return_percent": -69.4636,
+          "spy_return_percent": 10.8699,
+          "excess_return_percent": -80.3335
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-15",
+          "end_date": "2025-02-18",
+          "company_return_percent": -60.9195,
+          "spy_return_percent": 23.3708,
+          "excess_return_percent": -84.2903
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-15",
+          "end_date": "2026-02-17",
+          "company_return_percent": -99.3487,
+          "spy_return_percent": 39.3858,
+          "excess_return_percent": -138.7345
+        }
+      },
+      "max_drawdown_12_months_percent": -90.8095
+    },
+    {
+      "cik": "0000084839",
+      "ticker": "ROL",
+      "accession_number": "0000084839-24-000025",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 75,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-15",
+      "measurement_start_date": "2024-02-16",
+      "measurement_start_company_price": 39.57310485839844,
+      "measurement_start_spy_price": 484.8826904296875,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-16",
+          "end_date": "2024-08-16",
+          "company_return_percent": 18.5517,
+          "spy_return_percent": 11.6747,
+          "excess_return_percent": 6.877
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-16",
+          "end_date": "2025-02-18",
+          "company_return_percent": 23.4549,
+          "spy_return_percent": 23.9883,
+          "excess_return_percent": -0.5333
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-16",
+          "end_date": "2026-02-17",
+          "company_return_percent": 50.1151,
+          "spy_return_percent": 40.0834,
+          "excess_return_percent": 10.0317
+        }
+      },
+      "max_drawdown_12_months_percent": -11.5139
+    },
+    {
+      "cik": "0001334036",
+      "ticker": "CROX",
+      "accession_number": "0001334036-24-000025",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 82,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-15",
+      "measurement_start_date": "2024-02-16",
+      "measurement_start_company_price": 118.9800033569336,
+      "measurement_start_spy_price": 484.8826904296875,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-16",
+          "end_date": "2024-08-16",
+          "company_return_percent": 14.3469,
+          "spy_return_percent": 11.6747,
+          "excess_return_percent": 2.6723
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-16",
+          "end_date": "2025-02-18",
+          "company_return_percent": -9.7748,
+          "spy_return_percent": 23.9883,
+          "excess_return_percent": -33.763
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-16",
+          "end_date": "2026-02-17",
+          "company_return_percent": -16.0195,
+          "spy_return_percent": 40.0834,
+          "excess_return_percent": -56.1029
+        }
+      },
+      "max_drawdown_12_months_percent": -44.37
+    },
+    {
+      "cik": "0001478242",
+      "ticker": "IQV",
+      "accession_number": "0001478242-24-000038",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 50,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-15",
+      "measurement_start_date": "2024-02-16",
+      "measurement_start_company_price": 238.60000610351562,
+      "measurement_start_spy_price": 484.8826904296875,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-16",
+          "end_date": "2024-08-16",
+          "company_return_percent": 0.4317,
+          "spy_return_percent": 11.6747,
+          "excess_return_percent": -11.243
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-16",
+          "end_date": "2025-02-18",
+          "company_return_percent": -19.0486,
+          "spy_return_percent": 23.9883,
+          "excess_return_percent": -43.0369
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-16",
+          "end_date": "2026-02-17",
+          "company_return_percent": -31.0813,
+          "spy_return_percent": 40.0834,
+          "excess_return_percent": -71.1647
+        }
+      },
+      "max_drawdown_12_months_percent": -26.2949
+    },
+    {
+      "cik": "0001617640",
+      "ticker": "ZG",
+      "accession_number": "0001617640-24-000022",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 55,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-15",
+      "measurement_start_date": "2024-02-16",
+      "measurement_start_company_price": 52.75,
+      "measurement_start_spy_price": 484.8826904296875,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-16",
+          "end_date": "2024-08-16",
+          "company_return_percent": -1.9147,
+          "spy_return_percent": 11.6747,
+          "excess_return_percent": -13.5893
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-16",
+          "end_date": "2025-02-18",
+          "company_return_percent": 46.5403,
+          "spy_return_percent": 23.9883,
+          "excess_return_percent": 22.552
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-16",
+          "end_date": "2026-02-17",
+          "company_return_percent": -16.6066,
+          "spy_return_percent": 40.0834,
+          "excess_return_percent": -56.6901
+        }
+      },
+      "max_drawdown_12_months_percent": -31.1487
+    },
+    {
+      "cik": "0000009092",
+      "ticker": "BMI",
+      "accession_number": "0000950170-24-016245",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 79,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-16",
+      "measurement_start_date": "2024-02-20",
+      "measurement_start_company_price": 153.75376892089844,
+      "measurement_start_spy_price": 482.2132263183594,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-20",
+          "end_date": "2024-08-20",
+          "company_return_percent": 28.8616,
+          "spy_return_percent": 13.1822,
+          "excess_return_percent": 15.6794
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-20",
+          "end_date": "2025-02-20",
+          "company_return_percent": 39.9939,
+          "spy_return_percent": 24.4483,
+          "excess_return_percent": 15.5456
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-20",
+          "end_date": "2026-02-20",
+          "company_return_percent": 3.0433,
+          "spy_return_percent": 42.2163,
+          "excess_return_percent": -39.1729
+        }
+      },
+      "max_drawdown_12_months_percent": -13.3615
+    },
+    {
+      "cik": "0001625278",
+      "ticker": "NRDS",
+      "accession_number": "0001625278-24-000030",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 62,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-20",
+      "measurement_start_date": "2024-02-21",
+      "measurement_start_company_price": 16.239999771118164,
+      "measurement_start_spy_price": 482.6500244140625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-21",
+          "end_date": "2024-08-21",
+          "company_return_percent": -25.2771,
+          "spy_return_percent": 13.4684,
+          "excess_return_percent": -38.7455
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-21",
+          "end_date": "2025-02-21",
+          "company_return_percent": -36.3916,
+          "spy_return_percent": 22.209,
+          "excess_return_percent": -58.6007
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-21",
+          "end_date": "2026-02-23",
+          "company_return_percent": -41.7488,
+          "spy_return_percent": 40.6366,
+          "excess_return_percent": -82.3854
+        }
+      },
+      "max_drawdown_12_months_percent": -39.1637
+    },
+    {
+      "cik": "0000313616",
+      "ticker": "DHR",
+      "accession_number": "0000313616-24-000052",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 95,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-21",
+      "measurement_start_date": "2024-02-22",
+      "measurement_start_company_price": 249.02508544921875,
+      "measurement_start_spy_price": 492.6387023925781,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-22",
+          "end_date": "2024-08-22",
+          "company_return_percent": 6.2039,
+          "spy_return_percent": 10.2952,
+          "excess_return_percent": -4.0913
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-22",
+          "end_date": "2025-02-24",
+          "company_return_percent": -16.0959,
+          "spy_return_percent": 19.1863,
+          "excess_return_percent": -35.2823
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-22",
+          "end_date": "2026-02-23",
+          "company_return_percent": -15.6569,
+          "spy_return_percent": 37.7851,
+          "excess_return_percent": -53.442
+        }
+      },
+      "max_drawdown_12_months_percent": -28.0337
+    },
+    {
+      "cik": "0000701347",
+      "ticker": "CPF",
+      "accession_number": "0000701347-24-000006",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 62,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-21",
+      "measurement_start_date": "2024-02-22",
+      "measurement_start_company_price": 17.099136352539062,
+      "measurement_start_spy_price": 492.6387023925781,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-22",
+          "end_date": "2024-08-22",
+          "company_return_percent": 43.9235,
+          "spy_return_percent": 10.2952,
+          "excess_return_percent": 33.6283
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-22",
+          "end_date": "2025-02-24",
+          "company_return_percent": 57.0832,
+          "spy_return_percent": 19.1863,
+          "excess_return_percent": 37.8969
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-22",
+          "end_date": "2026-02-23",
+          "company_return_percent": 87.8935,
+          "spy_return_percent": 37.7851,
+          "excess_return_percent": 50.1084
+        }
+      },
+      "max_drawdown_12_months_percent": -18.1292
+    },
+    {
+      "cik": "0001046257",
+      "ticker": "INGR",
+      "accession_number": "0001046257-24-000005",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 66,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-21",
+      "measurement_start_date": "2024-02-22",
+      "measurement_start_company_price": 107.25748443603516,
+      "measurement_start_spy_price": 492.6387023925781,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-22",
+          "end_date": "2024-08-22",
+          "company_return_percent": 16.6663,
+          "spy_return_percent": 10.2952,
+          "excess_return_percent": 6.3711
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-22",
+          "end_date": "2025-02-24",
+          "company_return_percent": 16.4804,
+          "spy_return_percent": 19.1863,
+          "excess_return_percent": -2.7059
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-22",
+          "end_date": "2026-02-23",
+          "company_return_percent": 6.4893,
+          "spy_return_percent": 37.7851,
+          "excess_return_percent": -31.2958
+        }
+      },
+      "max_drawdown_12_months_percent": -18.42
+    },
+    {
+      "cik": "0000027996",
+      "ticker": "DLX",
+      "accession_number": "0000027996-24-000065",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 28,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-22",
+      "measurement_start_date": "2024-02-23",
+      "measurement_start_company_price": 16.87746810913086,
+      "measurement_start_spy_price": 492.9784240722656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-23",
+          "end_date": "2024-08-23",
+          "company_return_percent": 9.2036,
+          "spy_return_percent": 11.3903,
+          "excess_return_percent": -2.1867
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-23",
+          "end_date": "2025-02-24",
+          "company_return_percent": -7.2024,
+          "spy_return_percent": 19.1042,
+          "excess_return_percent": -26.3066
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-23",
+          "end_date": "2026-02-23",
+          "company_return_percent": 54.8644,
+          "spy_return_percent": 37.6902,
+          "excess_return_percent": 17.1742
+        }
+      },
+      "max_drawdown_12_months_percent": -27.6315
+    },
+    {
+      "cik": "0001104506",
+      "ticker": "INSM",
+      "accession_number": "0001104506-24-000008",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 25,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-22",
+      "measurement_start_date": "2024-02-23",
+      "measurement_start_company_price": 27.280000686645508,
+      "measurement_start_spy_price": 492.9784240722656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-23",
+          "end_date": "2024-08-23",
+          "company_return_percent": 189.0029,
+          "spy_return_percent": 11.3903,
+          "excess_return_percent": 177.6126
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-23",
+          "end_date": "2025-02-24",
+          "company_return_percent": 193.3651,
+          "spy_return_percent": 19.1042,
+          "excess_return_percent": 174.2609
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-23",
+          "end_date": "2026-02-23",
+          "company_return_percent": 482.9545,
+          "spy_return_percent": 37.6902,
+          "excess_return_percent": 445.2644
+        }
+      },
+      "max_drawdown_12_months_percent": -24.7349
+    },
+    {
+      "cik": "0001384905",
+      "ticker": "RNG",
+      "accession_number": "0001384905-24-000013",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 43,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-22",
+      "measurement_start_date": "2024-02-23",
+      "measurement_start_company_price": 30.973833084106445,
+      "measurement_start_spy_price": 492.9784240722656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-23",
+          "end_date": "2024-08-23",
+          "company_return_percent": 8.5742,
+          "spy_return_percent": 11.3903,
+          "excess_return_percent": -2.8161
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-23",
+          "end_date": "2025-02-24",
+          "company_return_percent": -7.097,
+          "spy_return_percent": 19.1042,
+          "excess_return_percent": -26.2012
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-23",
+          "end_date": "2026-02-23",
+          "company_return_percent": 11.0469,
+          "spy_return_percent": 37.6902,
+          "excess_return_percent": -26.6433
+        }
+      },
+      "max_drawdown_12_months_percent": -30.7747
+    },
+    {
+      "cik": "0001492691",
+      "ticker": "KNX",
+      "accession_number": "0001492691-24-000015",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 50,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-22",
+      "measurement_start_date": "2024-02-23",
+      "measurement_start_company_price": 56.305484771728516,
+      "measurement_start_spy_price": 492.9784240722656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-23",
+          "end_date": "2024-08-23",
+          "company_return_percent": -6.3744,
+          "spy_return_percent": 11.3903,
+          "excess_return_percent": -17.7647
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-23",
+          "end_date": "2025-02-24",
+          "company_return_percent": -11.8434,
+          "spy_return_percent": 19.1042,
+          "excess_return_percent": -30.9476
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-23",
+          "end_date": "2026-02-23",
+          "company_return_percent": 4.5293,
+          "spy_return_percent": 37.6902,
+          "excess_return_percent": -33.1608
+        }
+      },
+      "max_drawdown_12_months_percent": -20.3638
+    },
+    {
+      "cik": "0001515816",
+      "ticker": "PLYM",
+      "accession_number": "0001171520-24-000136",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 69,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001579684",
+      "ticker": "GCI",
+      "accession_number": "0001579684-24-000008",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 10,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0000109380",
+      "ticker": "ZION",
+      "accession_number": "0000109380-24-000061",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 67,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-23",
+      "measurement_start_date": "2024-02-26",
+      "measurement_start_company_price": 35.4502067565918,
+      "measurement_start_spy_price": 491.1728820800781,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-26",
+          "end_date": "2024-08-26",
+          "company_return_percent": 30.0823,
+          "spy_return_percent": 11.5333,
+          "excess_return_percent": 18.5491
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-26",
+          "end_date": "2025-02-26",
+          "company_return_percent": 43.5317,
+          "spy_return_percent": 19.0076,
+          "excess_return_percent": 24.5241
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-26",
+          "end_date": "2026-02-26",
+          "company_return_percent": 71.4418,
+          "spy_return_percent": 39.5957,
+          "excess_return_percent": 31.8461
+        }
+      },
+      "max_drawdown_12_months_percent": -15.179
+    },
+    {
+      "cik": "0000004904",
+      "ticker": "AEP",
+      "accession_number": "0000004904-24-000020",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 56,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-26",
+      "measurement_start_date": "2024-02-27",
+      "measurement_start_company_price": 77.1858901977539,
+      "measurement_start_spy_price": 492.0853576660156,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-27",
+          "end_date": "2024-08-27",
+          "company_return_percent": 19.4338,
+          "spy_return_percent": 11.4793,
+          "excess_return_percent": 7.9545
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-27",
+          "end_date": "2025-02-27",
+          "company_return_percent": 29.9038,
+          "spy_return_percent": 16.8908,
+          "excess_return_percent": 13.013
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-27",
+          "end_date": "2026-02-27",
+          "company_return_percent": 70.8231,
+          "spy_return_percent": 38.6678,
+          "excess_return_percent": 32.1553
+        }
+      },
+      "max_drawdown_12_months_percent": -13.101
+    },
+    {
+      "cik": "0001822479",
+      "ticker": "SHC",
+      "accession_number": "0001822479-24-000011",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 29,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-27",
+      "measurement_start_date": "2024-02-28",
+      "measurement_start_company_price": 14.954999923706055,
+      "measurement_start_spy_price": 491.4350280761719,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-28",
+          "end_date": "2024-08-28",
+          "company_return_percent": 1.5714,
+          "spy_return_percent": 10.9788,
+          "excess_return_percent": -9.4075
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-28",
+          "end_date": "2025-02-28",
+          "company_return_percent": -16.6165,
+          "spy_return_percent": 18.8721,
+          "excess_return_percent": -35.4886
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-28",
+          "end_date": "2026-03-02",
+          "company_return_percent": 6.3858,
+          "spy_return_percent": 38.9302,
+          "excess_return_percent": -32.5444
+        }
+      },
+      "max_drawdown_12_months_percent": -28.3811
+    },
+    {
+      "cik": "0001955520",
+      "ticker": "KNF",
+      "accession_number": "0001955520-24-000007",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "score": 64,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-27",
+      "measurement_start_date": "2024-02-28",
+      "measurement_start_company_price": 72.30999755859375,
+      "measurement_start_spy_price": 491.4350280761719,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-28",
+          "end_date": "2024-08-28",
+          "company_return_percent": 5.4903,
+          "spy_return_percent": 10.9788,
+          "excess_return_percent": -5.4886
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-28",
+          "end_date": "2025-02-28",
+          "company_return_percent": 32.3192,
+          "spy_return_percent": 18.8721,
+          "excess_return_percent": 13.4471
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-28",
+          "end_date": "2026-03-02",
+          "company_return_percent": 22.7769,
+          "spy_return_percent": 38.9302,
+          "excess_return_percent": -16.1533
+        }
+      },
+      "max_drawdown_12_months_percent": -18.2694
+    },
+    {
+      "cik": "0001171759",
+      "ticker": "RRGB",
+      "accession_number": "0001171759-24-000011",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 16,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-28",
+      "measurement_start_date": "2024-02-29",
+      "measurement_start_company_price": 7.480000019073486,
+      "measurement_start_spy_price": 493.20172119140625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-29",
+          "end_date": "2024-08-29",
+          "company_return_percent": -51.8717,
+          "spy_return_percent": 10.5912,
+          "excess_return_percent": -62.4628
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-28",
+          "end_date": "2025-02-28",
+          "company_return_percent": -24.7326,
+          "spy_return_percent": 18.4462,
+          "excess_return_percent": -43.1789
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-28",
+          "end_date": "2026-03-02",
+          "company_return_percent": -38.369,
+          "spy_return_percent": 38.4325,
+          "excess_return_percent": -76.8015
+        }
+      },
+      "max_drawdown_12_months_percent": -65.8043
+    },
+    {
+      "cik": "0001537028",
+      "ticker": "ICD",
+      "accession_number": "0001537028-24-000006",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "score": 69,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001766363",
+      "ticker": "EDR",
+      "accession_number": "0000950170-24-021653",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 60,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001781755",
+      "ticker": "BRP",
+      "accession_number": "0001781755-24-000016",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 41,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001849253",
+      "ticker": "RYAN",
+      "accession_number": "0000950170-24-021657",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 57,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-28",
+      "measurement_start_date": "2024-02-29",
+      "measurement_start_company_price": 50.84608840942383,
+      "measurement_start_spy_price": 493.20172119140625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-29",
+          "end_date": "2024-08-29",
+          "company_return_percent": 24.4984,
+          "spy_return_percent": 10.5912,
+          "excess_return_percent": 13.9073
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-28",
+          "end_date": "2025-02-28",
+          "company_return_percent": 35.1768,
+          "spy_return_percent": 18.4462,
+          "excess_return_percent": 16.7306
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-28",
+          "end_date": "2026-03-02",
+          "company_return_percent": -21.4879,
+          "spy_return_percent": 38.4325,
+          "excess_return_percent": -59.9205
+        }
+      },
+      "max_drawdown_12_months_percent": -19.443
+    },
+    {
+      "cik": "0001869198",
+      "ticker": "LTH",
+      "accession_number": "0001869198-24-000008",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 63,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-28",
+      "measurement_start_date": "2024-02-29",
+      "measurement_start_company_price": 13.739999771118164,
+      "measurement_start_spy_price": 493.20172119140625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-08-29",
+          "end_date": "2024-08-29",
+          "company_return_percent": 71.0335,
+          "spy_return_percent": 10.5912,
+          "excess_return_percent": 60.4423
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-02-28",
+          "end_date": "2025-02-28",
+          "company_return_percent": 121.6885,
+          "spy_return_percent": 18.4462,
+          "excess_return_percent": 103.2423
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-02-28",
+          "end_date": "2026-03-02",
+          "company_return_percent": 92.4309,
+          "spy_return_percent": 38.4325,
+          "excess_return_percent": 53.9983
+        }
+      },
+      "max_drawdown_12_months_percent": -16.2371
+    },
+    {
+      "cik": "0001724965",
+      "ticker": "TALO",
+      "accession_number": "0000950170-24-022540",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "score": 56,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-02-29",
+      "measurement_start_date": "2024-03-01",
+      "measurement_start_company_price": 13.329999923706055,
+      "measurement_start_spy_price": 497.8320007324219,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-01",
+          "end_date": "2024-09-03",
+          "company_return_percent": -16.7292,
+          "spy_return_percent": 8.3323,
+          "excess_return_percent": -25.0615
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-01",
+          "end_date": "2025-03-03",
+          "company_return_percent": -37.3593,
+          "spy_return_percent": 15.2887,
+          "excess_return_percent": -52.6481
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-01",
+          "end_date": "2026-03-02",
+          "company_return_percent": -3.2258,
+          "spy_return_percent": 37.145,
+          "excess_return_percent": -40.3708
+        }
+      },
+      "max_drawdown_12_months_percent": -40.7025
+    },
+    {
+      "cik": "0001464343",
+      "ticker": "ATLC",
+      "accession_number": "0001437749-24-006440",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 67,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-04",
+      "measurement_start_date": "2024-03-05",
+      "measurement_start_company_price": 30.31999969482422,
+      "measurement_start_spy_price": 492.32806396484375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-05",
+          "end_date": "2024-09-05",
+          "company_return_percent": 7.6517,
+          "spy_return_percent": 9.0533,
+          "excess_return_percent": -1.4015
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-05",
+          "end_date": "2025-03-05",
+          "company_return_percent": 62.9947,
+          "spy_return_percent": 16.4358,
+          "excess_return_percent": 46.5589
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-05",
+          "end_date": "2026-03-05",
+          "company_return_percent": 93.1728,
+          "spy_return_percent": 37.6538,
+          "excess_return_percent": 55.519
+        }
+      },
+      "max_drawdown_12_months_percent": -24.6707
+    },
+    {
+      "cik": "0001593548",
+      "ticker": "AGS",
+      "accession_number": "0001437749-24-006735",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 54,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0000216085",
+      "ticker": "HVT",
+      "accession_number": "0001628280-24-009586",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 38,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-07",
+      "measurement_start_date": "2024-03-08",
+      "measurement_start_company_price": 29.642423629760742,
+      "measurement_start_spy_price": 496.735107421875,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-08",
+          "end_date": "2024-09-09",
+          "company_return_percent": -23.98,
+          "spy_return_percent": 7.4564,
+          "excess_return_percent": -31.4364
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-08",
+          "end_date": "2025-03-10",
+          "company_return_percent": -30.3665,
+          "spy_return_percent": 10.9534,
+          "excess_return_percent": -41.3199
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-08",
+          "end_date": "2026-03-09",
+          "company_return_percent": -27.0377,
+          "spy_return_percent": 35.8238,
+          "excess_return_percent": -62.8615
+        }
+      },
+      "max_drawdown_12_months_percent": -35.9241
+    },
+    {
+      "cik": "0001014763",
+      "ticker": "AIMD",
+      "accession_number": "0001654954-24-002897",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 25,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-08",
+      "measurement_start_date": "2024-03-11",
+      "measurement_start_company_price": 8.199999809265137,
+      "measurement_start_spy_price": 496.30804443359375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-11",
+          "end_date": "2024-09-11",
+          "company_return_percent": -68.2927,
+          "spy_return_percent": 9.1255,
+          "excess_return_percent": -77.4182
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-11",
+          "end_date": "2025-03-11",
+          "company_return_percent": -71.3415,
+          "spy_return_percent": 10.1257,
+          "excess_return_percent": -81.4672
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-11",
+          "end_date": "2026-03-11",
+          "company_return_percent": -81.3415,
+          "spy_return_percent": 35.5519,
+          "excess_return_percent": -116.8933
+        }
+      },
+      "max_drawdown_12_months_percent": -74.0244
+    },
+    {
+      "cik": "0001883313",
+      "ticker": "SVV",
+      "accession_number": "0001883313-24-000013",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 42,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-08",
+      "measurement_start_date": "2024-03-11",
+      "measurement_start_company_price": 19.729999542236328,
+      "measurement_start_spy_price": 496.30804443359375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-11",
+          "end_date": "2024-09-11",
+          "company_return_percent": -55.4486,
+          "spy_return_percent": 9.1255,
+          "excess_return_percent": -64.574
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-11",
+          "end_date": "2025-03-11",
+          "company_return_percent": -65.332,
+          "spy_return_percent": 10.1257,
+          "excess_return_percent": -75.4577
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-11",
+          "end_date": "2026-03-11",
+          "company_return_percent": -59.3006,
+          "spy_return_percent": 35.5519,
+          "excess_return_percent": -94.8524
+        }
+      },
+      "max_drawdown_12_months_percent": -65.332
+    },
+    {
+      "cik": "0001959348",
+      "ticker": "KLG",
+      "accession_number": "0001628280-24-009949",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 42,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001558569",
+      "ticker": "ISPC",
+      "accession_number": "0001558370-24-003129",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 32,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-13",
+      "measurement_start_date": "2024-03-14",
+      "measurement_start_company_price": 288.0,
+      "measurement_start_spy_price": 499.87054443359375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-14",
+          "end_date": "2024-09-16",
+          "company_return_percent": -37.9167,
+          "spy_return_percent": 9.9932,
+          "excess_return_percent": -47.9099
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-14",
+          "end_date": "2025-03-14",
+          "company_return_percent": -81.3889,
+          "spy_return_percent": 10.6961,
+          "excess_return_percent": -92.0849
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-14",
+          "end_date": "2026-03-16",
+          "company_return_percent": -97.2639,
+          "spy_return_percent": 33.1332,
+          "excess_return_percent": -130.397
+        }
+      },
+      "max_drawdown_12_months_percent": -87.3
+    },
+    {
+      "cik": "0001604868",
+      "ticker": "GRWG",
+      "accession_number": "0001628280-24-010996",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 26,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-13",
+      "measurement_start_date": "2024-03-14",
+      "measurement_start_company_price": 1.9049999713897705,
+      "measurement_start_spy_price": 499.87054443359375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-14",
+          "end_date": "2024-09-16",
+          "company_return_percent": 6.0367,
+          "spy_return_percent": 9.9932,
+          "excess_return_percent": -3.9565
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-14",
+          "end_date": "2025-03-14",
+          "company_return_percent": -44.8819,
+          "spy_return_percent": 10.6961,
+          "excess_return_percent": -55.5779
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-14",
+          "end_date": "2026-03-16",
+          "company_return_percent": -44.8819,
+          "spy_return_percent": 33.1332,
+          "excess_return_percent": -78.015
+        }
+      },
+      "max_drawdown_12_months_percent": -70.7808
+    },
+    {
+      "cik": "0001813914",
+      "ticker": "CMAX",
+      "accession_number": "0000950170-24-032506",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 29,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001941536",
+      "ticker": "BAER",
+      "accession_number": "0001628280-24-012213",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 29,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-20",
+      "measurement_start_date": "2024-03-21",
+      "measurement_start_company_price": 5.150000095367432,
+      "measurement_start_spy_price": 508.4832458496094,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-21",
+          "end_date": "2024-09-23",
+          "company_return_percent": -53.2039,
+          "spy_return_percent": 9.778,
+          "excess_return_percent": -62.9819
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-21",
+          "end_date": "2025-03-21",
+          "company_return_percent": -73.3981,
+          "spy_return_percent": 9.3753,
+          "excess_return_percent": -82.7734
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-21",
+          "end_date": "2026-03-23",
+          "company_return_percent": -62.3301,
+          "spy_return_percent": 28.558,
+          "excess_return_percent": -90.8881
+        }
+      },
+      "max_drawdown_12_months_percent": -73.3981
+    },
+    {
+      "cik": "0001623526",
+      "ticker": "STOK",
+      "accession_number": "0000950170-24-035912",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 25,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-25",
+      "measurement_start_date": "2024-03-26",
+      "measurement_start_company_price": 10.289999961853027,
+      "measurement_start_spy_price": 505.18231201171875,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-26",
+          "end_date": "2024-09-26",
+          "company_return_percent": 19.1448,
+          "spy_return_percent": 11.0054,
+          "excess_return_percent": 8.1394
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-26",
+          "end_date": "2025-03-26",
+          "company_return_percent": -28.0855,
+          "spy_return_percent": 10.9899,
+          "excess_return_percent": -39.0754
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-26",
+          "end_date": "2026-03-26",
+          "company_return_percent": 227.5024,
+          "spy_return_percent": 27.3664,
+          "excess_return_percent": 200.1361
+        }
+      },
+      "max_drawdown_12_months_percent": -57.7626
+    },
+    {
+      "cik": "0000928340",
+      "ticker": "CWCO",
+      "accession_number": "0001558370-24-004095",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 71,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-27",
+      "measurement_start_date": "2024-03-28",
+      "measurement_start_company_price": 28.207605361938477,
+      "measurement_start_spy_price": 509.3302917480469,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-09-28",
+          "end_date": "2024-09-30",
+          "company_return_percent": -13.6794,
+          "spy_return_percent": 10.3823,
+          "excess_return_percent": -24.0617
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-03-28",
+          "end_date": "2025-03-28",
+          "company_return_percent": -15.556,
+          "spy_return_percent": 7.5826,
+          "excess_return_percent": -23.1386
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-03-28",
+          "end_date": "2026-03-30",
+          "company_return_percent": 15.9775,
+          "spy_return_percent": 23.7598,
+          "excess_return_percent": -7.7823
+        }
+      },
+      "max_drawdown_12_months_percent": -19.9766
+    },
+    {
+      "cik": "0000885508",
+      "ticker": "STRS",
+      "accession_number": "0000885508-24-000029",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 24,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-28",
+      "measurement_start_date": "2024-04-01",
+      "measurement_start_company_price": 17.979366302490234,
+      "measurement_start_spy_price": 508.4442443847656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-10-01",
+          "end_date": "2024-10-01",
+          "company_return_percent": 13.7978,
+          "spy_return_percent": 9.5841,
+          "excess_return_percent": 4.2137
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-04-01",
+          "end_date": "2025-04-01",
+          "company_return_percent": -22.1573,
+          "spy_return_percent": 8.7999,
+          "excess_return_percent": -30.9572
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-04-01",
+          "end_date": "2026-04-01",
+          "company_return_percent": 35.9551,
+          "spy_return_percent": 28.5404,
+          "excess_return_percent": 7.4147
+        }
+      },
+      "max_drawdown_12_months_percent": -42.5539
+    },
+    {
+      "cik": "0001051514",
+      "ticker": "SSKN",
+      "accession_number": "0001140361-24-015754",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 15,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-28",
+      "measurement_start_date": "2024-04-01",
+      "measurement_start_company_price": 4.0,
+      "measurement_start_spy_price": 508.4442443847656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-10-01",
+          "end_date": "2024-10-01",
+          "company_return_percent": -31.0,
+          "spy_return_percent": 9.5841,
+          "excess_return_percent": -40.5841
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-04-01",
+          "end_date": "2025-04-01",
+          "company_return_percent": -33.25,
+          "spy_return_percent": 8.7999,
+          "excess_return_percent": -42.0499
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-04-01",
+          "end_date": "2026-04-01",
+          "company_return_percent": -94.5,
+          "spy_return_percent": 28.5404,
+          "excess_return_percent": -123.0404
+        }
+      },
+      "max_drawdown_12_months_percent": -54.6411
+    },
+    {
+      "cik": "0001597846",
+      "ticker": "GRNQ",
+      "accession_number": "0001493152-24-011639",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 56,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-28",
+      "measurement_start_date": "2024-04-01",
+      "measurement_start_company_price": 13.600000381469727,
+      "measurement_start_spy_price": 508.4442443847656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-10-01",
+          "end_date": "2024-10-01",
+          "company_return_percent": -29.4118,
+          "spy_return_percent": 9.5841,
+          "excess_return_percent": -38.9958
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-04-01",
+          "end_date": "2025-04-01",
+          "company_return_percent": -33.8235,
+          "spy_return_percent": 8.7999,
+          "excess_return_percent": -42.6235
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-04-01",
+          "end_date": "2026-04-01",
+          "company_return_percent": 117.6471,
+          "spy_return_percent": 28.5404,
+          "excess_return_percent": 89.1067
+        }
+      },
+      "max_drawdown_12_months_percent": -53.3862
+    },
+    {
+      "cik": "0001899287",
+      "ticker": "AMPX",
+      "accession_number": "0001899287-24-000016",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 48,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-03-28",
+      "measurement_start_date": "2024-04-01",
+      "measurement_start_company_price": 2.5899999141693115,
+      "measurement_start_spy_price": 508.4442443847656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-10-01",
+          "end_date": "2024-10-01",
+          "company_return_percent": -60.6178,
+          "spy_return_percent": 9.5841,
+          "excess_return_percent": -70.2018
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-04-01",
+          "end_date": "2025-04-01",
+          "company_return_percent": -0.3861,
+          "spy_return_percent": 8.7999,
+          "excess_return_percent": -9.186
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-04-01",
+          "end_date": "2026-04-01",
+          "company_return_percent": 499.2278,
+          "spy_return_percent": 28.5404,
+          "excess_return_percent": 470.6874
+        }
+      },
+      "max_drawdown_12_months_percent": -72.471
+    },
+    {
+      "cik": "0001812727",
+      "ticker": "RELI",
+      "accession_number": "0001493152-24-013118",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 38,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001326706",
+      "ticker": "NAOV",
+      "accession_number": "0001493152-24-013966",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 50,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001849380",
+      "ticker": "ONMD",
+      "accession_number": "0001493152-24-014092",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 25,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-04-09",
+      "measurement_start_date": "2024-04-10",
+      "measurement_start_company_price": 0.640999972820282,
+      "measurement_start_spy_price": 500.61541748046875,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-10-10",
+          "end_date": "2024-10-10",
+          "company_return_percent": 9.2044,
+          "spy_return_percent": 12.7677,
+          "excess_return_percent": -3.5634
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-04-10",
+          "end_date": "2025-04-10",
+          "company_return_percent": -17.3167,
+          "spy_return_percent": 3.3332,
+          "excess_return_percent": -20.6499
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-04-10",
+          "end_date": "2026-04-10",
+          "company_return_percent": 29.6412,
+          "spy_return_percent": 35.3762,
+          "excess_return_percent": -5.735
+        }
+      },
+      "max_drawdown_12_months_percent": -81.4176
+    },
+    {
+      "cik": "0001460602",
+      "ticker": "ORGS",
+      "accession_number": "0001493152-24-014652",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 0,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-04-15",
+      "measurement_start_date": "2024-04-16",
+      "measurement_start_company_price": 5.0,
+      "measurement_start_spy_price": 490.3036193847656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-10-16",
+          "end_date": "2024-10-16",
+          "company_return_percent": -32.2,
+          "spy_return_percent": 16.3725,
+          "excess_return_percent": -48.5725
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-04-16",
+          "end_date": "2025-04-16",
+          "company_return_percent": -48.8,
+          "spy_return_percent": 5.7236,
+          "excess_return_percent": -54.5236
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-04-16",
+          "end_date": "2026-04-16",
+          "company_return_percent": -96.8,
+          "spy_return_percent": 42.7395,
+          "excess_return_percent": -139.5395
+        }
+      },
+      "max_drawdown_12_months_percent": -91.1111
+    },
+    {
+      "cik": "0001463972",
+      "ticker": "VUZI",
+      "accession_number": "0001558370-24-005117",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 50,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-04-15",
+      "measurement_start_date": "2024-04-16",
+      "measurement_start_company_price": 1.2000000476837158,
+      "measurement_start_spy_price": 490.3036193847656,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-10-16",
+          "end_date": "2024-10-16",
+          "company_return_percent": 14.1667,
+          "spy_return_percent": 16.3725,
+          "excess_return_percent": -2.2058
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-04-16",
+          "end_date": "2025-04-16",
+          "company_return_percent": 35.0,
+          "spy_return_percent": 5.7236,
+          "excess_return_percent": 29.2764
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-04-16",
+          "end_date": "2026-04-16",
+          "company_return_percent": 118.3333,
+          "spy_return_percent": 42.7395,
+          "excess_return_percent": 75.5938
+        }
+      },
+      "max_drawdown_12_months_percent": -69.7719
+    },
+    {
+      "cik": "0001688568",
+      "ticker": "DXC",
+      "accession_number": "0001688568-24-000032",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 26,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-05-17",
+      "measurement_start_date": "2024-05-20",
+      "measurement_start_company_price": 16.209999084472656,
+      "measurement_start_spy_price": 516.1368408203125,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-11-20",
+          "end_date": "2024-11-20",
+          "company_return_percent": 30.5984,
+          "spy_return_percent": 12.1047,
+          "excess_return_percent": 18.4937
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-05-20",
+          "end_date": "2025-05-20",
+          "company_return_percent": -5.7372,
+          "spy_return_percent": 13.2693,
+          "excess_return_percent": -19.0065
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-05-20",
+          "end_date": "2026-05-20",
+          "company_return_percent": -43.8618,
+          "spy_return_percent": 43.246,
+          "excess_return_percent": -87.1078
+        }
+      },
+      "max_drawdown_12_months_percent": -38.5458
+    },
+    {
+      "cik": "0001596993",
+      "ticker": "LPG",
+      "accession_number": "0001596993-24-000030",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 98,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-05-29",
+      "measurement_start_date": "2024-05-30",
+      "measurement_start_company_price": 40.832847595214844,
+      "measurement_start_spy_price": 508.88238525390625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2024-11-30",
+          "end_date": "2024-12-02",
+          "company_return_percent": -49.2032,
+          "spy_return_percent": 16.231,
+          "excess_return_percent": -65.4342
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-05-30",
+          "end_date": "2025-05-30",
+          "company_return_percent": -53.1939,
+          "spy_return_percent": 14.2136,
+          "excess_return_percent": -67.4075
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-05-30",
+          "end_date": "2026-06-01",
+          "company_return_percent": -1.0638,
+          "spy_return_percent": 48.677,
+          "excess_return_percent": -49.7407
+        }
+      },
+      "max_drawdown_12_months_percent": -62.8911
+    },
+    {
+      "cik": "0001468492",
+      "ticker": "HSCS",
+      "accession_number": "0000950170-24-087271",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 50,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-07-29",
+      "measurement_start_date": "2024-07-30",
+      "measurement_start_company_price": 3.8299999237060547,
+      "measurement_start_spy_price": 529.4656372070312,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-01-30",
+          "end_date": "2025-01-30",
+          "company_return_percent": -13.8381,
+          "spy_return_percent": 12.3503,
+          "excess_return_percent": -26.1884
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-07-30",
+          "end_date": "2025-07-30",
+          "company_return_percent": -13.0548,
+          "spy_return_percent": 18.517,
+          "excess_return_percent": -31.5719
+        },
+        "24_months": {
+          "status": "completed",
+          "target_date": "2026-07-30",
+          "end_date": "2026-07-30",
+          "company_return_percent": -45.6919,
+          "spy_return_percent": 40.0827,
+          "excess_return_percent": -85.7747
+        }
+      },
+      "max_drawdown_12_months_percent": -50.0963
+    },
+    {
+      "cik": "0000057515",
+      "ticker": "LANC",
+      "accession_number": "0000057515-24-000020",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 63,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001606757",
+      "ticker": "KE",
+      "accession_number": "0001606757-24-000024",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 29,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-08-23",
+      "measurement_start_date": "2024-08-26",
+      "measurement_start_company_price": 18.110000610351562,
+      "measurement_start_spy_price": 547.8211669921875,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-02-26",
+          "end_date": "2025-02-26",
+          "company_return_percent": 1.6013,
+          "spy_return_percent": 6.7014,
+          "excess_return_percent": -5.1001
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-08-26",
+          "end_date": "2025-08-26",
+          "company_return_percent": 58.5312,
+          "spy_return_percent": 16.4778,
+          "excess_return_percent": 42.0534
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2026-08-26"
+        }
+      },
+      "max_drawdown_12_months_percent": -39.0463
+    },
+    {
+      "cik": "0001069899",
+      "ticker": "PAHC",
+      "accession_number": "0001558370-24-012517",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 37,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-08-28",
+      "measurement_start_date": "2024-08-29",
+      "measurement_start_company_price": 20.76114273071289,
+      "measurement_start_spy_price": 545.4375610351562,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-02-28",
+          "end_date": "2025-02-28",
+          "company_return_percent": 7.1004,
+          "spy_return_percent": 7.1028,
+          "excess_return_percent": -0.0024
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-08-29",
+          "end_date": "2025-08-29",
+          "company_return_percent": 76.3363,
+          "spy_return_percent": 16.9668,
+          "excess_return_percent": 59.3695
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2026-08-29"
+        }
+      },
+      "max_drawdown_12_months_percent": -36.6406
+    },
+    {
+      "cik": "0000722572",
+      "ticker": "FKWL",
+      "accession_number": "0001683168-24-006754",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 25,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-09-30",
+      "measurement_start_date": "2024-10-01",
+      "measurement_start_company_price": 4.4751739501953125,
+      "measurement_start_spy_price": 557.1738891601562,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-04-01",
+          "end_date": "2025-04-01",
+          "company_return_percent": 30.5987,
+          "spy_return_percent": -0.7156,
+          "excess_return_percent": 31.3142
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-10-01",
+          "end_date": "2025-10-01",
+          "company_return_percent": -1.1086,
+          "spy_return_percent": 18.9857,
+          "excess_return_percent": -20.0944
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2026-10-01"
+        }
+      },
+      "max_drawdown_12_months_percent": -45.8213
+    },
+    {
+      "cik": "0001880613",
+      "ticker": "DRCT",
+      "accession_number": "0001558370-24-013317",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 27,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-10-15",
+      "measurement_start_date": "2024-10-16",
+      "measurement_start_company_price": 609.4000244140625,
+      "measurement_start_spy_price": 570.5784912109375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-04-16",
+          "end_date": "2025-04-16",
+          "company_return_percent": -80.4693,
+          "spy_return_percent": -9.1507,
+          "excess_return_percent": -71.3187
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-10-16",
+          "end_date": "2025-10-16",
+          "company_return_percent": -88.1227,
+          "spy_return_percent": 14.8329,
+          "excess_return_percent": -102.9556
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2026-10-16"
+        }
+      },
+      "max_drawdown_12_months_percent": -94.7091
+    },
+    {
+      "cik": "0000316253",
+      "ticker": "ENZ",
+      "accession_number": "0001213900-24-091798",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 41,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0000884614",
+      "ticker": "UGI",
+      "accession_number": "0000884614-24-000086",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 32,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-11-26",
+      "measurement_start_date": "2024-11-27",
+      "measurement_start_company_price": 27.82359504699707,
+      "measurement_start_spy_price": 586.7758178710938,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-05-27",
+          "end_date": "2025-05-27",
+          "company_return_percent": 23.2695,
+          "spy_return_percent": -0.6523,
+          "excess_return_percent": 23.9218
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-11-27",
+          "end_date": "2025-11-28",
+          "company_return_percent": 37.8374,
+          "spy_return_percent": 15.5083,
+          "excess_return_percent": 22.3291
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2026-11-27"
+        }
+      },
+      "max_drawdown_12_months_percent": -13.5803
+    },
+    {
+      "cik": "0001961847",
+      "ticker": "INHD",
+      "accession_number": "0001493152-24-049268",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 50,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-12-09",
+      "measurement_start_date": "2024-12-10",
+      "measurement_start_company_price": 2270.39990234375,
+      "measurement_start_spy_price": 590.665771484375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-06-10",
+          "end_date": "2025-06-10",
+          "company_return_percent": -72.5159,
+          "spy_return_percent": 0.6852,
+          "excess_return_percent": -73.201
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-12-10",
+          "end_date": "2025-12-10",
+          "company_return_percent": -96.7653,
+          "spy_return_percent": 15.4495,
+          "excess_return_percent": -112.2148
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2026-12-10"
+        }
+      },
+      "max_drawdown_12_months_percent": -98.5803
+    },
+    {
+      "cik": "0000737758",
+      "ticker": "TTC",
+      "accession_number": "0000737758-24-000087",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 53,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-12-18",
+      "measurement_start_date": "2024-12-19",
+      "measurement_start_company_price": 78.37605285644531,
+      "measurement_start_spy_price": 574.302001953125,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-06-19",
+          "end_date": "2025-06-20",
+          "company_return_percent": -13.0002,
+          "spy_return_percent": 2.3447,
+          "excess_return_percent": -15.3449
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-12-19",
+          "end_date": "2025-12-19",
+          "company_return_percent": -2.2461,
+          "spy_return_percent": 17.8809,
+          "excess_return_percent": -20.127
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2026-12-19"
+        }
+      },
+      "max_drawdown_12_months_percent": -26.8549
+    },
+    {
+      "cik": "0000936395",
+      "ticker": "CIEN",
+      "accession_number": "0000936395-24-000044",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 38,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2024-12-20",
+      "measurement_start_date": "2024-12-23",
+      "measurement_start_company_price": 87.62000274658203,
+      "measurement_start_spy_price": 584.6803588867188,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-06-23",
+          "end_date": "2025-06-23",
+          "company_return_percent": -13.9009,
+          "spy_return_percent": 1.521,
+          "excess_return_percent": -15.4219
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2025-12-23",
+          "end_date": "2025-12-23",
+          "company_return_percent": 174.241,
+          "spy_return_percent": 17.0423,
+          "excess_return_percent": 157.1987
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2026-12-23"
+        }
+      },
+      "max_drawdown_12_months_percent": -45.5083
+    },
+    {
+      "cik": "0001058090",
+      "ticker": "CMG",
+      "accession_number": "0001058090-25-000014",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 74,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-05",
+      "measurement_start_date": "2025-02-06",
+      "measurement_start_company_price": 57.31999969482422,
+      "measurement_start_spy_price": 596.1146240234375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-06",
+          "end_date": "2025-08-06",
+          "company_return_percent": -25.5234,
+          "spy_return_percent": 4.9874,
+          "excess_return_percent": -30.5108
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-06",
+          "end_date": "2026-02-06",
+          "company_return_percent": -31.2805,
+          "spy_return_percent": 15.2411,
+          "excess_return_percent": -46.5217
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-06"
+        }
+      },
+      "max_drawdown_12_months_percent": -48.8152
+    },
+    {
+      "cik": "0001125376",
+      "ticker": "ENSG",
+      "accession_number": "0001125376-25-000021",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 57,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-05",
+      "measurement_start_date": "2025-02-06",
+      "measurement_start_company_price": 135.588134765625,
+      "measurement_start_spy_price": 596.1146240234375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-06",
+          "end_date": "2025-08-06",
+          "company_return_percent": 16.4539,
+          "spy_return_percent": 4.9874,
+          "excess_return_percent": 11.4664
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-06",
+          "end_date": "2026-02-06",
+          "company_return_percent": 45.7757,
+          "spy_return_percent": 15.2411,
+          "excess_return_percent": 30.5346
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-06"
+        }
+      },
+      "max_drawdown_12_months_percent": -12.7552
+    },
+    {
+      "cik": "0001433195",
+      "ticker": "APPF",
+      "accession_number": "0001433195-25-000013",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 99,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-06",
+      "measurement_start_date": "2025-02-07",
+      "measurement_start_company_price": 222.97999572753906,
+      "measurement_start_spy_price": 590.6580200195312,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-07",
+          "end_date": "2025-08-07",
+          "company_return_percent": 34.7071,
+          "spy_return_percent": 5.8686,
+          "excess_return_percent": 28.8386
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-07",
+          "end_date": "2026-02-09",
+          "company_return_percent": -17.5756,
+          "spy_return_percent": 16.8665,
+          "excess_return_percent": -34.4421
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-07"
+        }
+      },
+      "max_drawdown_12_months_percent": -44.7907
+    },
+    {
+      "cik": "0000833640",
+      "ticker": "POWI",
+      "accession_number": "0000833640-25-000043",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 58,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-07",
+      "measurement_start_date": "2025-02-10",
+      "measurement_start_company_price": 56.41263198852539,
+      "measurement_start_spy_price": 594.6693115234375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-10",
+          "end_date": "2025-08-11",
+          "company_return_percent": -23.6508,
+          "spy_return_percent": 5.7648,
+          "excess_return_percent": -29.4157
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-10",
+          "end_date": "2026-02-10",
+          "company_return_percent": -19.6188,
+          "spy_return_percent": 15.7721,
+          "excess_return_percent": -35.3909
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-10"
+        }
+      },
+      "max_drawdown_12_months_percent": -53.0756
+    },
+    {
+      "cik": "0001762239",
+      "ticker": "KAVL",
+      "accession_number": "0001731122-25-000185",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 25,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-10",
+      "measurement_start_date": "2025-02-11",
+      "measurement_start_company_price": 1.399999976158142,
+      "measurement_start_spy_price": 595.1216430664062,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-11",
+          "end_date": "2025-08-11",
+          "company_return_percent": -60.9286,
+          "spy_return_percent": 5.6845,
+          "excess_return_percent": -66.613
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-11",
+          "end_date": "2026-02-11",
+          "company_return_percent": -98.7143,
+          "spy_return_percent": 15.6574,
+          "excess_return_percent": -114.3717
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-11"
+        }
+      },
+      "max_drawdown_12_months_percent": -98.9286
+    },
+    {
+      "cik": "0001617640",
+      "ticker": "ZG",
+      "accession_number": "0001617640-25-000016",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 69,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-11",
+      "measurement_start_date": "2025-02-12",
+      "measurement_start_company_price": 74.87000274658203,
+      "measurement_start_spy_price": 593.2044067382812,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-12",
+          "end_date": "2025-08-12",
+          "company_return_percent": 2.885,
+          "spy_return_percent": 7.1548,
+          "excess_return_percent": -4.2698
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-12",
+          "end_date": "2026-02-12",
+          "company_return_percent": -41.6322,
+          "spy_return_percent": 14.2386,
+          "excess_return_percent": -55.8708
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-12"
+        }
+      },
+      "max_drawdown_12_months_percent": -49.6312
+    },
+    {
+      "cik": "0000004904",
+      "ticker": "AEP",
+      "accession_number": "0000004904-25-000027",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 67,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-13",
+      "measurement_start_date": "2025-02-14",
+      "measurement_start_company_price": 97.09237670898438,
+      "measurement_start_spy_price": 599.4376831054688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-14",
+          "end_date": "2025-08-14",
+          "company_return_percent": 12.7423,
+          "spy_return_percent": 6.4134,
+          "excess_return_percent": 6.3289
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-14",
+          "end_date": "2026-02-17",
+          "company_return_percent": 32.1669,
+          "spy_return_percent": 13.3129,
+          "excess_return_percent": 18.854
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-14"
+        }
+      },
+      "max_drawdown_12_months_percent": -8.9691
+    },
+    {
+      "cik": "0000084839",
+      "ticker": "ROL",
+      "accession_number": "0000084839-25-000024",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 76,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-13",
+      "measurement_start_date": "2025-02-14",
+      "measurement_start_company_price": 49.55832290649414,
+      "measurement_start_spy_price": 599.4376831054688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-14",
+          "end_date": "2025-08-14",
+          "company_return_percent": 14.2045,
+          "spy_return_percent": 6.4134,
+          "excess_return_percent": 7.7911
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-14",
+          "end_date": "2026-02-17",
+          "company_return_percent": 19.8693,
+          "spy_return_percent": 13.3129,
+          "excess_return_percent": 6.5564
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-14"
+        }
+      },
+      "max_drawdown_12_months_percent": -11.4939
+    },
+    {
+      "cik": "0001334036",
+      "ticker": "CROX",
+      "accession_number": "0001334036-25-000009",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 80,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-13",
+      "measurement_start_date": "2025-02-14",
+      "measurement_start_company_price": 108.43000030517578,
+      "measurement_start_spy_price": 599.4376831054688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-14",
+          "end_date": "2025-08-14",
+          "company_return_percent": -22.503,
+          "spy_return_percent": 6.4134,
+          "excess_return_percent": -28.9164
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-14",
+          "end_date": "2026-02-17",
+          "company_return_percent": -7.8484,
+          "spy_return_percent": 13.3129,
+          "excess_return_percent": -21.1613
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-14"
+        }
+      },
+      "max_drawdown_12_months_percent": -38.9739
+    },
+    {
+      "cik": "0001478242",
+      "ticker": "IQV",
+      "accession_number": "0001478242-25-000045",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 52,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-13",
+      "measurement_start_date": "2025-02-14",
+      "measurement_start_company_price": 193.44000244140625,
+      "measurement_start_spy_price": 599.4376831054688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-14",
+          "end_date": "2025-08-14",
+          "company_return_percent": -2.0885,
+          "spy_return_percent": 6.4134,
+          "excess_return_percent": -8.5019
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-14",
+          "end_date": "2026-02-17",
+          "company_return_percent": -14.9917,
+          "spy_return_percent": 13.3129,
+          "excess_return_percent": -28.3046
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-14"
+        }
+      },
+      "max_drawdown_12_months_percent": -31.6632
+    },
+    {
+      "cik": "0000009092",
+      "ticker": "BMI",
+      "accession_number": "0000950170-25-020889",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 84,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-14",
+      "measurement_start_date": "2025-02-18",
+      "measurement_start_company_price": 217.13037109375,
+      "measurement_start_spy_price": 601.1976318359375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-18",
+          "end_date": "2025-08-18",
+          "company_return_percent": -14.9096,
+          "spy_return_percent": 5.8304,
+          "excess_return_percent": -20.7401
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-18",
+          "end_date": "2026-02-18",
+          "company_return_percent": -27.5689,
+          "spy_return_percent": 13.5504,
+          "excess_return_percent": -41.1193
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-18"
+        }
+      },
+      "max_drawdown_12_months_percent": -42.9198
+    },
+    {
+      "cik": "0001347178",
+      "ticker": "VNDA",
+      "accession_number": "0001628280-25-005761",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 42,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-14",
+      "measurement_start_date": "2025-02-18",
+      "measurement_start_company_price": 4.460000038146973,
+      "measurement_start_spy_price": 601.1976318359375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-18",
+          "end_date": "2025-08-18",
+          "company_return_percent": 2.2422,
+          "spy_return_percent": 5.8304,
+          "excess_return_percent": -3.5883
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-18",
+          "end_date": "2026-02-18",
+          "company_return_percent": 35.2018,
+          "spy_return_percent": 13.5504,
+          "excess_return_percent": 21.6514
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-18"
+        }
+      },
+      "max_drawdown_12_months_percent": -31.6326
+    },
+    {
+      "cik": "0001625278",
+      "ticker": "NRDS",
+      "accession_number": "0001625278-25-000019",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 65,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-19",
+      "measurement_start_date": "2025-02-20",
+      "measurement_start_company_price": 11.375,
+      "measurement_start_spy_price": 600.1062622070312,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-20",
+          "end_date": "2025-08-20",
+          "company_return_percent": -12.0879,
+          "spy_return_percent": 5.1675,
+          "excess_return_percent": -17.2554
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-20",
+          "end_date": "2026-02-20",
+          "company_return_percent": -10.8571,
+          "spy_return_percent": 14.2774,
+          "excess_return_percent": -25.1345
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-20"
+        }
+      },
+      "max_drawdown_12_months_percent": -42.4357
+    },
+    {
+      "cik": "0000313616",
+      "ticker": "DHR",
+      "accession_number": "0000313616-25-000043",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 79,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-20",
+      "measurement_start_date": "2025-02-21",
+      "measurement_start_company_price": 208.0415802001953,
+      "measurement_start_spy_price": 589.8419799804688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-21",
+          "end_date": "2025-08-21",
+          "company_return_percent": -2.7085,
+          "spy_return_percent": 6.5684,
+          "excess_return_percent": -9.2769
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-21",
+          "end_date": "2026-02-23",
+          "company_return_percent": 0.9585,
+          "spy_return_percent": 15.0787,
+          "excess_return_percent": -14.1203
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-21"
+        }
+      },
+      "max_drawdown_12_months_percent": -18.5762
+    },
+    {
+      "cik": "0001046257",
+      "ticker": "INGR",
+      "accession_number": "0001046257-25-000018",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 75,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-20",
+      "measurement_start_date": "2025-02-21",
+      "measurement_start_company_price": 122.8053970336914,
+      "measurement_start_spy_price": 589.8419799804688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-21",
+          "end_date": "2025-08-21",
+          "company_return_percent": 0.8445,
+          "spy_return_percent": 6.5684,
+          "excess_return_percent": -5.7239
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-21",
+          "end_date": "2026-02-23",
+          "company_return_percent": -6.9929,
+          "spy_return_percent": 15.0787,
+          "excess_return_percent": -22.0717
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-21"
+        }
+      },
+      "max_drawdown_12_months_percent": -23.9389
+    },
+    {
+      "cik": "0001104506",
+      "ticker": "INSM",
+      "accession_number": "0001104506-25-000009",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 31,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-20",
+      "measurement_start_date": "2025-02-21",
+      "measurement_start_company_price": 81.05999755859375,
+      "measurement_start_spy_price": 589.8419799804688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-21",
+          "end_date": "2025-08-21",
+          "company_return_percent": 63.5825,
+          "spy_return_percent": 6.5684,
+          "excess_return_percent": 57.0141
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-21",
+          "end_date": "2026-02-23",
+          "company_return_percent": 96.188,
+          "spy_return_percent": 15.0787,
+          "excess_return_percent": 81.1093
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-21"
+        }
+      },
+      "max_drawdown_12_months_percent": -30.8595
+    },
+    {
+      "cik": "0001492691",
+      "ticker": "KNX",
+      "accession_number": "0001492691-25-000013",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 53,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-20",
+      "measurement_start_date": "2025-02-21",
+      "measurement_start_company_price": 51.03700637817383,
+      "measurement_start_spy_price": 589.8419799804688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-21",
+          "end_date": "2025-08-21",
+          "company_return_percent": -17.4153,
+          "spy_return_percent": 6.5684,
+          "excess_return_percent": -23.9837
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-21",
+          "end_date": "2026-02-23",
+          "company_return_percent": 15.3197,
+          "spy_return_percent": 15.0787,
+          "excess_return_percent": 0.241
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-21"
+        }
+      },
+      "max_drawdown_12_months_percent": -26.5282
+    },
+    {
+      "cik": "0001579684",
+      "ticker": "GCI",
+      "accession_number": "0001579684-25-000007",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 12,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0000027996",
+      "ticker": "DLX",
+      "accession_number": "0000027996-25-000051",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 30,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-21",
+      "measurement_start_date": "2025-02-24",
+      "measurement_start_company_price": 15.661884307861328,
+      "measurement_start_spy_price": 587.157958984375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-24",
+          "end_date": "2025-08-25",
+          "company_return_percent": 22.2049,
+          "spy_return_percent": 8.2212,
+          "excess_return_percent": 13.9837
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-24",
+          "end_date": "2026-02-24",
+          "company_return_percent": 69.3428,
+          "spy_return_percent": 16.4451,
+          "excess_return_percent": 52.8978
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-24"
+        }
+      },
+      "max_drawdown_12_months_percent": -17.4987
+    },
+    {
+      "cik": "0001849253",
+      "ticker": "RYAN",
+      "accession_number": "0001628280-25-006973",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 54,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-21",
+      "measurement_start_date": "2025-02-24",
+      "measurement_start_company_price": 66.198486328125,
+      "measurement_start_spy_price": 587.157958984375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-24",
+          "end_date": "2025-08-25",
+          "company_return_percent": -13.4103,
+          "spy_return_percent": 8.2212,
+          "excess_return_percent": -21.6315
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-24",
+          "end_date": "2026-02-24",
+          "company_return_percent": -41.7207,
+          "spy_return_percent": 16.4451,
+          "excess_return_percent": -58.1657
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-24"
+        }
+      },
+      "max_drawdown_12_months_percent": -48.7203
+    },
+    {
+      "cik": "0001883313",
+      "ticker": "SVV",
+      "accession_number": "0001883313-25-000013",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 36,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-21",
+      "measurement_start_date": "2025-02-24",
+      "measurement_start_company_price": 7.800000190734863,
+      "measurement_start_spy_price": 587.157958984375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-24",
+          "end_date": "2025-08-25",
+          "company_return_percent": 43.8462,
+          "spy_return_percent": 8.2212,
+          "excess_return_percent": 35.625
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-24",
+          "end_date": "2026-02-24",
+          "company_return_percent": 19.7436,
+          "spy_return_percent": 16.4451,
+          "excess_return_percent": 3.2985
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-24"
+        }
+      },
+      "max_drawdown_12_months_percent": -43.8366
+    },
+    {
+      "cik": "0001955520",
+      "ticker": "KNF",
+      "accession_number": "0001955520-25-000010",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "score": 55,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-21",
+      "measurement_start_date": "2025-02-24",
+      "measurement_start_company_price": 92.7300033569336,
+      "measurement_start_spy_price": 587.157958984375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-24",
+          "end_date": "2025-08-25",
+          "company_return_percent": -1.9196,
+          "spy_return_percent": 8.2212,
+          "excess_return_percent": -10.1407
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-24",
+          "end_date": "2026-02-24",
+          "company_return_percent": -4.0871,
+          "spy_return_percent": 16.4451,
+          "excess_return_percent": -20.5322
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-24"
+        }
+      },
+      "max_drawdown_12_months_percent": -41.7533
+    },
+    {
+      "cik": "0000109380",
+      "ticker": "ZION",
+      "accession_number": "0000109380-25-000040",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 68,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-25",
+      "measurement_start_date": "2025-02-26",
+      "measurement_start_company_price": 50.88227844238281,
+      "measurement_start_spy_price": 584.532958984375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-26",
+          "end_date": "2025-08-26",
+          "company_return_percent": 8.3621,
+          "spy_return_percent": 9.1623,
+          "excess_return_percent": -0.8003
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-26",
+          "end_date": "2026-02-26",
+          "company_return_percent": 19.4453,
+          "spy_return_percent": 17.2998,
+          "excess_return_percent": 2.1454
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-26"
+        }
+      },
+      "max_drawdown_12_months_percent": -23.4086
+    },
+    {
+      "cik": "0001375365",
+      "ticker": "SMCI",
+      "accession_number": "0001375365-25-000004",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 56,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-25",
+      "measurement_start_date": "2025-02-26",
+      "measurement_start_company_price": 51.11000061035156,
+      "measurement_start_spy_price": 584.532958984375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-26",
+          "end_date": "2025-08-26",
+          "company_return_percent": -13.2068,
+          "spy_return_percent": 9.1623,
+          "excess_return_percent": -22.3691
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-26",
+          "end_date": "2026-02-26",
+          "company_return_percent": -36.8421,
+          "spy_return_percent": 17.2998,
+          "excess_return_percent": -54.1419
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-26"
+        }
+      },
+      "max_drawdown_12_months_percent": -53.4344
+    },
+    {
+      "cik": "0001781755",
+      "ticker": "BWIN",
+      "accession_number": "0001781755-25-000017",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 44,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-25",
+      "measurement_start_date": "2025-02-26",
+      "measurement_start_company_price": 40.61000061035156,
+      "measurement_start_spy_price": 584.532958984375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-26",
+          "end_date": "2025-08-26",
+          "company_return_percent": -19.1825,
+          "spy_return_percent": 9.1623,
+          "excess_return_percent": -28.3448
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-26",
+          "end_date": "2026-02-26",
+          "company_return_percent": -54.4693,
+          "spy_return_percent": 17.2998,
+          "excess_return_percent": -71.7692
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-26"
+        }
+      },
+      "max_drawdown_12_months_percent": -64.4473
+    },
+    {
+      "cik": "0001959348",
+      "ticker": "KLG",
+      "accession_number": "0001628280-25-007817",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 23,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0000701347",
+      "ticker": "CPF",
+      "accession_number": "0000701347-25-000007",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 53,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-26",
+      "measurement_start_date": "2025-02-27",
+      "measurement_start_company_price": 27.50389862060547,
+      "measurement_start_spy_price": 575.2025756835938,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-27",
+          "end_date": "2025-08-27",
+          "company_return_percent": 10.5979,
+          "spy_return_percent": 11.1858,
+          "excess_return_percent": -0.5879
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-27",
+          "end_date": "2026-02-27",
+          "company_return_percent": 14.8348,
+          "spy_return_percent": 18.6302,
+          "excess_return_percent": -3.7953
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-27"
+        }
+      },
+      "max_drawdown_12_months_percent": -17.4242
+    },
+    {
+      "cik": "0001171759",
+      "ticker": "RRGB",
+      "accession_number": "0001171759-25-000012",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 8,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-26",
+      "measurement_start_date": "2025-02-27",
+      "measurement_start_company_price": 6.079999923706055,
+      "measurement_start_spy_price": 575.2025756835938,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-27",
+          "end_date": "2025-08-27",
+          "company_return_percent": 6.5789,
+          "spy_return_percent": 11.1858,
+          "excess_return_percent": -4.6069
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-27",
+          "end_date": "2026-02-27",
+          "company_return_percent": -17.2697,
+          "spy_return_percent": 18.6302,
+          "excess_return_percent": -35.8999
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-27"
+        }
+      },
+      "max_drawdown_12_months_percent": -57.8947
+    },
+    {
+      "cik": "0001384905",
+      "ticker": "RNG",
+      "accession_number": "0001384905-25-000014",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 44,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-26",
+      "measurement_start_date": "2025-02-27",
+      "measurement_start_company_price": 28.4473876953125,
+      "measurement_start_spy_price": 575.2025756835938,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-27",
+          "end_date": "2025-08-27",
+          "company_return_percent": 7.4126,
+          "spy_return_percent": 11.1858,
+          "excess_return_percent": -3.7732
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-27",
+          "end_date": "2026-02-27",
+          "company_return_percent": 27.4476,
+          "spy_return_percent": 18.6302,
+          "excess_return_percent": 8.8174
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-27"
+        }
+      },
+      "max_drawdown_12_months_percent": -24.7902
+    },
+    {
+      "cik": "0001689375",
+      "ticker": "TRDA",
+      "accession_number": "0001689375-25-000011",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 75,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-27",
+      "measurement_start_date": "2025-02-28",
+      "measurement_start_company_price": 11.9399995803833,
+      "measurement_start_spy_price": 584.1788940429688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-28",
+          "end_date": "2025-08-28",
+          "company_return_percent": -52.6801,
+          "spy_return_percent": 9.8651,
+          "excess_return_percent": -62.5451
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-28",
+          "end_date": "2026-03-02",
+          "company_return_percent": -2.1775,
+          "spy_return_percent": 16.8737,
+          "excess_return_percent": -19.0513
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-28"
+        }
+      },
+      "max_drawdown_12_months_percent": -57.9564
+    },
+    {
+      "cik": "0001724965",
+      "ticker": "TALO",
+      "accession_number": "0000950170-25-028223",
+      "partition": "holdout",
+      "industry_division": "Mining",
+      "score": 68,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-27",
+      "measurement_start_date": "2025-02-28",
+      "measurement_start_company_price": 9.0,
+      "measurement_start_spy_price": 584.1788940429688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-28",
+          "end_date": "2025-08-28",
+          "company_return_percent": 9.2222,
+          "spy_return_percent": 9.8651,
+          "excess_return_percent": -0.6429
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-28",
+          "end_date": "2026-03-02",
+          "company_return_percent": 43.3333,
+          "spy_return_percent": 16.8737,
+          "excess_return_percent": 26.4596
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-28"
+        }
+      },
+      "max_drawdown_12_months_percent": -34.3621
+    },
+    {
+      "cik": "0001822479",
+      "ticker": "SHC",
+      "accession_number": "0001822479-25-000015",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 48,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-27",
+      "measurement_start_date": "2025-02-28",
+      "measurement_start_company_price": 12.470000267028809,
+      "measurement_start_spy_price": 584.1788940429688,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-08-28",
+          "end_date": "2025-08-28",
+          "company_return_percent": 29.9118,
+          "spy_return_percent": 9.8651,
+          "excess_return_percent": 20.0467
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-02-28",
+          "end_date": "2026-03-02",
+          "company_return_percent": 27.5862,
+          "spy_return_percent": 16.8737,
+          "excess_return_percent": 10.7125
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-02-28"
+        }
+      },
+      "max_drawdown_12_months_percent": -21.4114
+    },
+    {
+      "cik": "0001065078",
+      "ticker": "NTIP",
+      "accession_number": "0001072613-25-000187",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 25,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-28",
+      "measurement_start_date": "2025-03-03",
+      "measurement_start_company_price": 1.2281348705291748,
+      "measurement_start_spy_price": 573.9441528320312,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-03",
+          "end_date": "2025-09-03",
+          "company_return_percent": 45.0382,
+          "spy_return_percent": 10.9316,
+          "excess_return_percent": 34.1066
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-03",
+          "end_date": "2026-03-03",
+          "company_return_percent": 15.6771,
+          "spy_return_percent": 17.9093,
+          "excess_return_percent": -2.2322
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-03"
+        }
+      },
+      "max_drawdown_12_months_percent": -31.0949
+    },
+    {
+      "cik": "0001823529",
+      "ticker": "ACT",
+      "accession_number": "0001823529-25-000070",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 93,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-28",
+      "measurement_start_date": "2025-03-03",
+      "measurement_start_company_price": 33.680728912353516,
+      "measurement_start_spy_price": 573.9441528320312,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-03",
+          "end_date": "2025-09-03",
+          "company_return_percent": 10.3169,
+          "spy_return_percent": 10.9316,
+          "excess_return_percent": -0.6147
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-03",
+          "end_date": "2026-03-03",
+          "company_return_percent": 23.6736,
+          "spy_return_percent": 17.9093,
+          "excess_return_percent": 5.7643
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-03"
+        }
+      },
+      "max_drawdown_12_months_percent": -10.961
+    },
+    {
+      "cik": "0001934850",
+      "ticker": "FG",
+      "accession_number": "0001934850-25-000015",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 63,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-02-28",
+      "measurement_start_date": "2025-03-03",
+      "measurement_start_company_price": 40.71439743041992,
+      "measurement_start_spy_price": 573.9441528320312,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-03",
+          "end_date": "2025-09-03",
+          "company_return_percent": -16.9162,
+          "spy_return_percent": 10.9316,
+          "excess_return_percent": -27.8478
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-03",
+          "end_date": "2026-03-03",
+          "company_return_percent": -45.3319,
+          "spy_return_percent": 17.9093,
+          "excess_return_percent": -63.2413
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-03"
+        }
+      },
+      "max_drawdown_12_months_percent": -46.4461
+    },
+    {
+      "cik": "0001515816",
+      "ticker": "PLYM",
+      "accession_number": "0001171520-25-000056",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 80,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0000216085",
+      "ticker": "HVT",
+      "accession_number": "0001628280-25-010869",
+      "partition": "holdout",
+      "industry_division": "Retail trade",
+      "score": 31,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-06",
+      "measurement_start_date": "2025-03-07",
+      "measurement_start_company_price": 20.287748336791992,
+      "measurement_start_spy_price": 566.2261962890625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-07",
+          "end_date": "2025-09-08",
+          "company_return_percent": 11.6903,
+          "spy_return_percent": 13.3327,
+          "excess_return_percent": -1.6424
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-07",
+          "end_date": "2026-03-09",
+          "company_return_percent": 6.6052,
+          "spy_return_percent": 19.1546,
+          "excess_return_percent": -12.5494
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-07"
+        }
+      },
+      "max_drawdown_12_months_percent": -22.5676
+    },
+    {
+      "cik": "0001593548",
+      "ticker": "AGS",
+      "accession_number": "0001437749-25-006461",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 70,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001014763",
+      "ticker": "AIMD",
+      "accession_number": "0001493152-25-009568",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 22,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-07",
+      "measurement_start_date": "2025-03-10",
+      "measurement_start_company_price": 2.299999952316284,
+      "measurement_start_spy_price": 551.1444702148438,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-10",
+          "end_date": "2025-09-10",
+          "company_return_percent": 50.0,
+          "spy_return_percent": 17.0406,
+          "excess_return_percent": 32.9594
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-10",
+          "end_date": "2026-03-10",
+          "company_return_percent": -33.4783,
+          "spy_return_percent": 22.2185,
+          "excess_return_percent": -55.6967
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-10"
+        }
+      },
+      "max_drawdown_12_months_percent": -69.6471
+    },
+    {
+      "cik": "0001812727",
+      "ticker": "RELI",
+      "accession_number": "0001493152-25-009445",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 23,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001819516",
+      "ticker": "UP",
+      "accession_number": "0001819516-25-000012",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 0,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-11",
+      "measurement_start_date": "2025-03-12",
+      "measurement_start_company_price": 20.200000762939453,
+      "measurement_start_spy_price": 549.4631958007812,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-12",
+          "end_date": "2025-09-12",
+          "company_return_percent": 114.8515,
+          "spy_return_percent": 18.3347,
+          "excess_return_percent": 96.5168
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-12",
+          "end_date": "2026-03-12",
+          "company_return_percent": -46.5347,
+          "spy_return_percent": 20.5793,
+          "excess_return_percent": -67.114
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-12"
+        }
+      },
+      "max_drawdown_12_months_percent": -84.6667
+    },
+    {
+      "cik": "0001463972",
+      "ticker": "VUZI",
+      "accession_number": "0001558370-25-002903",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 50,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-13",
+      "measurement_start_date": "2025-03-14",
+      "measurement_start_company_price": 2.359999895095825,
+      "measurement_start_spy_price": 553.3369750976562,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-14",
+          "end_date": "2025-09-15",
+          "company_return_percent": -5.9322,
+          "spy_return_percent": 18.1318,
+          "excess_return_percent": -24.064
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-14",
+          "end_date": "2026-03-16",
+          "company_return_percent": -10.5932,
+          "spy_return_percent": 20.2691,
+          "excess_return_percent": -30.8623
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-14"
+        }
+      },
+      "max_drawdown_12_months_percent": -49.7549
+    },
+    {
+      "cik": "0001464343",
+      "ticker": "ATLC",
+      "accession_number": "0001437749-25-007559",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 66,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-13",
+      "measurement_start_date": "2025-03-14",
+      "measurement_start_company_price": 48.63999938964844,
+      "measurement_start_spy_price": 553.3369750976562,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-14",
+          "end_date": "2025-09-15",
+          "company_return_percent": 56.5584,
+          "spy_return_percent": 18.1318,
+          "excess_return_percent": 38.4265
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-14",
+          "end_date": "2026-03-16",
+          "company_return_percent": 0.5962,
+          "spy_return_percent": 20.2691,
+          "excess_return_percent": -19.6729
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-14"
+        }
+      },
+      "max_drawdown_12_months_percent": -37.019
+    },
+    {
+      "cik": "0001517022",
+      "ticker": "AKBA",
+      "accession_number": "0001628280-25-012470",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 0,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-13",
+      "measurement_start_date": "2025-03-14",
+      "measurement_start_company_price": 2.259999990463257,
+      "measurement_start_spy_price": 553.3369750976562,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-14",
+          "end_date": "2025-09-15",
+          "company_return_percent": 29.2035,
+          "spy_return_percent": 18.1318,
+          "excess_return_percent": 11.0717
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-14",
+          "end_date": "2026-03-16",
+          "company_return_percent": -33.1858,
+          "spy_return_percent": 20.2691,
+          "excess_return_percent": -53.4549
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-14"
+        }
+      },
+      "max_drawdown_12_months_percent": -70.5736
+    },
+    {
+      "cik": "0001941536",
+      "ticker": "BAER",
+      "accession_number": "0001628280-25-012821",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 42,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-14",
+      "measurement_start_date": "2025-03-17",
+      "measurement_start_company_price": 1.559999942779541,
+      "measurement_start_spy_price": 557.60400390625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-17",
+          "end_date": "2025-09-17",
+          "company_return_percent": 12.8205,
+          "spy_return_percent": 16.921,
+          "excess_return_percent": -4.1005
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-17",
+          "end_date": "2026-03-17",
+          "company_return_percent": 35.8974,
+          "spy_return_percent": 19.6627,
+          "excess_return_percent": 16.2347
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-17"
+        }
+      },
+      "max_drawdown_12_months_percent": -39.7554
+    },
+    {
+      "cik": "0000928340",
+      "ticker": "CWCO",
+      "accession_number": "0001558370-25-003137",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 71,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-17",
+      "measurement_start_date": "2025-03-18",
+      "measurement_start_company_price": 26.450010299682617,
+      "measurement_start_spy_price": 551.5770874023438,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-18",
+          "end_date": "2025-09-18",
+          "company_return_percent": 28.2804,
+          "spy_return_percent": 18.7508,
+          "excess_return_percent": 9.5296
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-18",
+          "end_date": "2026-03-18",
+          "company_return_percent": 18.1013,
+          "spy_return_percent": 19.2822,
+          "excess_return_percent": -1.1809
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-18"
+        }
+      },
+      "max_drawdown_12_months_percent": -18.4231
+    },
+    {
+      "cik": "0001623526",
+      "ticker": "STOK",
+      "accession_number": "0000950170-25-041170",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 50,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-18",
+      "measurement_start_date": "2025-03-19",
+      "measurement_start_company_price": 8.260000228881836,
+      "measurement_start_spy_price": 557.584228515625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-19",
+          "end_date": "2025-09-19",
+          "company_return_percent": 177.2397,
+          "spy_return_percent": 18.0533,
+          "excess_return_percent": 159.1864
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-19",
+          "end_date": "2026-03-19",
+          "company_return_percent": 301.816,
+          "spy_return_percent": 17.7064,
+          "excess_return_percent": 284.1096
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-19"
+        }
+      },
+      "max_drawdown_12_months_percent": -37.1629
+    },
+    {
+      "cik": "0001698530",
+      "ticker": "XCUR",
+      "accession_number": "0001698530-25-000019",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 25,
+      "available_components": 3,
+      "status": "completed",
+      "filing_date": "2025-03-18",
+      "measurement_start_date": "2025-03-19",
+      "measurement_start_company_price": 12.899999618530273,
+      "measurement_start_spy_price": 557.584228515625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-19",
+          "end_date": "2025-09-19",
+          "company_return_percent": -70.2326,
+          "spy_return_percent": 18.0533,
+          "excess_return_percent": -88.2858
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-19",
+          "end_date": "2026-03-19",
+          "company_return_percent": -63.1783,
+          "spy_return_percent": 17.7064,
+          "excess_return_percent": -80.8847
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-19"
+        }
+      },
+      "max_drawdown_12_months_percent": -75.0178
+    },
+    {
+      "cik": "0001899287",
+      "ticker": "AMPX",
+      "accession_number": "0001899287-25-000012",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 49,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-20",
+      "measurement_start_date": "2025-03-21",
+      "measurement_start_company_price": 3.109999895095825,
+      "measurement_start_spy_price": 556.1552734375,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-21",
+          "end_date": "2025-09-22",
+          "company_return_percent": 287.7814,
+          "spy_return_percent": 18.9166,
+          "excess_return_percent": 268.8648
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-21",
+          "end_date": "2026-03-23",
+          "company_return_percent": 500.6431,
+          "spy_return_percent": 17.5384,
+          "excess_return_percent": 483.1047
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-21"
+        }
+      },
+      "max_drawdown_12_months_percent": -46.4066
+    },
+    {
+      "cik": "0001372514",
+      "ticker": "KPRX",
+      "accession_number": "0001372514-25-000012",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 97,
+      "available_components": 3,
+      "status": "completed",
+      "filing_date": "2025-03-25",
+      "measurement_start_date": "2025-03-26",
+      "measurement_start_company_price": 2.990000009536743,
+      "measurement_start_spy_price": 560.7012939453125,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-26",
+          "end_date": "2025-09-26",
+          "company_return_percent": -12.709,
+          "spy_return_percent": 17.0645,
+          "excess_return_percent": -29.7735
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-26",
+          "end_date": "2026-03-26",
+          "company_return_percent": -34.1137,
+          "spy_return_percent": 14.7549,
+          "excess_return_percent": -48.8686
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-26"
+        }
+      },
+      "max_drawdown_12_months_percent": -53.8462
+    },
+    {
+      "cik": "0000885508",
+      "ticker": "STRS",
+      "accession_number": "0000885508-25-000022",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 48,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-28",
+      "measurement_start_date": "2025-03-31",
+      "measurement_start_company_price": 14.343090057373047,
+      "measurement_start_spy_price": 551.62890625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-30",
+          "end_date": "2025-09-30",
+          "company_return_percent": 19.2113,
+          "spy_return_percent": 19.7737,
+          "excess_return_percent": -0.5624
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-31",
+          "end_date": "2026-03-31",
+          "company_return_percent": 71.9437,
+          "spy_return_percent": 17.5915,
+          "excess_return_percent": 54.3521
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-31"
+        }
+      },
+      "max_drawdown_12_months_percent": -26.8017
+    },
+    {
+      "cik": "0001051514",
+      "ticker": "SSKN",
+      "accession_number": "0001140361-25-010772",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 20,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-28",
+      "measurement_start_date": "2025-03-31",
+      "measurement_start_company_price": 2.640000104904175,
+      "measurement_start_spy_price": 551.62890625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-30",
+          "end_date": "2025-09-30",
+          "company_return_percent": -21.9697,
+          "spy_return_percent": 19.7737,
+          "excess_return_percent": -41.7434
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-31",
+          "end_date": "2026-03-31",
+          "company_return_percent": -89.0189,
+          "spy_return_percent": 17.5915,
+          "excess_return_percent": -106.6105
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-31"
+        }
+      },
+      "max_drawdown_12_months_percent": -93.6207
+    },
+    {
+      "cik": "0001880613",
+      "ticker": "DRCT",
+      "accession_number": "0001628280-25-015290",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 0,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-03-28",
+      "measurement_start_date": "2025-03-31",
+      "measurement_start_company_price": 140.8000030517578,
+      "measurement_start_spy_price": 551.62890625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-09-30",
+          "end_date": "2025-09-30",
+          "company_return_percent": -47.1875,
+          "spy_return_percent": 19.7737,
+          "excess_return_percent": -66.9612
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-03-31",
+          "end_date": "2026-03-31",
+          "company_return_percent": -97.6989,
+          "spy_return_percent": 17.5915,
+          "excess_return_percent": -115.2904
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-03-31"
+        }
+      },
+      "max_drawdown_12_months_percent": -98.4694
+    },
+    {
+      "cik": "0001326706",
+      "ticker": "NAOV",
+      "accession_number": "0001641172-25-001613",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 32,
+      "available_components": 4,
+      "status": "incomplete",
+      "reason": "No adjusted daily closes were returned."
+    },
+    {
+      "cik": "0001597846",
+      "ticker": "GRNQ",
+      "accession_number": "0001641172-25-003336",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 38,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-04-09",
+      "measurement_start_date": "2025-04-10",
+      "measurement_start_company_price": 8.850000381469727,
+      "measurement_start_spy_price": 517.3018798828125,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-10-10",
+          "end_date": "2025-10-10",
+          "company_return_percent": 71.7514,
+          "spy_return_percent": 25.1985,
+          "excess_return_percent": 46.5529
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-04-10",
+          "end_date": "2026-04-10",
+          "company_return_percent": 224.2938,
+          "spy_return_percent": 31.0094,
+          "excess_return_percent": 193.2844
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-04-10"
+        }
+      },
+      "max_drawdown_12_months_percent": -48.7603
+    },
+    {
+      "cik": "0000885462",
+      "ticker": "GURE",
+      "accession_number": "0001193805-25-000461",
+      "partition": "holdout",
+      "industry_division": "Manufacturing",
+      "score": 34,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-04-11",
+      "measurement_start_date": "2025-04-14",
+      "measurement_start_company_price": 8.0,
+      "measurement_start_spy_price": 531.6401977539062,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-10-14",
+          "end_date": "2025-10-14",
+          "company_return_percent": -10.0,
+          "spy_return_percent": 23.5401,
+          "excess_return_percent": -33.5401
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-04-14",
+          "end_date": "2026-04-14",
+          "company_return_percent": -31.25,
+          "spy_return_percent": 30.2903,
+          "excess_return_percent": -61.5403
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-04-14"
+        }
+      },
+      "max_drawdown_12_months_percent": -72.3158
+    },
+    {
+      "cik": "0001558569",
+      "ticker": "ISPC",
+      "accession_number": "0001213900-25-031639",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 19,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-04-14",
+      "measurement_start_date": "2025-04-15",
+      "measurement_start_company_price": 48.79999923706055,
+      "measurement_start_spy_price": 530.151123046875,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-10-15",
+          "end_date": "2025-10-15",
+          "company_return_percent": -30.8197,
+          "spy_return_percent": 24.437,
+          "excess_return_percent": -55.2567
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-04-15",
+          "end_date": "2026-04-15",
+          "company_return_percent": -90.8197,
+          "spy_return_percent": 31.6872,
+          "excess_return_percent": -122.5069
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-04-15"
+        }
+      },
+      "max_drawdown_12_months_percent": -94.4103
+    },
+    {
+      "cik": "0001849380",
+      "ticker": "ONMD",
+      "accession_number": "0001641172-25-004815",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 0,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-04-15",
+      "measurement_start_date": "2025-04-16",
+      "measurement_start_company_price": 0.4699999988079071,
+      "measurement_start_spy_price": 518.3668212890625,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-10-16",
+          "end_date": "2025-10-16",
+          "company_return_percent": 446.8085,
+          "spy_return_percent": 26.3992,
+          "excess_return_percent": 420.4093
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-04-16",
+          "end_date": "2026-04-16",
+          "company_return_percent": 88.7234,
+          "spy_return_percent": 35.0119,
+          "excess_return_percent": 53.7115
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-04-16"
+        }
+      },
+      "max_drawdown_12_months_percent": -81.3376
+    },
+    {
+      "cik": "0001688568",
+      "ticker": "DXC",
+      "accession_number": "0001688568-25-000029",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 30,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-05-15",
+      "measurement_start_date": "2025-05-16",
+      "measurement_start_company_price": 15.270000457763672,
+      "measurement_start_spy_price": 585.9559936523438,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-11-16",
+          "end_date": "2025-11-17",
+          "company_return_percent": -18.4021,
+          "spy_return_percent": 12.6706,
+          "excess_return_percent": -31.0727
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-05-16",
+          "end_date": "2026-05-18",
+          "company_return_percent": -39.2927,
+          "spy_return_percent": 25.735,
+          "excess_return_percent": -65.0278
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-05-16"
+        }
+      },
+      "max_drawdown_12_months_percent": -49.3842
+    },
+    {
+      "cik": "0001596993",
+      "ticker": "LPG",
+      "accession_number": "0001596993-25-000034",
+      "partition": "holdout",
+      "industry_division": "Transportation and utilities",
+      "score": 100,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-05-29",
+      "measurement_start_date": "2025-05-30",
+      "measurement_start_company_price": 19.112255096435547,
+      "measurement_start_spy_price": 581.2127075195312,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-11-30",
+          "end_date": "2025-12-01",
+          "company_return_percent": 20.3316,
+          "spy_return_percent": 16.0815,
+          "excess_return_percent": 4.2501
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-05-30",
+          "end_date": "2026-06-01",
+          "company_return_percent": 111.3748,
+          "spy_return_percent": 30.1745,
+          "excess_return_percent": 81.2002
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-05-30"
+        }
+      },
+      "max_drawdown_12_months_percent": -24.995
+    },
+    {
+      "cik": "0002052959",
+      "ticker": "LION",
+      "accession_number": "0002052959-25-000010",
+      "partition": "holdout",
+      "industry_division": "Services",
+      "score": 21,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-05-30",
+      "measurement_start_date": "2025-06-02",
+      "measurement_start_company_price": 7.360000133514404,
+      "measurement_start_spy_price": 584.4867553710938,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2025-12-02",
+          "end_date": "2025-12-02",
+          "company_return_percent": 0.9511,
+          "spy_return_percent": 15.6451,
+          "excess_return_percent": -14.694
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-06-02",
+          "end_date": "2026-06-02",
+          "company_return_percent": 87.6359,
+          "spy_return_percent": 29.6211,
+          "excess_return_percent": 58.0148
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-06-02"
+        }
+      },
+      "max_drawdown_12_months_percent": -24.0489
+    },
+    {
+      "cik": "0001468492",
+      "ticker": "HSCS",
+      "accession_number": "0000950170-25-098326",
+      "partition": "holdout",
+      "industry_division": "Finance",
+      "score": 2,
+      "available_components": 4,
+      "status": "completed",
+      "filing_date": "2025-07-24",
+      "measurement_start_date": "2025-07-25",
+      "measurement_start_company_price": 3.940000057220459,
+      "measurement_start_spy_price": 630.1181030273438,
+      "horizons": {
+        "6_months": {
+          "status": "completed",
+          "target_date": "2026-01-25",
+          "end_date": "2026-01-26",
+          "company_return_percent": -18.0203,
+          "spy_return_percent": 9.3554,
+          "excess_return_percent": -27.3757
+        },
+        "12_months": {
+          "status": "completed",
+          "target_date": "2026-07-25",
+          "end_date": "2026-07-27",
+          "company_return_percent": -35.7868,
+          "spy_return_percent": 17.2939,
+          "excess_return_percent": -53.0807
+        },
+        "24_months": {
+          "status": "pending",
+          "target_date": "2027-07-25"
+        }
+      },
+      "max_drawdown_12_months_percent": -57.6142
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "registered_on": "2026-08-15",
+  "status": "sealed_preregistration",
+  "protocol_version": "1.0",
+  "files": {
+    "data/validation/preregistration/expanded-study-v1.json": "3ff8774dce5c5f94882e6fc34b27c983260c9bd7b1a4f86c3a548d36adc0704b",
+    "docs/phase-2-expanded-preregistration.md": "f56a01cb3fe9ce8f6d66e296aed2676ff40270459684efdc8959343cd97f7d27",
+    "data/validation/report/baseline_manifest.json": "6b1d1133bb6e1fae14501bf79b5c2df6bf061eb65f58d621398e88cfcf387f03"
+  }
+}

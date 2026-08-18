@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "JNJ",
+  "cik": "0000200406",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0000200406-26-000016",
+      "filing_date": "2026-02-11",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000200406/000020040626000016.json"
+    },
+    {
+      "accession_number": "0000200406-25-000038",
+      "filing_date": "2025-02-13",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000200406/000020040625000038.json"
+    },
+    {
+      "accession_number": "0000200406-24-000013",
+      "filing_date": "2024-02-16",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000200406/000020040624000013.json"
+    },
+    {
+      "accession_number": "0000200406-23-000016",
+      "filing_date": "2023-02-16",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000200406/000020040623000016.json"
+    },
+    {
+      "accession_number": "0000200406-22-000022",
+      "filing_date": "2022-02-17",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000200406/000020040622000022.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000200406/companyfacts.json"
+  }
+}

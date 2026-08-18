@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "UNH",
+  "cik": "0000731766",
+  "entity_name": "UnitedHealth Group Incorporated",
+  "fiscal_year": 2025,
+  "period_end": "2025-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2026-03-02",
+    "accession_number": "0000731766-26-000062"
+  },
+  "score": {
+    "value": 46,
+    "label": "Mixed-to-cautious current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 100,
+        "source_value": 11.814039242726306
+      },
+      {
+        "name": "Net profit margin",
+        "score": 11,
+        "source_value": 2.6936749134766416
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 55,
+        "source_value": 67.1497927844409
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 18,
+        "source_value": 4.4009053393123265
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "Revenues",
+      "value": 447567000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-12-31",
+      "filed": "2026-03-02",
+      "accession_number": "0000731766-26-000062",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 12056000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-12-31",
+      "filed": "2026-03-02",
+      "accession_number": "0000731766-26-000062",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 309581000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-12-31",
+      "filed": "2026-03-02",
+      "accession_number": "0000731766-26-000062",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 207883000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-12-31",
+      "filed": "2026-03-02",
+      "accession_number": "0000731766-26-000062",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 19697000000,
+      "unit": "USD",
+      "fiscal_year": 2025,
+      "period_end": "2025-12-31",
+      "filed": "2026-03-02",
+      "accession_number": "0000731766-26-000062",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "Revenues",
+    "value": 400278000000,
+    "unit": "USD",
+    "fiscal_year": 2025,
+    "period_end": "2024-12-31",
+    "filed": "2026-03-02",
+    "accession_number": "0000731766-26-000062",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000731766/companyfacts.json"
+  }
+}

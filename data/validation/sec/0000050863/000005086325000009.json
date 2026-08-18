@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "INTC",
+  "cik": "0000050863",
+  "entity_name": "INTEL CORP",
+  "fiscal_year": 2024,
+  "period_end": "2024-12-28",
+  "filing": {
+    "form": "10-K",
+    "filed": "2025-01-31",
+    "accession_number": "0000050863-25-000009"
+  },
+  "score": {
+    "value": 46,
+    "label": "Mixed-to-cautious current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 40,
+        "source_value": -2.0782621523935974
+      },
+      {
+        "name": "Net profit margin",
+        "score": 0,
+        "source_value": -35.321368712453626
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 84,
+        "source_value": 49.47705931750515
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 62,
+        "source_value": 15.607992316528879
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 53101000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-28",
+      "filed": "2025-01-31",
+      "accession_number": "0000050863-25-000009",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": -18756000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-28",
+      "filed": "2025-01-31",
+      "accession_number": "0000050863-25-000009",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 196485000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-28",
+      "filed": "2025-01-31",
+      "accession_number": "0000050863-25-000009",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 8288000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-28",
+      "filed": "2025-01-31",
+      "accession_number": "0000050863-25-000009",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "derived:Assets-StockholdersEquity",
+      "value": 97215000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-28",
+      "filed": "2025-01-31",
+      "accession_number": "0000050863-25-000009",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 54228000000,
+    "unit": "USD",
+    "fiscal_year": 2024,
+    "period_end": "2023-12-30",
+    "filed": "2025-01-31",
+    "accession_number": "0000050863-25-000009",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000050863/companyfacts.json"
+  }
+}

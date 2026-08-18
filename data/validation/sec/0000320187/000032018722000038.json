@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "NKE",
+  "cik": "0000320187",
+  "entity_name": "NIKE, Inc.",
+  "fiscal_year": 2022,
+  "period_end": "2022-05-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2022-07-21",
+    "accession_number": "0000320187-22-000038"
+  },
+  "score": {
+    "value": 58,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 74,
+        "source_value": 4.876734473932372
+      },
+      {
+        "name": "Net profit margin",
+        "score": 52,
+        "source_value": 12.943695140226932
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 63,
+        "source_value": 62.101634384067864
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 44,
+        "source_value": 11.106829372725327
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 46710000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-05-31",
+      "filed": "2022-07-21",
+      "accession_number": "0000320187-22-000038",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 6046000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-05-31",
+      "filed": "2022-07-21",
+      "accession_number": "0000320187-22-000038",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 40321000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-05-31",
+      "filed": "2022-07-21",
+      "accession_number": "0000320187-22-000038",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 5188000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-05-31",
+      "filed": "2022-07-21",
+      "accession_number": "0000320187-22-000038",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "derived:Assets-StockholdersEquity",
+      "value": 25040000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-05-31",
+      "filed": "2022-07-21",
+      "accession_number": "0000320187-22-000038",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 44538000000,
+    "unit": "USD",
+    "fiscal_year": 2022,
+    "period_end": "2021-05-31",
+    "filed": "2022-07-21",
+    "accession_number": "0000320187-22-000038",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000320187/companyfacts.json"
+  }
+}

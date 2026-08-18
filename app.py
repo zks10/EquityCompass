@@ -21,6 +21,7 @@ from finance_news.dashboard import (
     build_filing_preview,
     build_financial_snapshot_score,
     check_ticker_eligibility,
+    describe_score_confidence,
     detect_news_topics,
     explain_8k_item,
 )
@@ -632,6 +633,7 @@ def show_overview(summary: DashboardSummary) -> None:
     """Display company context, market history, and financial signals."""
     financials = summary.financials
     snapshot_score = build_financial_snapshot_score(financials)
+    confidence_label, confidence_explanation = describe_score_confidence(snapshot_score)
     try:
         market = load_market_overview(summary.ticker)
     except MarketDataError:
@@ -744,10 +746,11 @@ def show_overview(summary: DashboardSummary) -> None:
             st.markdown(
                 f"""
                 <div class="score-summary">
-                  <div class="score-summary-label">OVERALL FINANCIAL SIGNAL</div>
+                  <div class="score-summary-label">FINANCIAL HEALTH SCORE</div>
                   <div class="score-summary-value">{score_value}</div>
                   <div class="score-summary-title">{html.escape(snapshot_score.label.replace(' current signals', ''))}</div>
                   <div class="score-summary-divider"></div>
+                  <div class="score-summary-item"><span class="summary-dot summary-neutral"></span><div><small>DATA CONFIDENCE</small><strong>{html.escape(confidence_label)}</strong><span>{html.escape(confidence_explanation)}</span></div></div>
                   <div class="score-summary-item"><span class="summary-dot summary-strong"></span><div><small>STRONGEST SIGNAL</small><strong>{html.escape(friendly_names[strongest.name] if strongest else 'Unavailable')}</strong></div></div>
                   <div class="score-summary-item"><span class="summary-dot summary-watch"></span><div><small>NEEDS THE MOST CONTEXT</small><strong>{html.escape(friendly_names[weakest.name] if weakest else 'Unavailable')}</strong></div></div>
                 </div>
@@ -819,6 +822,9 @@ def show_overview(summary: DashboardSummary) -> None:
         )
         st.caption(
             "Latest annual SEC figures. Excludes valuation and forward estimates."
+        )
+        st.info(
+            "Financial health only—not a return forecast or buy/sell signal."
         )
 
 
@@ -2438,6 +2444,13 @@ st.markdown(
         letter-spacing: 0.045em;
     }
     .score-summary-item strong { display: block; margin-top: 1px; }
+    .score-summary-item span:not(.summary-dot) {
+        display: block;
+        color: #667382;
+        font-size: 0.72rem;
+        line-height: 1.35;
+        margin-top: 2px;
+    }
     .score-info {
         position: relative;
         display: inline-flex;
@@ -2498,6 +2511,7 @@ st.markdown(
     }
     .summary-dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 9px; }
     .summary-strong { background: #0A8F6A; }
+    .summary-neutral { background: #587A9A; }
     .summary-watch { background: #D05B68; }
     .factor-table {
         width: 100%;

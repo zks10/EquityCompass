@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "AAPL",
+  "cik": "0000320193",
+  "entity_name": "Apple Inc.",
+  "fiscal_year": 2023,
+  "period_end": "2023-09-30",
+  "filing": {
+    "form": "10-K",
+    "filed": "2023-11-03",
+    "accession_number": "0000320193-23-000106"
+  },
+  "score": {
+    "value": 66,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 36,
+        "source_value": -2.8004605303199366
+      },
+      {
+        "name": "Net profit margin",
+        "score": 100,
+        "source_value": 25.30623426432028
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 29,
+        "source_value": 82.37407929480435
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 100,
+        "source_value": 28.840940814276582
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 383285000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-09-30",
+      "filed": "2023-11-03",
+      "accession_number": "0000320193-23-000106",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 96995000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-09-30",
+      "filed": "2023-11-03",
+      "accession_number": "0000320193-23-000106",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 352583000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-09-30",
+      "filed": "2023-11-03",
+      "accession_number": "0000320193-23-000106",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 290437000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-09-30",
+      "filed": "2023-11-03",
+      "accession_number": "0000320193-23-000106",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 110543000000,
+      "unit": "USD",
+      "fiscal_year": 2023,
+      "period_end": "2023-09-30",
+      "filed": "2023-11-03",
+      "accession_number": "0000320193-23-000106",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 394328000000,
+    "unit": "USD",
+    "fiscal_year": 2023,
+    "period_end": "2022-09-24",
+    "filed": "2023-11-03",
+    "accession_number": "0000320193-23-000106",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000320193/companyfacts.json"
+  }
+}

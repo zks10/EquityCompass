@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "status": "identity_resolution_review_required",
+  "source_manifest_sha256": "05ac3f9bf1ab9c189b97e6909af44e35ccbe1e0aa9f2f66721af09d344dbaca2",
+  "audit_sha256": "e3124e8a25e033945442ddd515acf80ed821b57a341cbfe86ea49c1c7b20fa9c",
+  "attempts": 1593,
+  "eligible": 523,
+  "ineligible": 9,
+  "pending": 1061
+}

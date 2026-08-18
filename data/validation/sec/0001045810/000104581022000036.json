@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "NVDA",
+  "cik": "0001045810",
+  "entity_name": "NVIDIA CORP",
+  "fiscal_year": 2022,
+  "period_end": "2022-01-30",
+  "filing": {
+    "form": "10-K",
+    "filed": "2022-03-18",
+    "accession_number": "0001045810-22-000036"
+  },
+  "score": {
+    "value": 100,
+    "label": "Mostly favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 100,
+        "source_value": 61.403298350824585
+      },
+      {
+        "name": "Net profit margin",
+        "score": 100,
+        "source_value": 36.23393029649996
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 100,
+        "source_value": 39.774141715889286
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 100,
+        "source_value": 33.84112357880657
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 26914000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-01-30",
+      "filed": "2022-03-18",
+      "accession_number": "0001045810-22-000036",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 9752000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-01-30",
+      "filed": "2022-03-18",
+      "accession_number": "0001045810-22-000036",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 44187000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-01-30",
+      "filed": "2022-03-18",
+      "accession_number": "0001045810-22-000036",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 17575000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-01-30",
+      "filed": "2022-03-18",
+      "accession_number": "0001045810-22-000036",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 9108000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-01-30",
+      "filed": "2022-03-18",
+      "accession_number": "0001045810-22-000036",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 16675000000,
+    "unit": "USD",
+    "fiscal_year": 2022,
+    "period_end": "2021-01-31",
+    "filed": "2022-03-18",
+    "accession_number": "0001045810-22-000036",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0001045810/companyfacts.json"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "JNJ",
+  "cik": "0000200406",
+  "entity_name": "Johnson & Johnson",
+  "fiscal_year": 2024,
+  "period_end": "2024-12-29",
+  "filing": {
+    "form": "10-K",
+    "filed": "2025-02-13",
+    "accession_number": "0000200406-25-000038"
+  },
+  "score": {
+    "value": 75,
+    "label": "Mostly favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 72,
+        "source_value": 4.300191406662831
+      },
+      {
+        "name": "Net profit margin",
+        "score": 63,
+        "source_value": 15.836345008500242
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 66,
+        "source_value": 60.30626748989473
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 100,
+        "source_value": 27.320115738395202
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 88821000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-29",
+      "filed": "2025-02-13",
+      "accession_number": "0000200406-25-000038",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 14066000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-29",
+      "filed": "2025-02-13",
+      "accession_number": "0000200406-25-000038",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 180104000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-29",
+      "filed": "2025-02-13",
+      "accession_number": "0000200406-25-000038",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 108614000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-29",
+      "filed": "2025-02-13",
+      "accession_number": "0000200406-25-000038",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 24266000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-29",
+      "filed": "2025-02-13",
+      "accession_number": "0000200406-25-000038",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 85159000000,
+    "unit": "USD",
+    "fiscal_year": 2024,
+    "period_end": "2023-12-31",
+    "filed": "2025-02-13",
+    "accession_number": "0000200406-25-000038",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000200406/companyfacts.json"
+  }
+}

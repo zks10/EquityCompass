@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "BAC",
+  "cik": "0000070858",
+  "entity_name": "BofA Finance LLC",
+  "fiscal_year": 2022,
+  "period_end": "2022-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2023-02-22",
+    "accession_number": "0000070858-23-000092"
+  },
+  "score": {
+    "value": 50,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 83,
+        "source_value": 6.550110533816615
+      },
+      {
+        "name": "Net profit margin",
+        "score": 100,
+        "source_value": 28.99210110584518
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 15,
+        "source_value": 91.04675760927451
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 0,
+        "source_value": -6.663507109004739
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "Revenues",
+      "value": 94950000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-22",
+      "accession_number": "0000070858-23-000092",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 27528000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-22",
+      "accession_number": "0000070858-23-000092",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 3051375000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-22",
+      "accession_number": "0000070858-23-000092",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 2778178000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-22",
+      "accession_number": "0000070858-23-000092",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": -6327000000,
+      "unit": "USD",
+      "fiscal_year": 2022,
+      "period_end": "2022-12-31",
+      "filed": "2023-02-22",
+      "accession_number": "0000070858-23-000092",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "Revenues",
+    "value": 89113000000,
+    "unit": "USD",
+    "fiscal_year": 2022,
+    "period_end": "2021-12-31",
+    "filed": "2023-02-22",
+    "accession_number": "0000070858-23-000092",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000070858/companyfacts.json"
+  }
+}

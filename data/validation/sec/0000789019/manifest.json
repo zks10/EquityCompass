@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "MSFT",
+  "cik": "0000789019",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0001193125-26-323660",
+      "filing_date": "2026-07-29",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000789019/000119312526323660.json"
+    },
+    {
+      "accession_number": "0000950170-25-100235",
+      "filing_date": "2025-07-30",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000789019/000095017025100235.json"
+    },
+    {
+      "accession_number": "0000950170-24-087843",
+      "filing_date": "2024-07-30",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000789019/000095017024087843.json"
+    },
+    {
+      "accession_number": "0000950170-23-035122",
+      "filing_date": "2023-07-27",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000789019/000095017023035122.json"
+    },
+    {
+      "accession_number": "0001564590-22-026876",
+      "filing_date": "2022-07-28",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000789019/000156459022026876.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000789019/companyfacts.json"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "PFE",
+  "cik": "0000078003",
+  "entity_name": "PFIZER INC",
+  "fiscal_year": 2024,
+  "period_end": "2024-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2025-02-27",
+    "accession_number": "0000078003-25-000054"
+  },
+  "score": {
+    "value": 71,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 84,
+        "source_value": 6.840965190670495
+      },
+      {
+        "name": "Net profit margin",
+        "score": 50,
+        "source_value": 12.62200009429959
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 69,
+        "source_value": 58.52921329359501
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 80,
+        "source_value": 20.029232872837003
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "Revenues",
+      "value": 63627000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-27",
+      "accession_number": "0000078003-25-000054",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 8031000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-27",
+      "accession_number": "0000078003-25-000054",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 213396000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-27",
+      "accession_number": "0000078003-25-000054",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 124899000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-27",
+      "accession_number": "0000078003-25-000054",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 12744000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-12-31",
+      "filed": "2025-02-27",
+      "accession_number": "0000078003-25-000054",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "Revenues",
+    "value": 59553000000,
+    "unit": "USD",
+    "fiscal_year": 2024,
+    "period_end": "2023-12-31",
+    "filed": "2025-02-27",
+    "accession_number": "0000078003-25-000054",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000078003/companyfacts.json"
+  }
+}

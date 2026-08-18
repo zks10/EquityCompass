@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "MDT",
+  "cik": "0001613103",
+  "entity_name": "Medtronic plc",
+  "fiscal_year": 2024,
+  "period_end": "2024-04-26",
+  "filing": {
+    "form": "10-K",
+    "filed": "2024-06-20",
+    "accession_number": "0001613103-24-000072"
+  },
+  "score": {
+    "value": 72,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 68,
+        "source_value": 3.6410798347583824
+      },
+      {
+        "name": "Net profit margin",
+        "score": 45,
+        "source_value": 11.358299344951181
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 93,
+        "source_value": 43.96594836687745
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 84,
+        "source_value": 20.970831788406873
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "value": 32364000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-04-26",
+      "filed": "2024-06-20",
+      "accession_number": "0001613103-24-000072",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 3676000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-04-26",
+      "filed": "2024-06-20",
+      "accession_number": "0001613103-24-000072",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 89981000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-04-26",
+      "filed": "2024-06-20",
+      "accession_number": "0001613103-24-000072",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 39561000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-04-26",
+      "filed": "2024-06-20",
+      "accession_number": "0001613103-24-000072",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 6787000000,
+      "unit": "USD",
+      "fiscal_year": 2024,
+      "period_end": "2024-04-26",
+      "filed": "2024-06-20",
+      "accession_number": "0001613103-24-000072",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+    "value": 31227000000,
+    "unit": "USD",
+    "fiscal_year": 2024,
+    "period_end": "2023-04-28",
+    "filed": "2024-06-20",
+    "accession_number": "0001613103-24-000072",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0001613103/companyfacts.json"
+  }
+}

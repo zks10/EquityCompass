@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "ticker": "GS",
+  "cik": "0000886982",
+  "entity_name": "The Goldman Sachs Group, Inc.",
+  "fiscal_year": 2021,
+  "period_end": "2021-12-31",
+  "filing": {
+    "form": "10-K",
+    "filed": "2022-02-25",
+    "accession_number": "0001193125-22-052682"
+  },
+  "score": {
+    "value": 55,
+    "label": "Mixed-to-favorable current signals",
+    "available_components": 4,
+    "eligible_for_main_comparison": true,
+    "components": [
+      {
+        "name": "Revenue growth",
+        "score": 100,
+        "source_value": 33.1665170556553
+      },
+      {
+        "name": "Net profit margin",
+        "score": 100,
+        "source_value": 36.46000101113939
+      },
+      {
+        "name": "Liabilities / assets",
+        "score": 13,
+        "source_value": 92.49133189616309
+      },
+      {
+        "name": "Operating cash flow margin",
+        "score": 6,
+        "source_value": 1.5520989568412005
+      }
+    ]
+  },
+  "source_facts": {
+    "revenue": {
+      "metric": "revenue",
+      "label": "Revenue",
+      "tag": "RevenuesNetOfInterestExpense",
+      "value": 59339000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-25",
+      "accession_number": "0001193125-22-052682",
+      "form": "10-K"
+    },
+    "net_income": {
+      "metric": "net_income",
+      "label": "Net income",
+      "tag": "NetIncomeLoss",
+      "value": 21635000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-25",
+      "accession_number": "0001193125-22-052682",
+      "form": "10-K"
+    },
+    "assets": {
+      "metric": "assets",
+      "label": "Total assets",
+      "tag": "Assets",
+      "value": 1463988000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-25",
+      "accession_number": "0001193125-22-052682",
+      "form": "10-K"
+    },
+    "liabilities": {
+      "metric": "liabilities",
+      "label": "Total liabilities",
+      "tag": "Liabilities",
+      "value": 1354062000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-25",
+      "accession_number": "0001193125-22-052682",
+      "form": "10-K"
+    },
+    "operating_cash_flow": {
+      "metric": "operating_cash_flow",
+      "label": "Operating cash flow",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "value": 921000000,
+      "unit": "USD",
+      "fiscal_year": 2021,
+      "period_end": "2021-12-31",
+      "filed": "2022-02-25",
+      "accession_number": "0001193125-22-052682",
+      "form": "10-K"
+    }
+  },
+  "prior_revenue_fact": {
+    "metric": "revenue",
+    "label": "Revenue",
+    "tag": "RevenuesNetOfInterestExpense",
+    "value": 44560000000,
+    "unit": "USD",
+    "fiscal_year": 2021,
+    "period_end": "2020-12-31",
+    "filed": "2022-02-25",
+    "accession_number": "0001193125-22-052682",
+    "form": "10-K"
+  },
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000886982/companyfacts.json"
+  }
+}

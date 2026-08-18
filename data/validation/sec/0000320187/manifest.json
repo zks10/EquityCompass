@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "ticker": "NKE",
+  "cik": "0000320187",
+  "requested_years": 5,
+  "attempted": 5,
+  "completed": 5,
+  "incomplete": 0,
+  "filings": [
+    {
+      "accession_number": "0000320187-26-000088",
+      "filing_date": "2026-07-15",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000320187/000032018726000088.json"
+    },
+    {
+      "accession_number": "0000320187-25-000047",
+      "filing_date": "2025-07-17",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000320187/000032018725000047.json"
+    },
+    {
+      "accession_number": "0000320187-24-000044",
+      "filing_date": "2024-07-25",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000320187/000032018724000044.json"
+    },
+    {
+      "accession_number": "0000320187-23-000039",
+      "filing_date": "2023-07-20",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000320187/000032018723000039.json"
+    },
+    {
+      "accession_number": "0000320187-22-000038",
+      "filing_date": "2022-07-21",
+      "status": "completed",
+      "snapshot_path": "data/validation/sec/0000320187/000032018722000038.json"
+    }
+  ],
+  "source_files": {
+    "companyfacts": "data/raw/sec/0000320187/companyfacts.json"
+  }
+}
