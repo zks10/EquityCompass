@@ -6,8 +6,8 @@
   market data, and company news into clear, explainable research.</p>
 
   <p>
-    <img src="https://img.shields.io/badge/Phase_1-MVP_Complete-1f7a5c" alt="Phase 1 MVP complete">
-    <img src="https://img.shields.io/badge/tests-138_passing-2ea44f" alt="138 tests passing">
+    <img src="https://img.shields.io/badge/Phase_2-Validation_Complete-1f7a5c" alt="Phase 2 validation complete">
+    <img src="https://img.shields.io/badge/tests-166_passing-2ea44f" alt="166 tests passing">
     <img src="https://img.shields.io/badge/Python-3.10%2B-3776ab" alt="Python 3.10 or later">
     <img src="https://img.shields.io/badge/built_with-Streamlit-ff4b4b" alt="Built with Streamlit">
   </p>
@@ -38,11 +38,11 @@ workspace from primary filings, market data, and recent coverage.
 > Equity Compass is a research and education tool, not a valuation, forecast,
 > investment rating, or recommendation.
 
-### Phase 1 validation
+### Validation status
 
-End-to-end validated with **AAPL, JPM, XOM, TSLA, and NVDA**. All **138 automated
-tests pass**, including missing-data, error-state, filing-extraction, scoring, and
-corporate-successor coverage.
+Phase 2 completed a preregistered historical holdout study. The score showed modest
+relative ranking value, but it remains a financial-health summary rather than a
+return forecast. All **166 automated tests pass**.
 
 ## Quick start
 
@@ -110,7 +110,8 @@ contacting the SEC.
 External data can be delayed, incomplete, or temporarily unavailable. Equity Compass
 shows missing-data and error states rather than inventing values.
 
-## Next: Phase 2
+## Next: Phase 3
 
-Phase 2 will test whether historical Equity Scores were connected with stronger
-later results. Read the plain-language [Phase 2 validation plan](docs/phase-2-validation-plan.md).
+Phase 3 will make validation evidence and company-specific score context more useful
+inside the product without changing the frozen score formula. Read the
+[Phase 3 plan](docs/phase-3-plan.md).
