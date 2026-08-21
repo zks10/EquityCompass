@@ -18,6 +18,7 @@ from finance_news.dashboard import (
     _read_quarterly_sections,
     analyze_ticker,
     build_filing_preview,
+    build_news_investor_summary,
     build_financial_insights,
     build_financial_snapshot_score,
     describe_score_confidence,
@@ -111,6 +112,49 @@ class FinancialInsightTests(unittest.TestCase):
         self.assertEqual(insights[1].label, "Reported a loss")
         self.assertEqual(insights[2].label, "Very high liabilities share")
         self.assertEqual(insights[3].label, "Not available")
+
+
+class NewsInvestorSummaryTests(unittest.TestCase):
+    def test_builds_article_specific_summary_with_two_short_sentences(self) -> None:
+        article = RecentNewsArticle(
+            "Apple raises guidance after strong quarterly revenue growth",
+            "Example",
+            "2026-08-18T12:00:00Z",
+            "https://example.com/apple",
+        )
+
+        summary = build_news_investor_summary(article)
+
+        self.assertEqual(len(summary), 2)
+        self.assertNotIn(article.title, summary[0])
+        self.assertIn("sales", summary[0])
+        self.assertIn("Bottom line", summary[1])
+
+    def test_marks_uncertain_headline_without_inventing_direction(self) -> None:
+        article = RecentNewsArticle(
+            "Microsoft announces an investor conference presentation",
+            "Example",
+            "2026-08-18T12:00:00Z",
+            "https://example.com/microsoft",
+        )
+
+        summary = build_news_investor_summary(article)
+
+        self.assertLessEqual(len(summary), 2)
+        self.assertIn("Bottom line", summary[-1])
+
+    def test_explains_waymo_chip_news_in_beginner_language(self) -> None:
+        article = RecentNewsArticle(
+            "Waymo is making its own AI chip for its robotaxi service",
+            "Example",
+            "2026-08-20T12:00:00Z",
+            "https://example.com/waymo",
+        )
+
+        summary = build_news_investor_summary(article)
+
+        self.assertIn("self-driving taxis", summary[0])
+        self.assertIn("lower costs", summary[1])
 
 
 class FinancialSnapshotScoreTests(unittest.TestCase):

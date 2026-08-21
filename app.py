@@ -17,6 +17,7 @@ from finance_news.dashboard import (
     DashboardSummary,
     FinancialSnapshotScore,
     RecentNewsArticle,
+    build_news_investor_summary,
     analyze_ticker,
     build_filing_preview,
     build_financial_snapshot_score,
@@ -316,7 +317,9 @@ def show_news_article(
     article: RecentNewsArticle, key: str, score_signal: ArticleSignal | None = None,
 ) -> None:
     """Display one normalized article as a scannable, headline-only card."""
-    topic, explanation, relevance, cue_label = describe_news_relevance(article)
+    topic, _generic_explanation, relevance, cue_label = describe_news_relevance(article)
+    investor_summary = build_news_investor_summary(article)
+    what_happened, bottom_line = investor_summary
     safe_url = html.escape(article.url, quote=True)
     publisher_mark = "".join(
         word[0] for word in article.publisher.split()[:2] if word
@@ -350,7 +353,11 @@ def show_news_article(
                 <span>{html.escape(format_news_timestamp(article.published_at))}</span>
               </div>
               <h3>{html.escape(article.title)}</h3>
-              <p>{html.escape(explanation)}</p>
+              <div class="news-investor-summary">
+                <small>IN PLAIN ENGLISH</small>
+                <p>{html.escape(what_happened)}</p>
+                <strong>{html.escape(bottom_line)}</strong>
+              </div>
               <div class="news-card-footer">
                 <div class="news-cues">
                   <span class="news-topic">{html.escape(topic)}</span>
@@ -3328,7 +3335,10 @@ st.markdown(
     .news-source { color: #087A5A; font-weight: 760; }
     .news-source::after { content: "·"; margin-left: 8px; color: #B0B8BF; }
     .news-card h3 { max-width: 900px; margin: 8px 0 6px; color: #17324B; font-size: 1.01rem; line-height: 1.4; }
-    .news-card-content > p { max-width: 850px; margin: 0; color: #617180; font-size: .77rem; line-height: 1.55; }
+    .news-investor-summary { max-width: 850px; margin-top: 2px; }
+    .news-investor-summary small { display: block; margin-bottom: 5px; color: #087A5A; font-size: .53rem; font-weight: 820; letter-spacing: .075em; }
+    .news-investor-summary p { margin: 0; color: #617180; font-size: .77rem; line-height: 1.45; }
+    .news-investor-summary strong { display: block; margin-top: 5px; color: #405668; font-size: .75rem; line-height: 1.4; }
     .news-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 14px; padding-top: 13px; border-top: 1px solid rgba(16,42,67,.075); }
     .news-cues { display: flex; flex-wrap: wrap; gap: 7px; }
     .news-cues > span { padding: 4px 8px; border-radius: 999px; font-size: .64rem; font-weight: 720; }

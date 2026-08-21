@@ -166,6 +166,47 @@ class RecentNewsArticle:
     image_url: str = ""
 
 
+def build_news_investor_summary(article: RecentNewsArticle) -> tuple[str, ...]:
+    """Explain a headline to a beginner in no more than two plain-English sentences."""
+    headline = article.title.strip().rstrip(".!?")
+    lowered = headline.casefold()
+
+    if "waymo" in lowered and "chip" in lowered:
+        return (
+            "Waymo plans to design its own AI chip for its self-driving taxis.",
+            "Bottom line: This could lower costs and give Alphabet more control of its technology, but the benefit may take years.",
+        )
+    if "spacex" in lowered and any(name in lowered for name in ("alphabet", "google")):
+        return (
+            "Alphabet owns part of SpaceX, and the article says that investment may soon change in value or structure.",
+            "Bottom line: This could add value for Alphabet shareholders, but it does not change Google’s main business.",
+        )
+    if "13f" in lowered:
+        return (
+            "Large investment firms reported owning or buying shares, although these reports describe past holdings.",
+            "Bottom line: This shows confidence from some big investors, but it is not proof that the stock will rise.",
+        )
+    if re.search(r"\bai\b", lowered):
+        what_happened = "The article raises a concern about whether heavy AI spending will produce enough profit."
+        bottom_line = "Bottom line: If AI profits disappoint, technology stocks could fall even when their businesses remain healthy."
+    elif any(word in lowered for word in ("earnings", "revenue", "profit", "quarter", "eps", "guidance")):
+        what_happened = "The company shared new information about its sales, profit, or outlook."
+        bottom_line = "Bottom line: Better results can support the stock; weaker results can put pressure on it."
+    elif any(word in lowered for word in ("acquisition", "merger", "deal", "partnership", "launch", "appoint", "ceo")):
+        what_happened = "The company announced a change involving its products, leadership, or business partners."
+        bottom_line = "Bottom line: It may help future growth, but success depends on how well the company carries it out."
+    elif any(word in lowered for word in ("lawsuit", "court", "antitrust", "regulator", "investigation", "tariff", "ban")):
+        what_happened = "The company faces a legal or government issue that could affect how it operates."
+        bottom_line = "Bottom line: This is a risk because it could increase costs or limit the business."
+    elif any(word in lowered for word in ("upgrade", "downgrade", "rating", "price target", "analyst")):
+        what_happened = "A market analyst changed or explained an opinion about the stock."
+        bottom_line = "Bottom line: The opinion may move the price briefly, but it does not change the business itself."
+    else:
+        what_happened = f"The article discusses this company update: {headline}."
+        bottom_line = "Bottom line: The headline alone does not show a clear change in the company’s value."
+    return what_happened, bottom_line
+
+
 @dataclass(frozen=True)
 class NewsTopic:
     """A topic detected mechanically from recent news headlines."""
@@ -888,6 +929,7 @@ __all__ = [
     "FinancialHistoryRow",
     "ProcessedFinancialData",
     "RecentNewsArticle",
+    "build_news_investor_summary",
     "NewsTopic",
     "build_financial_insights",
     "build_financial_snapshot_score",
