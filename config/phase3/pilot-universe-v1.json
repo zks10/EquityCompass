@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "universe_id": "phase3-pilot-v1",
+  "universe_name": "Phase 3.1 Development Pilot",
+  "effective_at": "2026-08-21",
+  "members": [
+    {"company_id": "0000019617", "ticker": "JPM", "company_name": "JPMorgan Chase & Co.", "sector": "Financials", "industry": "Diversified Banks"},
+    {"company_id": "0000021344", "ticker": "KO", "company_name": "The Coca-Cola Company", "sector": "Consumer Staples", "industry": "Beverages"},
+    {"company_id": "0000027419", "ticker": "TGT", "company_name": "Target Corporation", "sector": "Consumer Discretionary", "industry": "Retail"},
+    {"company_id": "0000034088", "ticker": "XOM", "company_name": "Exxon Mobil Corporation", "sector": "Energy", "industry": "Integrated Oil and Gas"},
+    {"company_id": "0000050863", "ticker": "INTC", "company_name": "Intel Corporation", "sector": "Information Technology", "industry": "Semiconductors"},
+    {"company_id": "0000078003", "ticker": "PFE", "company_name": "Pfizer Inc.", "sector": "Health Care", "industry": "Pharmaceuticals"},
+    {"company_id": "0000087347", "ticker": "SLB", "company_name": "SLB", "sector": "Energy", "industry": "Energy Equipment and Services"},
+    {"company_id": "0000093410", "ticker": "CVX", "company_name": "Chevron Corporation", "sector": "Energy", "industry": "Integrated Oil and Gas"},
+    {"company_id": "0000104169", "ticker": "WMT", "company_name": "Walmart Inc.", "sector": "Consumer Staples", "industry": "Consumer Staples Distribution and Retail"},
+    {"company_id": "0000200406", "ticker": "JNJ", "company_name": "Johnson & Johnson", "sector": "Health Care", "industry": "Pharmaceuticals"},
+    {"company_id": "0000320187", "ticker": "NKE", "company_name": "NIKE, Inc.", "sector": "Consumer Discretionary", "industry": "Footwear"},
+    {"company_id": "0000320193", "ticker": "AAPL", "company_name": "Apple Inc.", "sector": "Information Technology", "industry": "Technology Hardware"},
+    {"company_id": "0000731766", "ticker": "UNH", "company_name": "UnitedHealth Group Incorporated", "sector": "Health Care", "industry": "Managed Health Care"},
+    {"company_id": "0000789019", "ticker": "MSFT", "company_name": "Microsoft Corporation", "sector": "Information Technology", "industry": "Systems Software"},
+    {"company_id": "0000831001", "ticker": "C", "company_name": "Citigroup Inc.", "sector": "Financials", "industry": "Diversified Banks"},
+    {"company_id": "0000886982", "ticker": "GS", "company_name": "The Goldman Sachs Group, Inc.", "sector": "Financials", "industry": "Investment Banking and Brokerage"},
+    {"company_id": "0001018724", "ticker": "AMZN", "company_name": "Amazon.com, Inc.", "sector": "Consumer Discretionary", "industry": "Broadline Retail"},
+    {"company_id": "0001045810", "ticker": "NVDA", "company_name": "NVIDIA Corporation", "sector": "Information Technology", "industry": "Semiconductors"},
+    {"company_id": "0001163165", "ticker": "COP", "company_name": "ConocoPhillips", "sector": "Energy", "industry": "Oil and Gas Exploration and Production"},
+    {"company_id": "0001326801", "ticker": "META", "company_name": "Meta Platforms, Inc.", "sector": "Communication Services", "industry": "Interactive Media and Services"}
+  ]
+}
