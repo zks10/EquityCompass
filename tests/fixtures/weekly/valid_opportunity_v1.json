@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "weekly-2026-08-21-fixture-v1",
+  "week_ending": "2026-08-21",
+  "published_at": "2026-08-22T12:00:00Z",
+  "information_cutoff": "2026-08-22T08:00:00Z",
+  "market_data_through": "2026-08-21",
+  "universe": {"id": "fictional-pilot-v1", "name": "Fictional Pilot"},
+  "methodology": {
+    "version": "phase-3.1-v1",
+    "configuration_version": "opportunity-v1",
+    "formula_version": "ranking-v1"
+  },
+  "coverage": {
+    "universe_members": 20,
+    "refreshed": 20,
+    "triggered": 4,
+    "analyzed": 4,
+    "qualified": 1,
+    "published": 1
+  },
+  "warnings": [],
+  "opportunities": [{
+    "rank": 1,
+    "company": {
+      "company_id": "0000000001",
+      "ticker": "FIC",
+      "name": "Fictional Industries Corporation",
+      "sector": "Industrials",
+      "industry": "Imaginary Equipment"
+    },
+    "primary_thesis": {"detector": "market_overreaction", "strength": 82},
+    "supporting_signals": [{
+      "detector": "fundamental_inflection",
+      "family": "business_improvement",
+      "score": 74
+    }],
+    "ranking": {
+      "primary_strength": 82,
+      "evidence_confidence": 78,
+      "freshness": 91,
+      "opportunity_risk": 38,
+      "signal_convergence_bonus": 3,
+      "momentum_adjustment": 0,
+      "final_score": 82.35
+    },
+    "equity_score": 76,
+    "cross_detector": {
+      "evidence_confidence": 78,
+      "opportunity_risk": 38,
+      "freshness": 91,
+      "thesis_momentum": "stable",
+      "momentum_adjustment": 0
+    },
+    "critical_risk_flags": [],
+    "explanation": {
+      "why_now": "Shares declined unusually after a bounded fictional production update.",
+      "supporting_case": "The fictional filing maintained guidance and quantified the interruption.",
+      "counter_case": "The duration of the recovery remains uncertain.",
+      "what_would_invalidate": "A guidance reduction or evidence of permanent customer loss."
+    },
+    "evidence": [{
+      "evidence_id": "fictional-reported-1",
+      "fact_type": "reported_fact",
+      "claim": "The fictional company maintained full-year guidance.",
+      "role": "primary",
+      "source": {
+        "type": "FIXTURE_FILING",
+        "title": "Fictional Current Report",
+        "published_at": "2026-08-20T12:00:00Z",
+        "url": "https://example.invalid/fictional-filing"
+      },
+      "source_location": "Fictional Item 2.02"
+    }, {
+      "evidence_id": "fictional-calculated-1",
+      "fact_type": "calculated_fact",
+      "claim": "The fictional five-session benchmark-adjusted return was negative.",
+      "role": "supporting",
+      "source": {
+        "type": "FIXTURE_MARKET_DATA",
+        "title": "Fictional Market Observation",
+        "published_at": "2026-08-21T20:00:00Z",
+        "url": "https://example.invalid/fictional-market-data"
+      },
+      "source_location": "Fixture calculation"
+    }]
+  }]
+}

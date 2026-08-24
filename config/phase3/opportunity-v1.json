@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "configuration_version": "opportunity-v1",
+  "methodology_version": "phase-3.1-v1",
+  "eligibility": {
+    "minimum_equity_score": 65,
+    "minimum_evidence_confidence": 40,
+    "minimum_final_rank": 70
+  },
+  "ranking": {
+    "primary_strength_weight": 0.60,
+    "evidence_confidence_weight": 0.15,
+    "freshness_weight": 0.10,
+    "inverse_risk_weight": 0.15
+  },
+  "supporting_signals": {
+    "minimum_detector_score": 70,
+    "one_family_bonus": 3,
+    "two_family_bonus": 6,
+    "three_or_more_family_bonus": 8
+  },
+  "thesis_momentum": {
+    "strengthening": 3,
+    "stable": 0,
+    "weakening": -5
+  },
+  "diversification": {
+    "maximum_opportunities": 5,
+    "maximum_per_sector": 2
+  }
+}
