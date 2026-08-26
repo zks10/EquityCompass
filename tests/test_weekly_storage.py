@@ -23,14 +23,14 @@ class WeeklyStorageTests(unittest.TestCase):
 
     def test_discovers_numbered_repository_migrations(self):
         migrations = discover_migrations()
-        self.assertEqual([item.version for item in migrations], [1, 2, 3])
+        self.assertEqual([item.version for item in migrations], [1, 2, 3, 4])
         self.assertEqual(migrations[0].name, "001_foundation.sql")
 
     def test_migrates_empty_database_and_records_version(self):
-        self.assertEqual(migrate_database(self.database), 3)
+        self.assertEqual(migrate_database(self.database), 4)
         connection = connect_database(self.database)
         try:
-            self.assertEqual(current_schema_version(connection), 3)
+            self.assertEqual(current_schema_version(connection), 4)
             tables = {
                 row["name"]
                 for row in connection.execute(
@@ -53,7 +53,7 @@ class WeeklyStorageTests(unittest.TestCase):
             count = connection.execute(
                 "SELECT COUNT(*) AS count FROM schema_migrations"
             ).fetchone()["count"]
-            self.assertEqual(count, 3)
+            self.assertEqual(count, 4)
         finally:
             connection.close()
 
